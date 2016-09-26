@@ -19,3 +19,5 @@
 #
 #    The author may be contacted by email: jon@atack.com
 #++
+require 'minitest/autorun'
+require 'kraken_ruby_client'
