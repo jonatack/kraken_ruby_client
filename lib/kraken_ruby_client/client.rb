@@ -31,6 +31,7 @@ module Kraken
     KRAKEN_API_URL     = 'https://api.kraken.com'
     KRAKEN_API_VERSION = 0
 
+    def initialize(api_key = nil, api_secret = nil, options = {})
       @api_key, @api_secret = api_key, api_secret
       base_uri              = options[:base_uri]    ||= KRAKEN_API_URL
       api_version_path      = "/#{options[:version] ||= KRAKEN_API_VERSION}"
