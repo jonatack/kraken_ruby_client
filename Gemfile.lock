@@ -1,0 +1,23 @@
+PATH
+  remote: .
+  specs:
+    kraken_ruby_client (0.0.0)
+      curb
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    curb (0.9.3)
+    rake (11.3.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bundler
+  curb
+  kraken_ruby_client!
+  rake
+
+BUNDLED WITH
+   1.13.1
