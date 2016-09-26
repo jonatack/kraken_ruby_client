@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 2.3'
   s.homepage              = 'https://rubygems.org/gems/kraken_ruby_client'
   s.author                = 'Jon Atack'
-  s.email                 = 'jonnyatack@gmail.com'
+  s.email                 = 'jon@atack.com'
   s.summary               = 'Kraken Exchange API client written in Ruby'
   s.post_install_message  = 'Thanks for installing Kraken Ruby Client!'
   s.license               = 'LGPL-3.0'
