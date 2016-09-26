@@ -49,7 +49,7 @@ module Kraken
           else
             Curl.get(url)
           end
-        parsed_response(http.body)
+        JSON.parse(http.body)
       end
 
       def post_private(method, opts = {})
@@ -62,12 +62,7 @@ module Kraken
             OpenSSL::Digest.new('sha256', nonce + params).digest
           )
         end
-        parsed_response(http.body)
-      end
-
-      def parsed_response(body)
-        response = JSON.parse(body)
-        response[response['error'].empty? ? 'result' : 'error']
+        JSON.parse(http.body)
       end
 
       # Kraken requires an always-increasing unsigned 64-bit integer nonce
