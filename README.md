@@ -1,4 +1,5 @@
-# kraken_ruby_client
+# Kraken Ruby Client
+
 A Kraken Exchange API wrapper for Ruby 2.3+.
 
 Emphasis on speed, simplicity, no meta-programming, and few dependencies.
