@@ -1,3 +1,4 @@
+$:.push File.expand_path("../lib", __FILE__)
 require 'kraken_ruby_client/version'
 
 Gem::Specification.new do |s|
@@ -19,7 +20,7 @@ Gem::Specification.new do |s|
     Curb gem (CUrl-RuBy, Ruby bindings for libcurl written in C) for HTTP.
   EOF
 
-  s.add_dependency 'curb'
-  s.add_development_dependency 'bundler'
-  s.add_development_dependency 'rake'
+  s.add_dependency 'curb', '~> 0.9'
+  s.add_development_dependency 'bundler', '~> 1.13'
+  s.add_development_dependency 'rake', '~> 11.3'
 end

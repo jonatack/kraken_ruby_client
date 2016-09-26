@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     kraken_ruby_client (0.0.0)
-      curb
+      curb (~> 0.9)
 
 GEM
   remote: https://rubygems.org/
@@ -14,10 +14,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler
+  bundler (~> 1.13)
   curb
   kraken_ruby_client!
-  rake
+  rake (~> 11.3)
 
 BUNDLED WITH
    1.13.1
