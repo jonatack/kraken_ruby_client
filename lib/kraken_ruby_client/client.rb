@@ -41,6 +41,8 @@ module Kraken
 
     private
 
+      # HTTP GET request for public API queries
+      #
       def get_public(method, opts = nil)
         url = @api_public_url + method
         http =
@@ -52,28 +54,31 @@ module Kraken
         JSON.parse(http.body)
       end
 
+      # HTTP POST request for private queries involving user credentials
+      #
       def post_private(method, opts = {})
         nonce = opts['nonce'] = generate_nonce
         params = opts.map { |param| param.join('=') }.join('&')
         http = Curl.post(@api_private_url + method, params) do |http|
           http.headers['API-Key']  = @api_key
           http.headers['API-Sign'] = authenticate(
-            @api_private_path + method +
-            OpenSSL::Digest.new('sha256', nonce + params).digest
-          )
+              @api_private_path + method +
+              OpenSSL::Digest.new('sha256', nonce + params).digest
+            )
         end
         JSON.parse(http.body)
       end
 
       # Kraken requires an always-increasing unsigned 64-bit integer nonce
       # using a persistent counter or the current time.
+      #
       # We generate it using a timestamp in microseconds for the higher 48 bits
       # and a pseudorandom number for the lower 16 bits.
       #
       def generate_nonce
-        high_bits = (Time.now.to_f * 10_000).to_i << 16
-        low_bits  = SecureRandom.random_number(2 ** 16) & 0xffff
-        (high_bits | low_bits).to_s
+        higher_48_bits = (Time.now.to_f * 10_000).to_i << 16
+        lower_16_bits  = SecureRandom.random_number(2 ** 16) & 0xffff
+        (higher_48_bits | lower_16_bits).to_s
       end
 
       def authenticate(url)
