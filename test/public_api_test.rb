@@ -19,3 +19,18 @@
 #
 #    The author may be contacted by email: jon@atack.com
 #++
+require 'time'
+require_relative 'test_helper'
+
+class PublicApiTest < Minitest::Test
+  def setup
+    @query ||= Kraken::Client.new
+  end
+
+  def test_get_server_time
+    server_time = Time.parse(@query.server_time['result']['rfc1123'])
+    user_time   = Time.now.getutc
+    assert_equal user_time.yday, server_time.yday
+    assert_equal user_time.hour, server_time.hour
+  end
+end
