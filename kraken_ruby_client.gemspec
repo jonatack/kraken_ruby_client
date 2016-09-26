@@ -18,6 +18,11 @@ Gem::Specification.new do |s|
     A Kraken Exchange API wrapper for Ruby 2.3+. Emphasis on speed,
     simplicity, no meta-programming, and few dependencies. Uses the fast
     Curb gem (CUrl-RuBy, Ruby bindings for libcurl written in C) for HTTP.
+
+    This program comes with ABSOLUTELY NO WARRANTY.
+    This is free software, and you are welcome to redistribute it
+    under certain conditions; see the LICENSE file for details.
+    Copyright (C) 2016 Jon Atack
   EOF
 
   s.add_dependency 'curb', '~> 0.9'
