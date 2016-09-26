@@ -39,6 +39,39 @@ module Kraken
       end
     end
 
+    def ticker(pairs = nil) # takes string of comma-delimited pairs
+      get_public 'Ticker', { 'pair': pairs }
+    end
+
+    def order_book(pair = nil)
+      get_public 'Depth', { 'pair': pair }
+    end
+
+    def trades(pair = nil)
+      get_public 'Trades', { 'pair': pair }
+    end
+
+    def spread(pair = nil, opts = {})
+      opts['pair'] = pair
+      get_public 'Spread', opts
+    end
+
+    def balance
+      post_private 'Balance'
+    end
+
+    def trade_balance(opts = {})
+      post_private 'TradeBalance', opts
+    end
+
+    def open_orders(opts = {})
+      post_private 'OpenOrders', opts
+    end
+
+    def closed_orders(opts = {})
+      post_private 'ClosedOrders', opts
+    end
+
     private
 
       # HTTP GET request for public API queries
