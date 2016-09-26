@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# lib/kraken_ruby_client/client.rb
+
 require 'base64'
 require 'securerandom'
 require 'curb'
@@ -19,6 +21,9 @@ module Kraken
       @api_private_url      = base_uri + @api_private_path
     end
 
+
+    # +<tt>server_time</tt>
+    #
     def server_time
       get_public 'Time'
     end
