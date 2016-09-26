@@ -21,7 +21,13 @@
 #++
 require 'bundler/gem_tasks'
 
-desc 'Open an irb session'
+desc 'Run all tests with `rake` or `rake test`.'
+task default: :test
+task :test do
+  ruby 'test/*_test.rb'
+end
+
+desc 'Open an irb session with `rake console`'
 task :console do
   require 'irb'
   require 'irb/completion'
