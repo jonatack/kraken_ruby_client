@@ -1,5 +1,5 @@
 #--
-#    Gemfile
+#    test/test_public_api.rb
 #
 #    Kraken Exchange API client written in Ruby
 #    Copyright (C) 2016 Jon Atack
@@ -19,8 +19,3 @@
 #
 #    The author may be contacted by email: jon@atack.com
 #++
-source 'https://rubygems.org'
-gemspec
-
-gem 'curb'
-
