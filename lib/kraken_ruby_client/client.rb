@@ -21,9 +21,6 @@
 #    The author may be contacted by email: jon@atack.com
 #++
 
-# irb -I lib
-# require 'kraken_ruby_client'; k=Kraken::Client.new
-
 require 'base64'
 require 'securerandom'
 require 'curb'
@@ -42,8 +39,6 @@ module Kraken
       @api_private_url      = base_uri + @api_private_path
     end
 
-    # +<tt>server_time</tt>
-    #
     def server_time
       get_public 'Time'
     end
@@ -64,7 +59,7 @@ module Kraken
       end
     end
 
-    def ticker(pairs = nil) # takes string of comma-delimited pairs
+    def ticker(pairs = nil)
       get_public 'Ticker', { 'pair': pairs }
     end
 
@@ -99,7 +94,7 @@ module Kraken
 
     private
 
-      # HTTP GET request for public API queries
+      # HTTP GET request for public API queries.
       #
       def get_public(method, opts = nil)
         url = @api_public_url + method
@@ -112,7 +107,7 @@ module Kraken
         JSON.parse(http.body)
       end
 
-      # HTTP POST request for private queries involving user credentials
+      # HTTP POST request for private API queries involving user credentials.
       #
       def post_private(method, opts = {})
         nonce = opts['nonce'] = generate_nonce
