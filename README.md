@@ -1,15 +1,16 @@
 # Kraken Ruby Client
 
-A Kraken Exchange API wrapper for Ruby 2.3+.
+A Ruby API wrapper for the Kraken Bitcoin Exchange, written for Ruby 2.3+.
 
 Emphasis on speed, simplicity, no meta-programming, and few dependencies.
 
-- Uses the fast Curb gem (CUrl-RuBy, Ruby bindings for libcurl written in C) for
-HTTP.
+- Kraken Ruby Client has only one runtime dependency:
+The fast [Curb (CUrl-RuBy) gem](https://github.com/taf2/curb), which provides
+Ruby bindings for [libcurl](https://github.com/curl/curl), a fully-featured
+client-side URL transfer library written in C.
 
-- Does not subclass hash via Hashie like other Kraken Ruby clients.
-
-- Uses as few dependencies as possible.
+- Kraken Ruby Client does not use [Hashie](https://github.com/intridea/hashie),
+to avoid the pain and performance costs of subclassing Hash.
 
 - Currently developed with Ruby 2.4.0. Written for Ruby 2.3 and up.
 
@@ -22,7 +23,7 @@ HTTP.
 To support the project:
 
 * Use Kraken Ruby Client in your apps, and please file an issue if you
-encounter anything that's broken or missing. A failing spec to demonstrate
+encounter anything that's broken or missing. A failing test to demonstrate
 the issue is awesome. A pull request with passing tests is even better!
 
 ## License/disclaimer
@@ -42,4 +43,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 The author may be contacted by email at jon@atack.com.
 
-Copyright (C) 2016 Jon Atack
+Copyright © 2016 Jon Atack (@jonatack)
