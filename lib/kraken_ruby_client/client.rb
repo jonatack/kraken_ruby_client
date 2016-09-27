@@ -112,9 +112,9 @@ module Kraken
       def post_private(method, opts = {})
         nonce = opts['nonce'] = generate_nonce
         params = opts.map { |param| param.join('=') }.join('&')
-        http = Curl.post(@api_private_url + method, params) do |http|
-          http.headers['API-Key']  = @api_key
-          http.headers['API-Sign'] = authenticate(
+        http = Curl.post(@api_private_url + method, params) do |request|
+          request.headers['API-Key']  = @api_key
+          request.headers['API-Sign'] = authenticate(
               @api_private_path + method +
               OpenSSL::Digest.new('sha256', nonce + params).digest
             )
