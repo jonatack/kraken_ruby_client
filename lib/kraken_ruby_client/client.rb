@@ -131,7 +131,7 @@ module Kraken
       def generate_nonce
         higher_48_bits = (Time.now.to_f * 10_000).to_i << 16
         lower_16_bits  = SecureRandom.random_number(2 ** 16) & 0xffff
-        (higher_48_bits | lower_16_bits).to_s
+        higher_48_bits | lower_16_bits
       end
 
       def authenticate(url)
