@@ -10,9 +10,14 @@ Ruby bindings for [libcurl](https://github.com/curl/curl), a fully-featured
 client-side URL transfer library written in C.
 
 - Kraken Ruby Client does not use [Hashie](https://github.com/intridea/hashie),
-to avoid the pain and performance costs of subclassing Hash.
+to avoid the [pain and performance costs]
+(http://www.schneems.com/2014/12/15/hashie-considered-harmful.html) of
+[subclassing Hash]
+(http://tenderlovemaking.com/2014/06/02/yagni-methods-are-killing-me.html).
 
-- Currently developed with Ruby 2.4.0. Written for Ruby 2.3 and up.
+- Kraken Ruby Client uses fast, straightforward Minitest for its test suite.
+
+Currently developed with Ruby 2.4.0. Written for Ruby 2.3 and up.
 
 ## Getting started
 
