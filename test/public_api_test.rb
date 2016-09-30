@@ -33,4 +33,25 @@ class PublicApiTest < Minitest::Test
     assert_equal user_time.yday, server_time.yday
     assert_equal user_time.hour, server_time.hour
   end
+
+  def test_get_exchange_currencies_info
+    assets = %w(KFEE XDAO XETC XETH XLTC XNMC XXBT XXDG XXLM XXRP XXVN ZCAD
+      ZEUR ZGBP ZJPY ZKRW ZUSD)
+    assert_equal assets, @query.assets['result'].keys
+
+    assert_get_exchange_currency_info_for('ZUSD', 'USD',  4, 2)
+    assert_get_exchange_currency_info_for('ZEUR', 'EUR',  4, 2)
+    assert_get_exchange_currency_info_for('XXBT', 'XBT', 10, 5)
+  end
+
+  private
+
+    def assert_get_exchange_currency_info_for(currency, alt_name, decimals,
+      display_decimals)
+      query_currency = @query.assets(currency)['result']
+      assert_equal currency, query_currency.keys.first
+      assert_equal alt_name, query_currency[currency]['altname']
+      assert_equal decimals, query_currency[currency]['decimals']
+      assert_equal display_decimals, query_currency[currency]['display_decimals']
+    end
 end
