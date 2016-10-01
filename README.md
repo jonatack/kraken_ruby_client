@@ -1,8 +1,14 @@
 # Kraken Ruby Client
 
-A Ruby API wrapper for the Kraken Bitcoin Exchange, written for Ruby 2.3+.
+A work-in-progress Ruby API wrapper for the Kraken Bitcoin Exchange.
 
 Emphasis on speed, simplicity, no meta-programming, and few dependencies.
+
+- Kraken Ruby Client follows
+[Proposal X-ISO4217-A3](http://www.ifex-project.org/our-proposals/x-iso4217-a3),
+an API standards protocol for the open identification of currencies and
+currency-like commodities on the internet by the
+[Internet Financial EXchange (IFEX)](http://www.ifex-project.org/) organisation.
 
 - Kraken Ruby Client has only one runtime dependency:
 The fast [Curb (CUrl-RuBy) gem](https://github.com/taf2/curb), which provides
@@ -15,7 +21,8 @@ to avoid the [pain and performance costs]
 [subclassing Hash]
 (http://tenderlovemaking.com/2014/06/02/yagni-methods-are-killing-me.html).
 
-- Kraken Ruby Client uses fast, straightforward Minitest for its test suite.
+- Kraken Ruby Client uses fast, straightforward
+[Minitest](https://github.com/seattlerb/minitest) for its test suite.
 
 Currently developed with Ruby 2.4.0. Written for Ruby 2.3 and up.
 
