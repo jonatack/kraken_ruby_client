@@ -28,10 +28,15 @@ class PublicApiTest < Minitest::Test
   end
 
   def test_get_server_time
-    server_time = Time.parse(@query.server_time['result']['rfc1123'])
-    user_time   = Time.now.getutc
-    assert_equal user_time.yday, server_time.yday
-    assert_equal user_time.hour, server_time.hour
+    server_time         = @query.server_time['result']
+    server_unixtime     = server_time['unixtime']
+    server_rfc1123_time = Time.parse server_time['rfc1123']
+    user_time           = Time.now.getutc
+
+    assert_equal user_time.yday, server_rfc1123_time.yday
+    assert_equal user_time.hour, server_rfc1123_time.hour
+
+    assert_kind_of Integer, server_unixtime
   end
 
   def test_get_exchange_currencies_info
