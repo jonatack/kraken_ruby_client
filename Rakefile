@@ -22,7 +22,20 @@
 require 'bundler/gem_tasks'
 require 'rake/testtask'
 
-desc 'Run all tests with `rake` or `rake test`.'
+# To run all tests:
+#   rake (or) rake test
+#
+# To run one test file:
+#   ruby -Ilib:test test/private_api_test.rb
+#   (or)
+#   rake test TEST=test/public_api_test.rb
+#
+# To run an individual test in a test file:
+#   ruby -Ilib:test test/public_api_test.rb -n test_get_server_time
+#   (or)
+#   rake test TEST=test/public_api_test.rb TESTOPTS=--name=test_get_server_time
+#
+desc 'Run all tests with `rake` or `rake test`'
 task default: :test
 Rake::TestTask.new do |t|
   t.libs.push 'lib'

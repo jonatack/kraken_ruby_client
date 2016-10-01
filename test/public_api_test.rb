@@ -22,6 +22,18 @@
 require 'time'
 require_relative 'test_helper'
 
+# To run all tests: rake or rake test
+#
+# To run one test file:
+#   ruby -Ilib:test test/private_api_test.rb
+#   or
+#   rake test TEST=test/public_api_test.rb
+#
+# To run an individual test in a test file:
+#   ruby -Ilib:test test/public_api_test.rb -n test_get_server_time
+#   or
+#   rake test TEST=test/public_api_test.rb TESTOPTS=--name=test_get_server_time
+
 class PublicApiTest < Minitest::Test
   def setup
     @query ||= Kraken::Client.new
