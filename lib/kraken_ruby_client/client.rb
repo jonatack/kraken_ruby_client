@@ -63,12 +63,21 @@ module Kraken
       get_public 'Ticker', { 'pair': pairs }
     end
 
+    # Get open-high-low-close data
+    def ohlc(pair = nil) # pair, interval (optional), since (optional)
+      get_public 'OHLC', { 'pair': pair }
+    end
+
     def order_book(pair = nil)
       get_public 'Depth', { 'pair': pair }
     end
 
-    def trades(pair = nil)
-      get_public 'Trades', { 'pair': pair }
+    def trades(pair, since = nil)
+      if since
+        get_public 'Trades', { 'pair': pair, since: since }
+      else
+        get_public 'Trades', { 'pair': pair }
+      end
     end
 
     def spread(pair = nil, opts = {})
