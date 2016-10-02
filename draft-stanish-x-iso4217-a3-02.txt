@@ -1,0 +1,1392 @@
+INTERNET-DRAFT                                Walter Stanish
+Intended status: Informational              The IFEX Project
+Expires: May 26, 2013                       ifex-project.org
+                                               November 2012
+
+Registry of Unofficial Extensions to the ISO 4217 Alpha Three Currency
+                Identification Namespace (X-ISO4217-A3)
+                     draft-stanish-x-iso4217-a3-02
+
+
+Abstract
+
+
+   This document defines a new IANA registry to keep track of
+   identifiers for currencies or currency-like commodities lying outside
+   the traditional scope of the International Organization for
+   Standardization (ISO) 4217 alpha-3 standard, such as digital
+   currencies and commodities, currencies issued by countries (nation-
+   states) with limited international recognition, emerging commodities
+   such as emissions reduction credits, private or commercial
+   currencies, and accounting units for local exchange and trading
+   systems (LETS).  Such codes are already in use; the registry simply
+   codifies their existence.  This document obsoletes draft-stanish-x-
+   iso4217-a3-01.
+
+
+Status of this Memo
+
+
+   This memo defines an Experimental Protocol for the Internet
+   community.  This memo does not specify an Internet standard of any
+   kind.  Discussion and suggestions for improvement are requested.
+   Distribution of this memo is unlimited.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at http://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+
+
+
+The IFEX Project / ifex-project.org                             [Page 1]
+
+INTERNET-DRAFT            Expires: May 26, 2013            November 2012
+
+
+   This document is an individual submission. Comments are solicited
+   and should be addressed to the author(s).
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   This Internet-Draft will expire on May 26, 2013.
+
+
+Copyright Notice
+
+   Copyright (c) 2012 IETF Trust and the persons identified as the
+   document authors. All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The IFEX Project / ifex-project.org                 Section 1.  [Page 2]
+
+INTERNET-DRAFT            Expires: May 26, 2013            November 2012
+
+
+1.  Introduction
+
+
+   The vast majority of multicurrency financial systems today use the
+   International Organization for Standardization (ISO) 4217 standard
+   for currency identification, which provides three digit numeric and
+   three letter ("alpha-3") codepoints for the identification of each
+   currency.  The latter, letter-based codes are in far greater use.
+
+   ISO4217 codepoints are registered by the International Organization
+   for Standardization through the maintenance agency for the registry,
+   SIX Interbank Clearing [SIX], a Swiss financial body.
+
+   The specific terms of SIX or the ISO's mandate within the currency
+   sphere do not appear to be publicly available.  However, given that
+   geographically defined nation-states with some international
+   recognition and physically circulating currency (such as Transnistria
+   [PRB]) have not been issued currency codes, and leaving aside the
+   relatively large scope for raising conflict of interest questions
+   with regards to SIX's SWIFT links, it is reasonable to assume that
+   SIX and the ISO's mandate and/or sphere of interest in the currency
+   domain is highly unlikely to suddenly extend to emerging currency-
+   like commodities lacking some or all of the political qualities
+   exhibited by conventional currencies.
+
+   At present, issued codepoints are almost exclusively linked to
+   national or supra-national entities (eg. 'EUR' for the Euro, the
+   currency of the European Union) that have achieved political
+   recognition from the United Nations, with some exceptions for the
+   more popular traditional commodities, such as gold, and various
+   regional instruments backed by similar political entities.
+
+   This is understandable, given that conventional definitions of the
+   term 'currency' are often inextricably linked to the notion of
+   national issue by 'countries' or nation-states:
+
+         "a system of money in general use in a particular country"
+           -- The Oxford Dictionary [OXFORD]
+
+   Therefore currencies and currency-like commodities with far smaller
+   circulation not adopting a traditional national paradigm of issue are
+   unlikely to be granted a codepoint. Indeed, there is some evidence
+   that SIX Interbank Clearing has rejected proposals for such
+   registrations in the recent past, citing lack of a national entity
+   backing a particular currency. [ISO-REJECTION]
+
+   This situation has left both end users and system developers and
+   integrators in a quandry; in response they have apparently near
+
+
+
+The IFEX Project / ifex-project.org                 Section 1.  [Page 3]
+
+INTERNET-DRAFT            Expires: May 26, 2013            November 2012
+
+
+   uniformly opted to respond by issuing unofficial ISO4217 alpha-3
+   codes for private use.
+
+   The present problem is that, given the recent growth of such
+   unofficial codes, and the increasing exchange of such assets across
+   disparate systems, no registry of unofficial codepoints exists.
+   Therefore no unambiguous, internet-wide, shared vocabulary can be
+   adopted by internet systems to identify this emerging class of
+   assets.
+
+   This document proposes the establishment of a registry to be
+   maintained by the Internet Assigned Numbers Authority (IANA) in order
+   to resolve this issue by creating an unofficial, parallel namespace
+   codifying such unofficial extensions to the ISO4217 alpha-3 official
+   standard, tracking present and future unofficial assignments.
+
+   Examples of currencies or currency-like commodities for which systems
+   may benefit from such registration include decentralized digital
+   currencies such as Bitcoin [BITCOIN], the upcoming Ripple Credit
+   [XRP], private currency systems [SLL], and regional currencies of
+   limited political recognition [PRB] [TEM].
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in BCP 14, RFC 2119
+   [RFC2119].
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The IFEX Project / ifex-project.org                 Section 1.  [Page 4]
+
+INTERNET-DRAFT            Expires: May 26, 2013            November 2012
+
+
+
+Table of Contents
+
+
+   1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2. X-ISO4217-A3 . . . . . . . . . . . . . . . . . . . . . . . . .   6
+    2.1. Examples. . . . . . . . . . . . . . . . . . . . . . . . . .   6
+    2.2. Source Registry Identification. . . . . . . . . . . . . . .   6
+    2.3. Codepoint Identification. . . . . . . . . . . . . . . . . .   6
+   3. Implementation Considerations. . . . . . . . . . . . . . . . .   7
+    3.1. Input . . . . . . . . . . . . . . . . . . . . . . . . . . .   7
+     3.1.1. Formats. . . . . . . . . . . . . . . . . . . . . . . . .   7
+     3.1.2. End User Input . . . . . . . . . . . . . . . . . . . . .   8
+      3.1.2.1. a3code Input. . . . . . . . . . . . . . . . . . . . .   8
+     3.1.3. Case Sensitivity . . . . . . . . . . . . . . . . . . . .   8
+    3.2. Output. . . . . . . . . . . . . . . . . . . . . . . . . . .   8
+     3.2.1. Machine Presentation . . . . . . . . . . . . . . . . . .   9
+     3.2.2. End User Presentation. . . . . . . . . . . . . . . . . .   9
+    3.3. Internationalization. . . . . . . . . . . . . . . . . . . .   9
+   4. Security Considerations. . . . . . . . . . . . . . . . . . . .   9
+    4.1. Input . . . . . . . . . . . . . . . . . . . . . . . . . . .   9
+     4.1.1. Input Confirmation . . . . . . . . . . . . . . . . . . .  10
+     4.1.2. Case Normalization . . . . . . . . . . . . . . . . . . .  10
+    4.2. IANA Processes. . . . . . . . . . . . . . . . . . . . . . .  10
+   5. IANA Considerations. . . . . . . . . . . . . . . . . . . . . .  10
+    5.1. Name Space Exhaustion . . . . . . . . . . . . . . . . . . .  10
+    5.2. Registration. . . . . . . . . . . . . . . . . . . . . . . .  11
+    5.3. Modification / Cancellation . . . . . . . . . . . . . . . .  11
+    5.4. Publication . . . . . . . . . . . . . . . . . . . . . . . .  11
+    5.5. ISO Liason. . . . . . . . . . . . . . . . . . . . . . . . .  12
+     5.5.1. Resolving Duplicate Assignment . . . . . . . . . . . . .  12
+    5.6. Security. . . . . . . . . . . . . . . . . . . . . . . . . .  12
+   6. References . . . . . . . . . . . . . . . . . . . . . . . . . .  13
+    6.1. Normative References. . . . . . . . . . . . . . . . . . . .  13
+    6.2. Informative References. . . . . . . . . . . . . . . . . . .  14
+   7. Acknowledgments. . . . . . . . . . . . . . . . . . . . . . . .  15
+   8. Authors' Addresses . . . . . . . . . . . . . . . . . . . . . .  15
+   9. Appendix A: Initial Registry Contents. . . . . . . . . . . . .  16
+   10. Appendix B: ISO4217 Registry Issues . . . . . . . . . . . . .  24
+   11. Appendix C: Document History. . . . . . . . . . . . . . . . .  25
+
+
+
+
+
+
+
+
+
+
+
+The IFEX Project / ifex-project.org                 Section 1.  [Page 5]
+
+INTERNET-DRAFT            Expires: May 26, 2013            November 2012
+
+
+2.  X-ISO4217-A3
+
+
+   Official [ISO4217] codepoints shall be considered a subset of a
+   larger namespace, based upon a longer machine-format codepoint,
+   providing unambiguous identification of currencies and currency-like
+   commodities both within and beyond conventional ISO4217 assignment.
+   However, existing end user expectations regarding three-character
+   ('a3code') format and presentation are respected.
+
+   Systems implementers providing X-ISO4217-A3 support remain safe in
+   the knowledge that they will have the capacity to support all ISO4217
+   alpha-3 codepoints in addition to arbitrary currencies and currency-
+   like commodities.
+
+
+2.1.  Examples
+
+
+   The Euro is encoded as 'ZEUR'.
+
+   The digital currency or currency-like commodity known as Bitcoin is
+   encoded as 'XBTC'.
+
+
+2.2.  Source Registry Identification
+
+   In order to issue superset-compatible currency and currency-like
+   commodity identifiers within the [ISO4217] scheme, a prefix character
+   is introduced denominating the source registry, being either this
+   IANA-managed and unofficial registry (denoted with 'X') or the
+   official ISO-managed registry (denoted with 'Z').
+
+   The 'X' notation is chosen as is the standard semantic for unofficial
+   extensions within internet drafts.  The 'Z' notation is chosen as a
+   less frequently used opening consonant in Roman languages, thus
+   reducing the likelihood of unfortunate four-letter linguistic
+   connotations.
+
+
+2.3.  Codepoint Identification
+
+   The X-ISO4217-A3 format may be expressed in ABNF [RFC5234] as
+   follows:
+
+    codepoint    = registry a3code       ; eg: 'XBTC', 'ZEUR'
+
+    registry     = reg-x / reg-z         ; ie: capital 'X', capital 'Z'
+
+
+
+The IFEX Project / ifex-project.org               Section 2.3.  [Page 6]
+
+INTERNET-DRAFT            Expires: May 26, 2013            November 2012
+
+
+    reg-x        = %d88                  ; X-ISO4217-A3 (IANA managed)
+    reg-z        = %d90                  ; ISO4217-A3 (ISO managed)
+
+    a3code       = 3caps-letter          ; eg: 'EUR', 'BTC'
+
+    caps-letter  = %d65 / %d66 / %d67 / %d68 / %d69 / %d70 / %d71 /
+                   %d72 / %d73 / %d74 / %d75 / %d76 / %d77 / %d78 /
+                   %d79 / %d80 / %d81 / %d82 / %d83 / %d84 / %d85 /
+                   %d86 / %d87 / %d88 / %d89 / %d90   ; ie. capital A-Z
+
+
+   An explanation of the major elements follows.
+
+   codepoint:
+     A structurally valid X-ISO4217-A3 codepoint in machine format, ie.
+     including the registry identifier.
+
+   registry:
+     A character identifying the source registry of the subsequent
+     'a3code' being either 'X' (denoting this registry, managed by IANA)
+     or 'Z' (denoting the official ISO4217 registry, managed by SIX on
+     behalf of the ISO).
+
+   a3code:
+     Alpha-three code. A three letter alphanumeric string identifying a
+     specific currency or currency-like commodity within the prior
+     'registry', as presently used within ISO4217 and unofficial
+     extensions to the ISO4217 system, for example: 'EUR' (official ISO
+     code denoting the Euro) or 'BTC' (widely used code denoting
+     Bitcoin [BITCOIN]).
+
+
+
+3.  Implementation Considerations
+
+
+3.1.  Input
+
+
+3.1.1.  Formats
+
+   For legacy reasons, input MAY be accepted in either of two formats:
+
+    Three character (X-ISO4217-A3 'a3code') format:
+      This is the format most familiar to end users, ie. codes such as
+      'MYR' (Malaysian Ringgit) or 'SLL' (Second Life Linden Dollar).
+      This code format excludes an explicit registry identifier.  This
+      format MAY be supported.
+
+
+
+The IFEX Project / ifex-project.org             Section 3.1.1.  [Page 7]
+
+INTERNET-DRAFT            Expires: May 26, 2013            November 2012
+
+
+    Four character (X-ISO4217-A3) format:
+      The full X-ISO4217-A3 four character format, including an explicit
+      registry identifier.  For example, 'ZMYR' (Malaysian Ringgit) or
+      'XSLL' (Second Life Linden Dollar).  This format MUST be supported
+      in all cases.
+
+
+3.1.2.  End User Input
+
+   Systems accepting input from end users MUST accept codepoints from
+   each registry in an equal fashion, such that end users are NOT aware
+   of any difference between individual registries.
+
+
+3.1.2.1.  a3code Input
+
+   Implementations MAY allow 'a3code' input.  In this case,
+   implementations MUST normalize input to a complete an unambiguous X-
+   ISO4217-A3 codepoint immediately, using the following algorithm:
+
+    - If the 'a3code' exists within a single registry, normalize to that
+      X-ISO4217-A3 code.  The implementation SHOULD confirm or report on
+      the result of normalization.
+
+    - If the 'a3code' exists within multiple registries, NOT marked
+      as an historic allocation ('is_historic' field), the
+   implementation
+      MUST NOT normalize the value.  The implementation MUST return an
+      error.  The implementation MAY provide the appropriate subset of
+      normalization options to the end user or peer system to assist
+   with
+      building an additional query using properly normalized input.
+
+
+3.1.3.  Case Sensitivity
+
+   Implementations MAY accept mixed or lower case input, but MUST
+   normalize this input to (structurally valid) upper case prior to
+   processing or storage.  For relevant security considerations, see
+   Case Normalization.
+
+
+3.2.  Output
+
+
+
+
+
+
+
+
+The IFEX Project / ifex-project.org               Section 3.2.  [Page 8]
+
+INTERNET-DRAFT            Expires: May 26, 2013            November 2012
+
+
+3.2.1.  Machine Presentation
+
+   Implementations MUST present upper case only, normalized
+   (structurally valid), four character X-ISO4217-A3 identifiers to peer
+   systems.
+
+   For example, 'XVER' (Non Kyoto Protocol Verified Emissions Reduction
+   CO2 Tonne).
+
+
+3.2.2.  End User Presentation
+
+
+   For user presentation purposes, systems MAY present the 'a3code'
+   element to end users rather than the full X-ISO4217-A3 codepoint (eg:
+   'BTC' instead of 'XBTC').  In such cases, adequate context SHOULD be
+   given in order to prevent ambiguity.  Adequate context MAY include
+   the option to view the full X-ISO4217-A3 codepoint, the human
+   language currency name, and the source registry, AND/OR the
+   reconfirmation of any initiated operation with such clarifying
+   contextual information added prior to its actual execution.
+
+
+3.3.  Internationalization
+
+   The registry MAY include currency and entity names as arbitrary UTF8
+   strings.
+
+   To aid the international recognition of individual codepoints,
+   implementations MUST present only upper case normalized (structurally
+   valid) identifiers to both peer systems and end users.  (See Case
+   Sensitivity).
+
+
+4.  Security Considerations
+
+   X-ISO4217-A3 only provides a currency or currency-like commodity
+   identification scheme and DOES NOT approach problems of
+   communications security, which are purposefully left to other
+   protocols.  Even so, some security considerations are are pertinent.
+
+
+4.1.  Input
+
+
+
+
+
+
+
+
+The IFEX Project / ifex-project.org               Section 4.1.  [Page 9]
+
+INTERNET-DRAFT            Expires: May 26, 2013            November 2012
+
+
+4.1.1.  Input Confirmation
+
+   Because there is always some scope for error in systems requiring end
+   user input (see Case Normalization), unambiguous confirmation of
+   input SHOULD be provided.  Such confirmation MAY include the full X-
+   ISO4217-A3 codepoint, the human language currency name, and the
+   source registry.
+
+
+4.1.2.  Case Normalization
+
+   It should be noted with regards to case normalization that some
+   frequency of manual recognition (or transposition) errors is likely
+   to occur whenever input is sought.  This frequency increases in
+   situations where an end user does not have linguistic or other types
+   of clues regarding a source document's probable vocabulary or
+   semantics, or is simply unfamiliar with the material.  Machine-style
+   codes, such as X-ISO4217-A3, therefore fall in to a relatively high
+   risk area, albiet one that conventional ISO4217 systems are also
+   vulnerable to.
+
+   When considering the implementation of X-ISO4217-A3 systems that
+   accept lower or mixed-case input, implementers SHOULD consider
+   carefully whether case normalization is an appropriate choice for
+   their systems, given that the scope for such errors is nominally
+   (though not hugely) increased.  (For example, an input of 'Z' could
+   come from a user misunderstanding a lowercase 'r', or an input of 'U'
+   could come from a user misunderstanding a lowercase 'a'.)  To some
+   extent this issue SHOULD be mitigated by the requirement that
+   implementations MUST present only upper case (structurally valid)
+   codepoints both to peer systems and end users.
+
+
+4.2.  IANA Processes
+
+   IANA MUST provide adequate authentication of registrant institution
+   communications in order to prevent the subversion of established
+   institutions' registration information via IANA's registrar
+   functions.
+
+
+
+5.  IANA Considerations
+
+5.1.  Name Space Exhaustion
+
+   Should the entire IANA-managed portion of the X-ISO4217-A3 namespace
+   approach registration, IANA MUST immediately select an additional
+
+
+
+The IFEX Project / ifex-project.org              Section 5.1.  [Page 10]
+
+INTERNET-DRAFT            Expires: May 26, 2013            November 2012
+
+
+   registry prefix.
+
+
+5.2.  Registration
+
+   Codepoints MUST be assigned by IANA on a first come first served
+   basis [RFC5226].  To support innovation, in contrast to conventional
+   financial registries, codepoints MUST be issued to ANY registrant
+   supplying a valid domain name and reasonable information.
+
+   Registrants MUST provide the domain name with which their service is
+   primarily associated AND the name of the registrant (either a person
+   or an organizational entity), as well as the appropriate contents for
+   the registry fields.
+
+   Registrants MAY request a specific codepoint, or IANA MAY assign them
+   one.
+
+
+5.3.  Modification / Cancellation
+
+   Due to the nature of currency and currency-like commodity
+   identification between disparate financial systems, codepoint
+   allocations are permanent and binding.  However, modifications to
+   metadata are possible and SHOULD be effected by IANA within a few
+   working days.  IANA should update the 'modified' field of the
+   registry entry in question to reflect the fact that modification has
+   taken place.
+
+
+5.4.  Publication
+
+
+   IANA SHALL publish revisions to the global registry of X-ISO4217-A3
+   codes as changes are made.
+
+   IANA SHALL, where possible, attempt to include any and all changes to
+   the ISO4217 official codepoints within the registry.  Whilst the
+   copyright status of the codepoints remains unclear, they are
+   distributed freely to the public and have been widely republished in
+   open sources such as Wikipedia for an extended period, so should not
+   be of legal concern.  IANA MAY contact the author for the code that
+   was used to compile the ISO distributed code lists in to the registry
+   format in order to assist with ongoing maintenance.
+
+   IANA SHALL provide GPG-compatible cryptographic signatures along with
+   each version of the registry.  IANA MAY provide additional
+   cryptographic signatures and/or checksums at their sole discretion.
+
+
+
+The IFEX Project / ifex-project.org              Section 5.4.  [Page 11]
+
+INTERNET-DRAFT            Expires: May 26, 2013            November 2012
+
+
+   The registry SHALL utilize UTF8 encoding in order to meet
+   internationalization requirements for institution names.
+
+   The format and initial contents of this registry document are
+   specified in Appendix A.
+
+
+5.5.  ISO Liason
+
+   IANA SHOULD formally notify [SIX] (as the maintenance agency of the
+   ISO4217 registry) of the existence of this registry.  IANA SHOULD
+   make [SIX] feel welcome to forward parties unsuccessful in their
+   applications for ISO4217 codepoints to IANA, in order to acquire
+   alternate codepoint registrations within the IANA-managed X-
+   ISO4217-A3 registry.
+
+
+5.5.1.  Resolving Duplicate Assignment
+
+   In addition, the ISO MAY wish to inform IANA of any upcoming
+   codepoint additions that will effect duplicate allocation between the
+   X-ISO4217-A3 and ISO4217 registries.  In the event of such a
+   duplicate assignment, which is perceived as unlikely to occur outside
+   of exceptional cases, IANA SHOULD add a new, optional field
+   indicating external registry codepoint equivalence to X-ISO4217-A3
+   registry records.
+
+
+5.6.  Security
+
+   IANA MUST provide adequate authentication of registrant institution
+   communications in order to prevent the subversion of established
+   codepoints' metadata via IANA's registrar functions.
+
+   As IANA is likely to have superior experience in this domain,
+   specific procedures are left to IANA's judgement.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The IFEX Project / ifex-project.org              Section 5.6.  [Page 12]
+
+INTERNET-DRAFT            Expires: May 26, 2013            November 2012
+
+
+6.  References
+
+6.1.  Normative References
+
+
+   [ISO4217]       ISO. "ISO 4217 - Currency Codes",
+                   http://www.iso.org/iso/home/standards/
+                    currency_codes.htm
+
+   [RFC2119]       Bradner, S., "Key words for use in RFCs to
+                   Indicate Requirement Levels", BCP 14, RFC 2119,
+                   March 1997.
+
+   [RFC5226]       Narten, T., and H. Alvestrand, "Guidelines for
+                   Writing an IANA Considerations Section in RFCs",
+                   BCP 26, RFC 5226, May 2008.
+
+   [RFC5234]       Crocker, D. and P. Overell, "Augmented BNF for
+                   Syntax Specifications: ABNF", STD 68, RFC 5234,
+                   January 2008.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The IFEX Project / ifex-project.org              Section 6.1.  [Page 13]
+
+INTERNET-DRAFT            Expires: May 26, 2013            November 2012
+
+
+6.2.  Informative References
+
+
+   [BITCOIN]       Nakamoto, S., "Bitcoin: A Peer-to-Peer Electronic
+                   Cash System", 2009-05-24.
+                   http://www.bitcoin.org/bitcoin.pdf
+
+   [ISO-REJECTION] grossdigitalproduct, "getting BTC into ISO 4217
+                   currency list", 10 November 2012.
+                    https://bitcointalk.org/index.php?topic=123600
+                    Relevant excerpt:
+                     "I also understand you have previously denied
+                      such requests with the following statements:
+                       1. The currency code is not linked to any
+                          country code.
+                       2. The currency code is considered a
+                          'private currency' and not used for
+                          tender in any country.
+                       3. There will be no international payments
+                          denominated in Bitcoin therefore an ISO
+                          currency code for the Bitcoin is not
+                          applicable.
+                       4. The Institution responsible for the
+                          Bitcoin does not appear to be recognized
+                          internationally or have any official
+                          status. Neither Reuters or Bloomberg
+                          provides market data related to its use."
+
+   [OXFORD]        Oxford University Press, "Definition of currency"
+                   http://oxforddictionaries.com/definition/english/
+                    currency
+
+   [PRB]           Trans-Dniester Republican Bank, "History of coins
+                   and banknotes". Retrieved November, 2012.
+                   http://www.cbpmr.net/?id=33&lang=en
+
+   [SIX]           SIX Interbank Clearing
+                   http://www.six-interbank-clearing.com/
+
+   [SLL]           "Economy of Second Life"
+                   http://en.wikipedia.org/wiki/Economy_of_Second_Life
+
+   [TEM]           Exchange and Solidarity Network of Magnesia,
+                   "Alternate Monetary Unit"
+                   http://www.tem-magnisia.gr/
+
+   [XRP]           OpenCoin, Inc. "Ripple open source payment system"
+                   http://ripple.com/
+
+
+
+The IFEX Project / ifex-project.org              Section 6.2.  [Page 14]
+
+INTERNET-DRAFT            Expires: May 26, 2013            November 2012
+
+
+7.  Acknowledgments
+
+
+    * Payward, Inc. funded the research and development of this
+      document.
+    * The (completely OMC unaffiliated) OpenSimulator project staff were
+      helpful in clarifiying the origin and status of OMC.
+    * Valued feedback was provided by the following parties:
+       Bill McQuillan, OpenCoin Inc.
+
+
+8.  Authors' Addresses
+
+
+   Walter Stanish <walter@stani.sh> Payward, Inc.
+
+   On behalf of The Internet Financial EXchange (IFEX) Project:
+   http://www.ifex-project.org/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The IFEX Project / ifex-project.org                Section 8.  [Page 15]
+
+INTERNET-DRAFT            Expires: May 26, 2013            November 2012
+
+
+9.  Appendix A: Initial Registry Contents
+
+Prior to IANA handover, parties wishing to acquire an identifier may do
+so by contacting the IFEX Project via group.ifex-project.org
+
+
+ # X-ISO4217-A3: Unofficial ISO4217 Alpha-3 Extensions Registry.
+ #
+ # Version: 20121126-0
+ #  (Format is <yyyy><mm><dd>-<x>, where x is a digit from 0-9)
+ #
+ # To be cryptographically signed by IANA and replicated freely.
+ #
+ # Format:
+ #  - Lines beginning with '#' are comments.
+ #  - Whitespace should be ignored.
+ #  - Fields at the end of a record may be absent.
+ #
+ # Fields:
+ #  registry       Registry of origin.
+ #
+ #                  Code  Registry      Maintenance Agency
+ #                  -------------------------------------------
+ #                  X     X-ISO4217-A3  IANA
+ #                  Z     ISO4217-A3    SIX Interbank Clearing
+ #
+ #  a3code         Three character code identifying the currency or
+ #                 currency-like commodity within a registry.
+ #
+ #  is_meta        Denotes a meta-assignment (not a normal currency).
+ #
+ #  is_historic    Denotes a historic codepoint (obsolete).
+ #
+ #  name-singular  Singular form name of the currency (or primary unit)
+ #
+ #  e              Number of post-decimal digits in normal use.
+ #
+ #  created        Date of registration (YYYY-MM-DD), or blank for
+ #                 external registries.
+ #
+ #  modified       Date last modified (YYYY-MM-DD, YYYY-MM or YYYY as
+ #                 reflecting accuracy known), or blank for codes
+ #                 not yet modified or codes in external registries,
+ #                 except in the case of historic codepoints for which
+ #                 the field indicates date of withdrawl (if known).
+ #
+ #  domain         Primary domain name associated with the record, or
+ #                 blank for no domain or external registries.
+
+
+
+The IFEX Project / ifex-project.org                Section 9.  [Page 16]
+
+INTERNET-DRAFT            Expires: May 26, 2013            November 2012
+
+
+ #
+ #  registrant     Native language name of the registrant (UTF8), or
+ #                 blank for external registries.
+ X|ACD|0|0|Avination Care Dollar|2|2012-11-13||avination.com|Avination
+Virtual Limited
+ X|BTC|0|0|Bitcoin|8|2012-11-13||bitcoin.org|Bitcoin Community
+ X|CER|0|0|Kyoto Protocol Certified Emissions Reduction CO2
+Tonne|4|2012-11-13|||United Nations Framework Convention on Climate
+Change
+ X|OMC|0|0|Open Metaverse Currency|2|2012-11-13||Open Metaverse Currency
+Community
+ X|PRB|0|0|Transistrian Ruble|0|2012-11-13||cbpmr.net|Trans-Dniester
+Republican Bank
+ X|SLL|0|0|Second Life Linden Dollar|0|2012-11-13||secondlife.com|Linden
+Research, Inc.
+ X|TBC|0|0|Tonal Bitcoin|16|2012-11-26
+ X|TEM|0|0|Volos Alternative Monetary Unit|0|2012-11-13||tem-
+magnesia.gr|Volos Alternative Monetary Unit Community
+ X|VER|0|0|Non Kyoto Protocol Verified Emissions Reduction CO2
+Tonne|4|2012-11-13|||Non Kyoto Protocol Verified Emissions Reduction
+Community
+ X|XRP|0|0|Ripple Credit|6|2012-11-13||ripple.com|OpenCoin Inc.
+ Z|ADP|0|1|Andorran Peseta|||2003-07
+ Z|AED|0|0|UAE Dirham|2
+ Z|AFA|0|1|Afghani|||2003-01
+ Z|AFN|0|0|Afghani|2
+ Z|ALK|0|1|Old Lek|||1989-12
+ Z|ALL|0|0|Lek|2
+ Z|AMD|0|0|Armenian Dram|2
+ Z|ANG|0|1|Netherlands Antillean Guilder|||2010-10
+ Z|AOA|0|0|Kwanza|2
+ Z|AOK|0|1|Kwanza|||1991-03
+ Z|AON|0|1|New Kwanza|||2000-02
+ Z|AOR|0|1|Kwanza Reajustado|||2000-02
+ Z|ARA|0|1|Austral|||1992-01
+ Z|ARP|0|1|Peso Argentino|||1985-07
+ Z|ARS|0|0|Argentine Peso|2
+ Z|ARY|0|1|Peso|||1990
+ Z|ATS|0|1|Schilling|||2002-03
+ Z|AUD|0|0|Australian Dollar|2
+ Z|AWG|0|0|Aruban Florin|2
+ Z|AYM|0|1|Azerbaijan Manat|||2005-10
+ Z|AZM|0|1|Azerbaijanian Manat|||2005-12
+ Z|AZN|0|0|Azerbaijanian Manat|2
+ Z|BAD|0|1|Dinar|||1997-07
+ Z|BAM|0|0|Convertible Mark|2
+ Z|BBD|0|0|Barbados Dollar|2
+ Z|BDT|0|0|Taka|2
+
+
+
+The IFEX Project / ifex-project.org                Section 9.  [Page 17]
+
+INTERNET-DRAFT            Expires: May 26, 2013            November 2012
+
+
+ Z|BEC|0|1|Convertible Franc|||1990-03
+ Z|BEF|0|1|Belgian Franc|||2002-03
+ Z|BEL|0|1|Financial Franc|||1990-03
+ Z|BGJ|0|1|Lev A/52|||1990
+ Z|BGK|0|1|Lev A/62|||1990
+ Z|BGL|0|1|Lev|||2003-11
+ Z|BGN|0|0|Bulgarian Lev|2
+ Z|BHD|0|0|Bahraini Dinar|3
+ Z|BIF|0|0|Burundi Franc|0
+ Z|BMD|0|0|Bermudian Dollar|2
+ Z|BND|0|0|Brunei Dollar|2
+ Z|BOB|0|0|Boliviano|2
+ Z|BOP|0|1|Peso boliviano|||1987-02
+ Z|BOV|0|0|Mvdol|2
+ Z|BRB|0|1|Cruzeiro|||1986-03
+ Z|BRC|0|1|Cruzado|||1989-02
+ Z|BRE|0|1|Cruzeiro|||1993-03
+ Z|BRL|0|0|Brazilian Real|2
+ Z|BRN|0|1|New Cruzado|||1990-03
+ Z|BRR|0|1|Cruzeiro Real|||1994-07
+ Z|BSD|0|0|Bahamian Dollar|2
+ Z|BTN|0|0|Ngultrum|2
+ Z|BUK|0|1|N.A.|||1990-02
+ Z|BWP|0|0|Pula|2
+ Z|BYB|0|1|Belarussian Ruble|||2001-01
+ Z|BYR|0|0|Belarussian Ruble|0
+ Z|BZD|0|0|Belize Dollar|2
+ Z|CAD|0|0|Canadian Dollar|2
+ Z|CDF|0|0|Congolese Franc|2
+ Z|CHC|0|1|WIR Franc (for electronic)|||2004-11
+ Z|CHE|0|0|WIR Euro|2
+ Z|CHF|0|0|Swiss Franc|2
+ Z|CHW|0|0|WIR Franc|2
+ Z|CLF|0|0|Unidades de fomento|0
+ Z|CLP|0|0|Chilean Peso|0
+ Z|CNX|0|1|Peoples Bank Dollar|||1989-12
+ Z|CNY|0|0|Yuan Renminbi|2
+ Z|COP|0|0|Colombian Peso|2
+ Z|COU|0|0|Unidad de Valor Real|2
+ Z|CRC|0|0|Costa Rican Colon|2
+ Z|CSD|0|1|Serbian Dinar|||2006-10
+ Z|CSJ|0|1|Krona A/53|||1990
+ Z|CSK|0|1|Koruna|||1993-03
+ Z|CUC|0|0|Peso Convertible|2
+ Z|CUP|0|0|Cuban Peso|2
+ Z|CVE|0|0|Cape Verde Escudo|2
+ Z|CYP|0|1|Cyprus Pound|||2008-01
+ Z|CZK|0|0|Czech Koruna|2
+
+
+
+The IFEX Project / ifex-project.org                Section 9.  [Page 18]
+
+INTERNET-DRAFT            Expires: May 26, 2013            November 2012
+
+
+ Z|DDM|0|1|Mark der DDR|||1990-09
+ Z|DEM|0|1|Deutsche Mark|||2002-03
+ Z|DJF|0|0|Djibouti Franc|0
+ Z|DKK|0|0|Danish Krone|2
+ Z|DOP|0|0|Dominican Peso|2
+ Z|DZD|0|0|Algerian Dinar|2
+ Z|ECS|0|1|Sucre|||2000-09
+ Z|ECV|0|1|Unidad de Valor Constante (UVC)|||2000-09
+ Z|EEK|0|1|Kroon|||2011-01
+ Z|EGP|0|0|Egyptian Pound|2
+ Z|EQE|0|1|Ekwele|||1989-12
+ Z|ERN|0|0|Nakfa|2
+ Z|ESA|0|1|Spanish Peseta|||1981
+ Z|ESB|0|1|"A" Account (convertible Peseta Account)|||1994-12
+ Z|ESP|0|1|Spanish Peseta|||2002-03
+ Z|ETB|0|0|Ethiopian Birr|2
+ Z|EUR|0|1|Euro|||2006-10
+ Z|FIM|0|1|Markka|||2002-03
+ Z|FJD|0|0|Fiji Dollar|2
+ Z|FKP|0|0|Falkland Islands Pound|2
+ Z|FRF|0|1|French Franc|||1999-01
+ Z|GBP|0|0|Pound Sterling|2
+ Z|GEK|0|1|Georgian Coupon|||1995-10
+ Z|GEL|0|0|Lari|2
+ Z|GHC|0|1|Cedi|||2008-01
+ Z|GHP|0|1|Ghana Cedi|||2007-06
+ Z|GHS|0|0|Ghana Cedi|2
+ Z|GIP|0|0|Gibraltar Pound|2
+ Z|GMD|0|0|Dalasi|2
+ Z|GNE|0|1|Syli|||1989-12
+ Z|GNF|0|0|Guinea Franc|0
+ Z|GNS|0|1|Syli|||1986-02
+ Z|GQE|0|1|Ekwele|||1986-06
+ Z|GRD|0|1|Drachma|||2002-03
+ Z|GTQ|0|0|Quetzal|2
+ Z|GWE|0|1|Guinea Escudo|||1981
+ Z|GWP|0|1|Guinea-Bissau Peso|||1997-05
+ Z|GYD|0|0|Guyana Dollar|2
+ Z|HKD|0|0|Hong Kong Dollar|2
+ Z|HNL|0|0|Lempira|2
+ Z|HRD|0|1|Croatian Dinar|||1995-01
+ Z|HRK|0|0|Croatian Kuna|2
+ Z|HTG|0|0|Gourde|2
+ Z|HUF|0|0|Forint|2
+ Z|IDR|0|1|Rupiah|||2002-07
+ Z|IEP|0|1|Irish Pound|||2002-03
+ Z|ILP|0|1|Pound|||1981
+ Z|ILR|0|1|Old Shekel|||1990
+
+
+
+The IFEX Project / ifex-project.org                Section 9.  [Page 19]
+
+INTERNET-DRAFT            Expires: May 26, 2013            November 2012
+
+
+ Z|ILS|0|0|New Israeli Sheqel|2
+ Z|INR|0|0|Indian Rupee|2
+ Z|IQD|0|0|Iraqi Dinar|3
+ Z|IRR|0|0|Iranian Rial|2
+ Z|ISJ|0|1|Old Krona|||1990
+ Z|ISK|0|0|Iceland Krona|0
+ Z|ITL|0|1|Italian Lira|||2002-03
+ Z|JMD|0|0|Jamaican Dollar|2
+ Z|JOD|0|0|Jordanian Dinar|3
+ Z|JPY|0|0|Yen|0
+ Z|KES|0|0|Kenyan Shilling|2
+ Z|KGS|0|0|Som|2
+ Z|KHR|0|0|Riel|2
+ Z|KMF|0|0|Comoro Franc|0
+ Z|KPW|0|0|North Korean Won|2
+ Z|KRW|0|0|Won|0
+ Z|KWD|0|0|Kuwaiti Dinar|3
+ Z|KYD|0|0|Cayman Islands Dollar|2
+ Z|KZT|0|0|Tenge|2
+ Z|LAJ|0|1|Kip Pot Pol|||1989-12
+ Z|LAK|0|0|Kip|2
+ Z|LBP|0|0|Lebanese Pound|2
+ Z|LKR|0|0|Sri Lanka Rupee|2
+ Z|LRD|0|0|Liberian Dollar|2
+ Z|LSL|0|0|Loti|2
+ Z|LSM|0|1|Maloti|||1985-05
+ Z|LTL|0|0|Lithuanian Litas|2
+ Z|LTT|0|1|Talonas|||1993-07
+ Z|LUC|0|1|Luxembourg Convertible Franc|||1990-03
+ Z|LUF|0|1|Luxembourg Franc|||2002-03
+ Z|LUL|0|1|Luxembourg Financial Franc|||1990-03
+ Z|LVL|0|0|Latvian Lats|2
+ Z|LVR|0|1|Latvian Ruble|||1994-12
+ Z|LYD|0|0|Libyan Dinar|3
+ Z|MAD|0|0|Moroccan Dirham|2
+ Z|MAF|0|1|Mali Franc|||1989-12
+ Z|MDL|0|0|Moldovan Leu|2
+ Z|MGA|0|0|Malagasy Ariary|2
+ Z|MGF|0|1|Malagasy Franc|||2004-12
+ Z|MKD|0|0|Denar|2
+ Z|MLF|0|1|Mali Franc|||1984-11
+ Z|MMK|0|0|Kyat|2
+ Z|MNT|0|0|Tugrik|2
+ Z|MOP|0|0|Pataca|2
+ Z|MRO|0|0|Ouguiya|2
+ Z|MTL|0|1|Maltese Lira|||2008-01
+ Z|MTP|0|1|Maltese Pound|||1983-06
+ Z|MUR|0|0|Mauritius Rupee|2
+
+
+
+The IFEX Project / ifex-project.org                Section 9.  [Page 20]
+
+INTERNET-DRAFT            Expires: May 26, 2013            November 2012
+
+
+ Z|MVQ|0|1|Maldive Rupee|||1989-12
+ Z|MVR|0|0|Rufiyaa|2
+ Z|MWK|0|0|Kwacha|2
+ Z|MXN|0|0|Mexican Peso|2
+ Z|MXP|0|1|Mexican Peso|||1993-01
+ Z|MXV|0|0|Mexican Unidad de Inversion (UDI)|2
+ Z|MYR|0|0|Malaysian Ringgit|2
+ Z|MZE|0|1|Mozambique Escudo|||1981
+ Z|MZM|0|1|Mozambique Metical|||2006-06
+ Z|MZN|0|0|Mozambique Metical|2
+ Z|NAD|0|0|Namibia Dollar|2
+ Z|NGN|0|0|Naira|2
+ Z|NIC|0|1|Cordoba|||1990-10
+ Z|NIO|0|0|Cordoba Oro|2
+ Z|NLG|0|1|Netherlands Guilder|||2002-03
+ Z|NOK|0|0|Norwegian Krone|2
+ Z|NPR|0|0|Nepalese Rupee|2
+ Z|NZD|0|0|New Zealand Dollar|2
+ Z|OMR|0|0|Rial Omani|3
+ Z|PAB|0|0|Balboa|2
+ Z|PEH|0|1|Sol|||1990
+ Z|PEI|0|1|Inti|||1991-07
+ Z|PEN|0|0|Nuevo Sol|2
+ Z|PES|0|1|Sol|||1986-02
+ Z|PGK|0|0|Kina|2
+ Z|PHP|0|0|Philippine Peso|2
+ Z|PKR|0|0|Pakistan Rupee|2
+ Z|PLN|0|0|Zloty|2
+ Z|PLZ|0|1|Zloty|||1997-01
+ Z|PTE|0|1|Portuguese Escudo|||2002-03
+ Z|PYG|0|0|Guarani|0
+ Z|QAR|0|0|Qatari Rial|2
+ Z|RHD|0|1|Rhodesian Dollar|||1981
+ Z|ROK|0|1|Leu A/52|||1990
+ Z|ROL|0|1|Old Leu|||2005-06
+ Z|RON|0|0|New Romanian Leu|2
+ Z|RSD|0|0|Serbian Dinar|2
+ Z|RUB|0|0|Russian Ruble|2
+ Z|RUR|0|1|Russian Ruble|||1994-07
+ Z|RWF|0|0|Rwanda Franc|0
+ Z|SAR|0|0|Saudi Riyal|2
+ Z|SBD|0|0|Solomon Islands Dollar|2
+ Z|SCR|0|0|Seychelles Rupee|2
+ Z|SDD|0|1|Sudanese Dinar|||2007-07
+ Z|SDG|0|1|Sudanese Pound|||2012-09
+ Z|SDP|0|1|Sudanese Pound|||1998-06
+ Z|SEK|0|0|Swedish Krona|2
+ Z|SGD|0|0|Singapore Dollar|2
+
+
+
+The IFEX Project / ifex-project.org                Section 9.  [Page 21]
+
+INTERNET-DRAFT            Expires: May 26, 2013            November 2012
+
+
+ Z|SHP|0|0|Saint Helena Pound|2
+ Z|SIT|0|1|Tolar|||2007-01
+ Z|SKK|0|1|Slovak Koruna|||2009-01
+ Z|SLL|0|0|Leone|2
+ Z|SOS|0|0|Somali Shilling|2
+ Z|SRD|0|0|Surinam Dollar|2
+ Z|SRG|0|1|Surinam Guilder|||2003-12
+ Z|SSP|0|0|South Sudanese Pound|2
+ Z|STD|0|0|Dobra|2
+ Z|SUR|0|1|Rouble|||1990-12
+ Z|SVC|0|0|El Salvador Colon|2
+ Z|SYP|0|0|Syrian Pound|2
+ Z|SZL|0|0|Lilangeni|2
+ Z|THB|0|0|Baht|2
+ Z|TJR|0|1|Tajik Ruble|||2001-04
+ Z|TJS|0|0|Somoni|2
+ Z|TMM|0|1|Turkmenistan Manat|||2009-01
+ Z|TMT|0|0|Turkmenistan New Manat|2
+ Z|TND|0|0|Tunisian Dinar|3
+ Z|TOP|0|0|Pa'anga|2
+ Z|TPE|0|1|Timor Escudo|||2002-11
+ Z|TRL|0|1|Old Turkish Lira|||2005-12
+ Z|TRY|0|1|New Turkish Lira|||2009-01
+ Z|TTD|0|0|Trinidad and Tobago Dollar|2
+ Z|TWD|0|0|New Taiwan Dollar|2
+ Z|TZS|0|0|Tanzanian Shilling|2
+ Z|UAH|0|0|Hryvnia|2
+ Z|UAK|0|1|Karbovanet|||1996-09
+ Z|UGS|0|1|Uganda Shilling|||1987-05
+ Z|UGW|0|1|Old Shilling|||1990
+ Z|UGX|0|0|Uganda Shilling|0
+ Z|USD|0|0|US Dollar|2
+ Z|USN|0|0|US Dollar (Next day)|2
+ Z|USS|0|0|US Dollar (Same day)|2
+ Z|UYI|0|0|Uruguay Peso en Unidades Indexadas (URUIURUI)|0
+ Z|UYN|0|1|Old Uruguay Peso|||1989-12
+ Z|UYP|0|1|Uruguayan Peso|||1993-03
+ Z|UYU|0|0|Peso Uruguayo|2
+ Z|UZS|0|0|Uzbekistan Sum|2
+ Z|VEB|0|1|Bolivar|||2008-01
+ Z|VEF|0|1|Bolivar Fuerte|||2011-12
+ Z|VNC|0|1|Old Dong|||1989-1990
+ Z|VND|0|0|Dong|0
+ Z|VUV|0|0|Vatu|0
+ Z|WST|0|0|Tala|2
+ Z|XAF|0|0|CFA Franc BEAC|0
+ Z|XAG|0|0|Silver
+ Z|XAU|0|0|Gold
+
+
+
+The IFEX Project / ifex-project.org                Section 9.  [Page 22]
+
+INTERNET-DRAFT            Expires: May 26, 2013            November 2012
+
+
+ Z|XBA|0|0|Bond Markets Unit European Composite Unit (EURCO)
+ Z|XBB|0|0|Bond Markets Unit European Monetary Unit (E.M.U.-6)
+ Z|XBC|0|0|Bond Markets Unit European Unit of Account 9 (E.U.A.-9)
+ Z|XBD|0|0|Bond Markets Unit European Unit of Account 17 (E.U.A.-17)
+ Z|XCD|0|0|East Caribbean Dollar|2
+ Z|XDR|1|0|SDR (Special Drawing Right)
+ Z|XEU|0|1|European Currency Unit (E.C.U)|||1999-01
+ Z|XFO|0|1|Gold-Franc|||2006-10
+ Z|XFU|0|0|UIC-Franc
+ Z|XOF|0|0|CFA Franc BCEAO|0
+ Z|XPD|0|0|Palladium
+ Z|XPF|0|0|CFP Franc|0
+ Z|XPT|0|0|Platinum
+ Z|XRE|0|1|RINET Funds Code|||1999-11
+ Z|XSU|0|0|Sucre
+ Z|XTS|1|0|Codes specifically reserved for testing purposes
+ Z|XUA|0|0|ADB Unit of Account
+ Z|XXX|1|0|The codes assigned for transactions where no currency is
+involved
+ Z|YDD|0|1|Yemeni Dinar|||1991-09
+ Z|YER|0|0|Yemeni Rial|2
+ Z|YUD|0|1|New Yugoslavian Dinar|||1990-01
+ Z|YUM|0|1|New Dinar|||2003-07
+ Z|YUN|0|1|Yugoslavian Dinar|||1995-11
+ Z|ZAL|0|1|Financial Rand|||1995-03
+ Z|ZAR|0|0|Rand|2
+ Z|ZMK|0|1|Zambian Kwacha|||2012-12
+ Z|ZRN|0|1|New Zaire|||1999-06
+ Z|ZRZ|0|1|Zaire|||1994-02
+ Z|ZWC|0|1|Rhodesian Dollar|||1989-12
+ Z|ZWD|0|1|Zimbabwe Dollar|||2008-08
+ Z|ZWL|0|0|Zimbabwe Dollar|2
+ Z|ZWN|0|1|Zimbabwe Dollar (new)|||2006-09
+ Z|ZWR|0|1|Zimbabwe Dollar|||2009-06
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The IFEX Project / ifex-project.org                Section 9.  [Page 23]
+
+INTERNET-DRAFT            Expires: May 26, 2013            November 2012
+
+
+10.  Appendix B: ISO4217 Registry Issues
+
+In researching this document the following issues were observed within
+the ISO4217 registry publications provided at http://www.currency-
+iso.org/:
+
+ Indistinct Requirements for Issue:
+  As discussed earlier in this document, there does not
+  appear to be any publicly available definition of the
+  requirements for codepoint registration within the
+  traditional ISO 4217 registry.  Combined with observed
+  behaviors in denying registration requests, this fact
+  highlights the need for alternate registries.
+
+ Possible Conflict of Interest:
+  The present registry maintenance agency for ISO 4217 is
+  SIX Interbank Clearing, a Swiss entity that is strongly
+  affiliated with the existing SWIFT interbank clearing
+  network.  Due to the innovative privision of alternate
+  international settlement paradigms provided by some
+  emerging electronic currencies and currency-like
+  commodities ([BITCOIN], etc.) this raises the question
+  of conflict of interest.
+
+ Historical Codepoint Division:
+  The lack of a unified distribution of current and historic
+  codepoints (properties, single publication source, etc.)
+  requires manual coordination and processing that is
+  problematic for implementors.
+
+ Lack of Codepoint Divisions:
+  There is no division within the ISO 4217 registry
+  publications regarding meta-assignments (such as test
+  codes and codes for organization-internal use) and normal
+  codepoints, nor between currency-like commodities and
+  conventional nationally linked currencies, nor between
+  currencies or currency-like commodities of decentralized
+  (non-consolidated) issue vs. conventional, national
+  currencies.  This means that the majority of implementors
+  who do not wish to handle certain codepoint types (for
+  instance, the Swiss WIR mutual credit clearing system,
+  special drawing rights or accounting units used in
+  specific organizations such as the African Development
+  Bank) face a requirement for the definition of ad-hoc
+  codepoint subsets for display purposes.
+
+
+
+
+
+
+The IFEX Project / ifex-project.org               Section 10.  [Page 24]
+
+INTERNET-DRAFT            Expires: May 26, 2013            November 2012
+
+
+11.  Appendix C: Document History
+
+draft-stanish-x-iso4217-a3-02 (2012-11-26)
+  - Add 'Tonal Bitcoin' (XTBC) to registry, by request.
+  - Modified registry definition of domain field to allow
+    for non domain-associated codepoints.
+  - Clarify contact details in response to concerns.
+
+draft-stanish-x-iso4217-a3-01 (2012-11-25)
+  - Complete section on input treatment.
+  - Expand treatment of formatting and add section on prefix
+    selection in response to feedback from Bill McQuillan.
+  - Change ISO identifier to 'Z' in response to feedback
+    from Bill McQuillan.
+  - Add IANA notes on handling ISO duplicate assignments.
+  - Modify IANA considerations regarding code maintenance.
+  - Correct formatting and typographic errors.
+
+draft-stanish-x-iso4217-a3-00 (2012-11-13)
+  Initial release.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The IFEX Project / ifex-project.org               Section 11.  [Page 25]
