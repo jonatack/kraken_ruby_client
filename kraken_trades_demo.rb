@@ -36,7 +36,7 @@ since           = { 'USD' => nil, 'EUR' => nil }
 call_limit_time = 6
 
 def digits_to_syllables(num)
-  num.to_s.each_char.to_a.join(' ').sub('.', 'point')
+  num.to_s.each_char.to_a.join(' ').sub('. 0', '').sub('.', 'point')
 end
 
 loop do
