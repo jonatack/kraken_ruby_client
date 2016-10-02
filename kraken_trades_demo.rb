@@ -39,29 +39,39 @@ def digits_to_syllables(num)
   num.to_s.each_char.to_a.join(' ').sub('. 0', '').sub('.', 'point')
 end
 
+def print_trade(currency, operation, price, volume)
+  puts "#{price} #{currency} #{volume} BTC #{operation}"
+end
+
+def speak_trade(currency, operation, price, volume)
+  %x(say "#{currency}: #{operation}, #{volume} bitcoin, at #{price}.")
+end
+
 loop do
   currencies.each do |currency|
-    trades = kraken.trades(btc_pairs[currency], since[currency])
-    if trades['error'].any?
+    query = kraken.trades(btc_pairs[currency], since[currency])
+    if query['error'].any?
       puts "Error in #{currency} trades query!"
     else
-      since[currency] = trades['result']['last']
-      next unless query = trades['result'][btc_pairs[currency]]&.last
+      trades, pair      = query['result'], btc_pairs[currency]
+      since[currency]   = trades['last'] # memoize last trade id
+      transactions      = trades[pair]
+      number_of_tx      = transactions.size
+      next if number_of_tx.zero?
 
-      price           = query[0]
-      volume          = query[1][0..-5] # Remove trailing zeroes.
-      operation       = query[3]
+      (number_of_tx < 10 ? transactions : [transactions.last]).each do |trade|
+        price, volume, operation = trade[0], trade[1][0..-5], trade[3]
+        round_price     = price.to_f.round(2)
+        written_price   = "#{round_price}#{'0' if round_price.to_s.size == 5}"
+        spoken_price    = digits_to_syllables(round_price.round(1))
+        round_volume    = volume.to_f.round(1)
+        spoken_volume   = round_volume < 1 ? 'less than one' : round_volume
+        spoken_currency = currency == 'USD' ? 'Dollars' : 'Euros'
+        buy_or_sell     = operation == 'b' ? 'buy' : 'sell'
 
-      rounded_price   = price.to_f.round(2)
-      written_price   = "#{rounded_price}#{'0' if rounded_price.to_s.size == 5}"
-      spoken_price    = digits_to_syllables(rounded_price.round(1))
-      rounded_volume  = volume.to_f.round(1)
-      spoken_volume   = rounded_volume < 1 ? 'less than one' : rounded_volume
-      spoken_currency = currency == 'USD' ? 'dollars' : 'euros'
-      op              = operation == 'b' ? 'bought' : 'sold'
-
-      puts "#{written_price} #{currency} #{volume} BTC #{op}"
-      %x(say "#{spoken_volume} bitcoin #{op}, at #{spoken_price} #{spoken_currency}")
+        print_trade(currency, buy_or_sell, written_price, volume)
+        speak_trade(spoken_currency, buy_or_sell, spoken_price, spoken_volume)
+      end
     end
     sleep call_limit_time
   end
