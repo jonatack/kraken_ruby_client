@@ -28,7 +28,7 @@ require 'kraken_ruby_client'
 
 kraken          = Kraken::Client.new
 currencies      = %w(USD EUR)
-btc_pairs       = { 'USD' => 'XXBTZUSD', 'EUR' => 'XXBTZEUR' }
+pairs           = { 'USD' => 'XXBTZUSD', 'EUR' => 'XXBTZEUR' }
 since           = { 'USD' => nil, 'EUR' => nil }
 
 # Wait 6 seconds per call to not exceed the Kraken API rate limit.
@@ -44,18 +44,18 @@ def print_trade(currency, operation, price, volume)
 end
 
 def speak_trade(currency, operation, price, volume)
-  %x(say "#{currency}: #{operation}, #{volume} bitcoin, at #{price}.")
+  %x(say "#{currency}: #{operation}, #{volume} bitcoin, at #{price}")
 end
 
 loop do
   currencies.each do |currency|
-    query = kraken.trades(btc_pairs[currency], since[currency])
+    query = kraken.trades(pairs[currency], since[currency])
     if query['error'].any?
       puts "Error in #{currency} trades query!"
     else
-      trades, pair      = query['result'], btc_pairs[currency]
-      since[currency]   = trades['last'] # memoize last trade id
-      transactions      = trades[pair]
+      trades            = query['result']
+      since[currency]   = trades['last']          # memoize last trade id
+      transactions      = trades[pairs[currency]]
       number_of_tx      = transactions.size
       next if number_of_tx.zero?
 
