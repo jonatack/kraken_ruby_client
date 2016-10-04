@@ -26,25 +26,84 @@
 #++
 require 'kraken_ruby_client'
 
+def alerts
+  {
+    'USD' => { less_than: 608.00, greater_than: 612.70 }.freeze,
+    'EUR' => { less_than: 544.00, greater_than: 547.99 }.freeze
+  }.freeze
+end
+
 kraken          = Kraken::Client.new
 currencies      = %w(USD EUR)
 pairs           = { 'USD' => 'XXBTZUSD', 'EUR' => 'XXBTZEUR' }
 since           = { 'USD' => nil, 'EUR' => nil }
-
 # Wait 6 seconds per call to not exceed the Kraken API rate limit.
 # Tier 3 users can lower this to 4 seconds, and Tier 4 users to 2 seconds.
 call_limit_time = 6
+
+def currency_symbol
+  { 'USD' => '$', 'EUR' => '€' }.freeze
+end
 
 def digits_to_syllables(num)
   num.to_s.each_char.to_a.join(' ').sub('. 0', '').sub('.', 'point')
 end
 
-def print_trade(currency, operation, price, volume)
-  puts "#{price} #{currency} #{volume} BTC #{operation}"
+def spoken_currency(currency)
+  currency == 'USD' ? 'Dollars' : 'Euros'
+end
+
+def buy_or_sell(operation)
+  operation == 'b' ? 'buy ' : 'sell'
+end
+
+def ansi_codes
+  { default: 38, black: 30, red: 31, green: 32 }.freeze
+end
+
+def colorize(text, operation)
+  color = operation == 'b' ? :green : :red
+  "\033[#{ansi_codes[color]}m#{text}\033[0m"
+end
+
+def unixtime_to_hhmmss(unixtime)
+  Time.at(unixtime).strftime('%H:%M:%S')
+end
+
+def tab_for(currency)
+  '                                                ' if currency == 'EUR'
+end
+
+def market_or_limit(type)
+  type == 'l' ? 'limit' : 'market'
+end
+
+def print_trade(currency, operation, price, volume, time, type)
+  puts "#{tab_for(currency)}#{unixtime_to_hhmmss(time)}  #{
+    colorize(buy_or_sell(operation), operation)}  #{
+    currency_symbol[currency]} #{price[0..-3]} #{
+    ' ' * (7 - volume.size)}#{volume} ฿  #{
+    market_or_limit(type)}"
 end
 
 def speak_trade(currency, operation, price, volume)
-  %x(say "#{currency}: #{operation}, #{volume} bitcoin, at #{price}")
+  %x(say "#{spoken_currency(currency)}: #{buy_or_sell(operation)}, #{volume
+          } bitcoin, at #{price}")
+end
+
+def speak_price_alert(currency, operation, price, volume)
+  return unless action = price_alert_reached?(price, currency)
+  %x(say "Price alert! In #{spoken_currency(currency)}, the price of #{price
+          } is #{action} with #{buy_or_sell(operation)}, #{volume} bitcoin")
+end
+
+def price_alert_reached?(price, currency)
+  low, high = alerts[currency][:less_than], alerts[currency][:greater_than]
+  if price < low
+    "below, your threshold of #{low}"
+  elsif price > high
+    "above, your threshold of #{high}"
+  end
 end
 
 loop do
@@ -59,18 +118,17 @@ loop do
       number_of_tx      = transactions.size
       next if number_of_tx.zero?
 
-      (number_of_tx < 10 ? transactions : [transactions.last]).each do |trade|
-        price, volume, operation = trade[0], trade[1][0..-5], trade[3]
-        round_price     = price.to_f.round(2)
-        written_price   = "#{round_price}#{'0' if round_price.to_s.size == 5}"
-        spoken_price    = digits_to_syllables(round_price.round(1))
+      (number_of_tx < 40 ? transactions : [transactions.last]).each do |trade|
+        price, volume, time, operation, type, misc = trade
+        price_f         = price.to_f
+        volume          = volume[0..-6]
+        spoken_price    = digits_to_syllables(price_f.round(1))
         round_volume    = volume.to_f.round(1)
         spoken_volume   = round_volume < 1 ? 'less than one' : round_volume
-        spoken_currency = currency == 'USD' ? 'Dollars' : 'Euros'
-        buy_or_sell     = operation == 'b' ? 'buy' : 'sell'
 
-        print_trade(currency, buy_or_sell, written_price, volume)
-        speak_trade(spoken_currency, buy_or_sell, spoken_price, spoken_volume)
+        print_trade(currency, operation, price, volume, time, type)
+        # speak_trade(currency, operation, spoken_price, spoken_volume)
+        speak_price_alert(currency, operation, price_f, spoken_volume)
       end
     end
     sleep call_limit_time
