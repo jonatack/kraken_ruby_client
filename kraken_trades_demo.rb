@@ -61,7 +61,8 @@ def ansi_codes
   { default: 38, black: 30, red: 31, green: 32 }.freeze
 end
 
-def colorize(text, operation)
+def colorize(text, operation, volume = nil, volume_threshold = 10)
+  return volume if volume && volume.to_i < volume_threshold
   color = operation == 'b' ? :green : :red
   "\033[#{ansi_codes[color]}m#{text}\033[0m"
 end
@@ -82,7 +83,7 @@ def print_trade(currency, operation, price, volume, time, type)
   puts "#{tab_for(currency)}#{unixtime_to_hhmmss(time)}  #{
     colorize(buy_or_sell(operation), operation)}  #{
     currency_symbol[currency]} #{price[0..-3]} #{
-    ' ' * (7 - volume.size)}#{volume} ฿  #{
+    ' ' * (7 - volume.size)}#{colorize(volume, operation, volume)} ฿  #{
     market_or_limit(type)}"
 end
 
