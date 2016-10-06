@@ -120,7 +120,7 @@ loop do
       number_of_tx      = transactions.size
       next if number_of_tx.zero?
 
-      (number_of_tx < 40 ? transactions : [transactions.last]).each do |trade|
+      (number_of_tx < 100 ? transactions : [transactions.last]).each do |trade|
         price, volume, time, operation, type, misc = trade
         price_f         = price.to_f
         volume          = volume[0..-6]
