@@ -111,7 +111,8 @@ loop do
   currencies.each do |currency|
     query = kraken.trades(pairs[currency], since[currency])
     if query['error'].any?
-      puts "Error in #{currency} trades query!"
+      error_messages = query['error'].join(' - ')
+      puts "Error '#{error_messages}' in #{currency} trades query!"
     else
       trades            = query['result']
       since[currency]   = trades['last']          # memoize last trade id
