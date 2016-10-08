@@ -22,6 +22,9 @@
 require 'minitest/autorun'
 require 'kraken_ruby_client'
 
+require 'color_pound_spec_reporter'
+Minitest::Reporters.use! [ColorPoundSpecReporter.new]
+
 module Curl
   class << self
     undef urlalize
