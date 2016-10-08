@@ -52,8 +52,10 @@ class PublicApiTest < Minitest::Test
   end
 
   def test_get_exchange_currencies_info
-    assets = %w(KFEE XDAO XETC XETH XLTC XNMC XXBT XXDG XXLM XXRP XXVN ZCAD
-      ZEUR ZGBP ZJPY ZKRW ZUSD)
+    assets = %w(
+      KFEE XDAO XETC XETH XLTC XNMC XREP XXBT XXDG
+      XXLM XXRP XXVN ZCAD ZEUR ZGBP ZJPY ZKRW ZUSD
+      )
     assert_equal assets, @query.assets['result'].keys
 
     assert_get_exchange_currency_info_for('ZUSD', 'USD',  4, 2)
