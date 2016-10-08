@@ -22,7 +22,7 @@
 source 'https://rubygems.org'
 gemspec
 
-gem 'curb'
+gem 'curb', github: 'taf2/curb'
 gem 'minitest'
 
 gem 'minitest-reporters'
