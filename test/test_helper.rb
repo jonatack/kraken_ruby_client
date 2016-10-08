@@ -21,3 +21,18 @@
 #++
 require 'minitest/autorun'
 require 'kraken_ruby_client'
+
+module Curl
+  def self.urlalize(url, params = {})
+    query_str = params.map { |k, v|
+      "#{URI.join(k.to_s)}=#{CGI.escape(v.to_s)}" # <- URI.join or GGI.escape
+    }.join('&')
+    if url.match(/\?/) && query_str.size > 0
+      "#{url}&#{query_str}"
+    elsif query_str.size > 0
+      "#{url}?#{query_str}"
+    else
+      url
+    end
+  end
+end
