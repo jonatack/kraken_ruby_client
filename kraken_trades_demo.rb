@@ -45,6 +45,23 @@ class Trades
   # Tier 3 users can lower this to 4 seconds, and Tier 4 users to 2 seconds.
   CALL_LIMIT_TIME           = 6
 
+  # These are your price alert settings.
+  #
+  # After each alert, the threshold is adjusted outward by the greater value
+  # between the latest price, or the threshold multiplied by this coefficent:
+  PRICE_ALERT_ADJUST_COEFF  = 1.0004
+  # Set your price alert thresholds here. Use nil when no price alert wanted.
+  PRICE_ALERT_THRESHOLDS    = {
+    'USD' => {
+      less_than: 616.4,
+      more_than: 621
+    },
+    'EUR' => {
+      less_than: 553.3752,
+      more_than: nil
+    }
+  }
+
   def initialize
     @kraken = Kraken::Client.new
   end
@@ -72,7 +89,8 @@ class Trades
             spoken_volume   = round_volume < 1 ? 'less than one' : round_volume
 
             print_trade(currency, operation, price, volume, time, type)
-            speak_trade(currency, operation, spoken_price, spoken_volume)
+            # speak_trade(currency, operation, spoken_price, spoken_volume)
+            speak_price_alert(currency, operation, price_f, spoken_volume)
           end
         end
         sleep CALL_LIMIT_TIME
@@ -86,6 +104,10 @@ class Trades
     @since ||= { 'USD' => nil, 'EUR' => nil }
   end
 
+  def alerts
+    @alerts ||= PRICE_ALERT_THRESHOLDS
+  end
+
   def print_trade(currency, operation, price, volume, time, type)
     puts "#{tab_for[currency]}#{unixtime_to_hhmmss(time)}  #{
       colorize(BUY_OR_SELL[operation], operation)}  #{
@@ -97,6 +119,24 @@ class Trades
   def speak_trade(currency, operation, price, volume)
     %x(say "#{CURRENCY_WORD[currency]}: #{BUY_OR_SELL[operation]}, #{volume
             } bitcoin, at #{price}")
+  end
+
+  def speak_price_alert(currency, operation, price, volume)
+    return unless action = price_alert_action!(price, currency)
+    %x(say "Price alert! In #{CURRENCY_WORD[currency]}, the price of #{price
+            } is #{action} with the #{BUY_OR_SELL[operation]
+            } of #{volume} bitcoin")
+  end
+
+  def price_alert_action!(price, currency, coeff = PRICE_ALERT_ADJUST_COEFF)
+    lo, hi = alerts[currency][:less_than], alerts[currency][:more_than]
+    if lo && price < lo
+      alerts[currency][:less_than] = [(lo / coeff).round(2), (lo - price)].min
+      "below, your threshold of #{lo}"
+    elsif hi && price > hi
+      alerts[currency][:more_than] = [(hi * coeff).round(2), (price - hi)].max
+      "above, your threshold of #{hi}"
+    end
   end
 
   def digits_to_syllables(num)
