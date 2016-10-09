@@ -112,7 +112,7 @@ class Trades
     puts "#{tab_for[currency]}#{unixtime_to_hhmmss(time)}  #{
       colorize(BUY_OR_SELL[operation], operation)}  #{
       CURRENCY_SYMBOL[currency]} #{price[0..-3]} #{
-      ' ' * (7 - volume.size)}#{colorize(volume, operation, volume)} ฿  #{
+      ' ' * (7 - volume.size)}#{colorize(volume, operation, 10)} ฿  #{
       MARKET_OR_LIMIT[type]}"
   end
 
@@ -147,8 +147,8 @@ class Trades
     Time.at(unixtime).strftime('%H:%M:%S')
   end
 
-  def colorize(text, operation, volume = nil, volume_threshold = 10)
-    return volume if volume && volume.to_i < volume_threshold
+  def colorize(text, operation, volume_threshold = nil)
+    return text if volume_threshold && text.to_i < volume_threshold
     "\033[#{ANSI_COLOR_CODES[TEXT_COLORS[operation]]}m#{text}\033[0m"
   end
 
