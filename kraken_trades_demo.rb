@@ -24,115 +24,99 @@
 #
 #    The author may be contacted by email: jon@atack.com
 #++
+
+lib = File.expand_path('../lib', __FILE__)
+$:.push(lib) unless $:.include?(lib)
+
 require 'kraken_ruby_client'
 
-def alerts
-  {
-    'USD' => { less_than: 608.00, greater_than: 612.70 }.freeze,
-    'EUR' => { less_than: 544.00, greater_than: 547.99 }.freeze
-  }.freeze
-end
+class Trades
+  CURRENCIES                = %w(USD EUR)
+  PAIRS                     = { 'USD' => 'XXBTZUSD',  'EUR' => 'XXBTZEUR' }
+  CURRENCY_WORD             = { 'USD' => 'Dollars',   'EUR' => 'Euros' }
+  CURRENCY_SYMBOL           = { 'USD' => '$',         'EUR' => '€' }
+  BUY_OR_SELL               = { 'b'   => 'buy',       's'   => 'sell' }
+  MARKET_OR_LIMIT           = { 'l'   => 'limit',     'm'   => 'market' }
 
-kraken          = Kraken::Client.new
-currencies      = %w(USD EUR)
-pairs           = { 'USD' => 'XXBTZUSD', 'EUR' => 'XXBTZEUR' }
-since           = { 'USD' => nil, 'EUR' => nil }
-# Wait 6 seconds per call to not exceed the Kraken API rate limit.
-# Tier 3 users can lower this to 4 seconds, and Tier 4 users to 2 seconds.
-call_limit_time = 6
+  TEXT_COLORS               = { 'b'   => :green,      's'   => :red }
+  ANSI_COLOR_CODES          = { default: 38, black: 30, red: 31, green: 32 }
 
-def currency_symbol
-  { 'USD' => '$', 'EUR' => '€' }.freeze
-end
+  # Wait 6 seconds per call to not exceed the Kraken API rate limit.
+  # Tier 3 users can lower this to 4 seconds, and Tier 4 users to 2 seconds.
+  CALL_LIMIT_TIME           = 6
 
-def digits_to_syllables(num)
-  num.to_s.each_char.to_a.join(' ').sub('. 0', '').sub('.', 'point')
-end
-
-def spoken_currency(currency)
-  currency == 'USD' ? 'Dollars' : 'Euros'
-end
-
-def buy_or_sell(operation)
-  operation == 'b' ? 'buy ' : 'sell'
-end
-
-def ansi_codes
-  { default: 38, black: 30, red: 31, green: 32 }.freeze
-end
-
-def colorize(text, operation, volume = nil, volume_threshold = 10)
-  return volume if volume && volume.to_i < volume_threshold
-  color = operation == 'b' ? :green : :red
-  "\033[#{ansi_codes[color]}m#{text}\033[0m"
-end
-
-def unixtime_to_hhmmss(unixtime)
-  Time.at(unixtime).strftime('%H:%M:%S')
-end
-
-def tab_for(currency)
-  '                                                ' if currency == 'EUR'
-end
-
-def market_or_limit(type)
-  type == 'l' ? 'limit' : 'market'
-end
-
-def print_trade(currency, operation, price, volume, time, type)
-  puts "#{tab_for(currency)}#{unixtime_to_hhmmss(time)}  #{
-    colorize(buy_or_sell(operation), operation)}  #{
-    currency_symbol[currency]} #{price[0..-3]} #{
-    ' ' * (7 - volume.size)}#{colorize(volume, operation, volume)} ฿  #{
-    market_or_limit(type)}"
-end
-
-def speak_trade(currency, operation, price, volume)
-  %x(say "#{spoken_currency(currency)}: #{buy_or_sell(operation)}, #{volume
-          } bitcoin, at #{price}")
-end
-
-def speak_price_alert(currency, operation, price, volume)
-  return unless action = price_alert_reached?(price, currency)
-  %x(say "Price alert! In #{spoken_currency(currency)}, the price of #{price
-          } is #{action} with #{buy_or_sell(operation)}, #{volume} bitcoin")
-end
-
-def price_alert_reached?(price, currency)
-  low, high = alerts[currency][:less_than], alerts[currency][:greater_than]
-  if price < low
-    "below, your threshold of #{low}"
-  elsif price > high
-    "above, your threshold of #{high}"
+  def initialize
+    @kraken = Kraken::Client.new
   end
-end
 
-loop do
-  currencies.each do |currency|
-    query = kraken.trades(pairs[currency], since[currency])
-    if query['error'].any?
-      error_messages = query['error'].join(' - ')
-      puts "Error '#{error_messages}' in #{currency} trades query!"
-    else
-      trades            = query['result']
-      since[currency]   = trades['last']          # memoize last trade id
-      transactions      = trades[pairs[currency]]
-      number_of_tx      = transactions.size
-      next if number_of_tx.zero?
+  def run
+    loop do
+      CURRENCIES.each do |currency|
+        query = @kraken.trades(PAIRS[currency], since[currency])
+        if query['error'].any?
+          error_messages = query['error'].join(' - ')
+          puts "Error '#{error_messages}' in #{currency} trades query!"
+        else
+          trades            = query['result']
+          since[currency]   = trades['last'] # memoize last trade id
+          transactions      = trades[PAIRS[currency]]
+          number_of_tx      = transactions.size
+          next if number_of_tx.zero?
 
-      (number_of_tx < 100 ? transactions : [transactions.last]).each do |trade|
-        price, volume, time, operation, type, misc = trade
-        price_f         = price.to_f
-        volume          = volume[0..-6]
-        spoken_price    = digits_to_syllables(price_f.round(1))
-        round_volume    = volume.to_f.round(1)
-        spoken_volume   = round_volume < 1 ? 'less than one' : round_volume
+          (number_of_tx < 100 ? transactions : [transactions.last]).each do |trade|
+            price, volume, time, operation, type, misc = trade
+            price_f         = price.to_f
+            volume          = volume[0..-5]
+            spoken_price    = digits_to_syllables(price_f.round(1))
+            round_volume    = volume.to_f.round(1)
+            spoken_volume   = round_volume < 1 ? 'less than one' : round_volume
 
-        print_trade(currency, operation, price, volume, time, type)
-        # speak_trade(currency, operation, spoken_price, spoken_volume)
-        speak_price_alert(currency, operation, price_f, spoken_volume)
+            print_trade(currency, operation, price, volume, time, type)
+            speak_trade(currency, operation, spoken_price, spoken_volume)
+          end
+        end
+        sleep CALL_LIMIT_TIME
       end
     end
-    sleep call_limit_time
+  end
+
+  private
+
+  def since
+    @since ||= { 'USD' => nil, 'EUR' => nil }
+  end
+
+  def print_trade(currency, operation, price, volume, time, type)
+    puts "#{tab_for[currency]}#{unixtime_to_hhmmss(time)}  #{
+      colorize(BUY_OR_SELL[operation], operation)}  #{
+      CURRENCY_SYMBOL[currency]} #{price[0..-3]} #{
+      ' ' * (7 - volume.size)}#{colorize(volume, operation, volume)} ฿  #{
+      MARKET_OR_LIMIT[type]}"
+  end
+
+  def speak_trade(currency, operation, price, volume)
+    %x(say "#{CURRENCY_WORD[currency]}: #{BUY_OR_SELL[operation]}, #{volume
+            } bitcoin, at #{price}")
+  end
+
+  def digits_to_syllables(num)
+    num.to_s.each_char.to_a.join(' ').sub('. 0', '').sub('.', 'point')
+  end
+
+  def unixtime_to_hhmmss(unixtime)
+    Time.at(unixtime).strftime('%H:%M:%S')
+  end
+
+  def colorize(text, operation, volume = nil, volume_threshold = 10)
+    return volume if volume && volume.to_i < volume_threshold
+    "\033[#{ANSI_COLOR_CODES[TEXT_COLORS[operation]]}m#{text}\033[0m"
+  end
+
+  def tab_for
+    { 'USD' => '',
+      'EUR' => '                                                ' }.freeze
   end
 end
+
+k = Trades.new
+k.run
