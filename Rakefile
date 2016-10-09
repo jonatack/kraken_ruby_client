@@ -36,10 +36,11 @@ require 'rake/testtask'
 #   rake test TEST=test/public_api_test.rb TESTOPTS=--name=test_get_server_time
 #
 desc 'Run all tests with `rake` or `rake test`'
-task default: :test
-Rake::TestTask.new do |t|
+task :default => :test
+Rake::TestTask.new(:test) do |t|
+  t.libs.push 'test'
   t.libs.push 'lib'
-  t.test_files = FileList['test/*_test.rb']
+  t.test_files = FileList['test/**/*_test.rb']
   t.verbose = true
 end
 
