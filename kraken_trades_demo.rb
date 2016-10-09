@@ -2,10 +2,11 @@
 #--
 #    kraken_trades_demo.rb
 #
-#    A funky little script to output Kraken BTCUSD & BTCEUR trades using the
-#    Kraken Ruby Client, for Ruby 2.3+ on Mac OS (for the text-to-speech).
+#    A funky little script to output Kraken BTCUSD & BTCEUR trades and
+#    audible (text-to-speech) price alerts on the command line using the
+#    Kraken Ruby Client. Tested with Ruby 2.3+ on Mac OS 10.11.
 #
-#    To run it, type `ruby -Ilib kraken_trades_demo.rb` on the command line.
+#    To run it, type `ruby kraken_trades_demo.rb` on the command line.
 #
 #    Copyright (C) 2016 Jon Atack
 #
