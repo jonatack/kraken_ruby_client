@@ -59,7 +59,7 @@ AUDIBLE_TRADES            = { 'USD' => false, 'EUR' => false }
 class Trades
   CURRENCIES                = %w(USD EUR)
   PAIRS                     = { 'USD' => 'XXBTZUSD',  'EUR' => 'XXBTZEUR' }
-  CURRENCY_WORD             = { 'USD' => 'Dollars',   'EUR' => 'Euros' }
+  CURRENCY_WORD             = { 'USD' => 'dollars',   'EUR' => 'euros' }
   CURRENCY_SYMBOL           = { 'USD' => '$',         'EUR' => '€' }
   BUY_OR_SELL               = { 'b'   => 'buy ',      's'   => 'sell' }
   MARKET_OR_LIMIT           = { 'l'   => 'limit',     'm'   => 'market' }
@@ -138,7 +138,7 @@ class Trades
             } is #{action} your threshold of #{old_threshold.round(2)
             } with the #{BUY_OR_SELL[operation].strip} of #{volume} bitcoin."
     puts "\r\n#{alert}\r\nThe price threshold has been updated from #{
-          old_threshold} to #{new_threshold}.\r\n\r\n"
+          old_threshold} to #{new_threshold.round(3)}.\r\n\r\n"
     %x(say "#{alert}")
   end
 
