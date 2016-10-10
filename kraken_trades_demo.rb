@@ -50,6 +50,10 @@ PRICE_ALERT_THRESHOLDS    = {
     more_than: nil
   }
 }
+
+# Audible settings per currency. True for audio, false for text only.
+AUDIBLE_TRADES            = { 'USD' => false, 'EUR' => false }
+
 ##############################################################################
 
 class Trades
@@ -87,7 +91,9 @@ class Trades
             volume          = volume[0..-5]
             spoken_volume   = spoken_vol(volume)
             print_trade(currency, operation, price, volume, time, type)
-            speak_trade(currency, operation, price_f, spoken_volume)
+            if AUDIBLE_TRADES[currency]
+              speak_trade(currency, operation, price_f, spoken_volume)
+            end
             do_price_alerts(currency, operation, price_f, spoken_volume)
           end
         end
