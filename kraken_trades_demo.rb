@@ -57,7 +57,7 @@ class Trades
   PAIRS                     = { 'USD' => 'XXBTZUSD',  'EUR' => 'XXBTZEUR' }
   CURRENCY_WORD             = { 'USD' => 'Dollars',   'EUR' => 'Euros' }
   CURRENCY_SYMBOL           = { 'USD' => '$',         'EUR' => '€' }
-  BUY_OR_SELL               = { 'b'   => 'buy',       's'   => 'sell' }
+  BUY_OR_SELL               = { 'b'   => 'buy ',      's'   => 'sell' }
   MARKET_OR_LIMIT           = { 'l'   => 'limit',     'm'   => 'market' }
 
   TEXT_COLORS               = { 'b'   => :green,      's'   => :red }
