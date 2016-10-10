@@ -30,13 +30,12 @@ $:.push(lib) unless $:.include?(lib)
 require 'kraken_ruby_client'
 
 # User settings ##############################################################
-#
+
 # Wait 6 seconds per call to not exceed the Kraken API rate limit.
 # Tier 3 users can lower this to 4 seconds, and Tier 4 users to 2 seconds.
 CALL_LIMIT_TIME           = 6
-#
+
 # These are your price alert settings.
-#
 # After each alert, the threshold is adjusted outward by the greater value
 # between the latest price, or the threshold multiplied by this coefficent:
 PRICE_ALERT_ADJUST_COEFF  = 1.0004
@@ -82,16 +81,13 @@ class Trades
           number_of_tx      = transactions.size
           next if number_of_tx.zero?
 
-          (number_of_tx < 100 ? transactions : [transactions.last]).each do |trade|
-            price, volume, time, operation, type, misc = trade
+          (number_of_tx < 200 ? transactions : [transactions.last]).each do |tx|
+            price, volume, time, operation, type, misc = tx
             price_f         = price.to_f
             volume          = volume[0..-5]
-            spoken_price    = digits_to_syllables(price_f.round(1))
-            round_volume    = volume.to_f.round(1)
-            spoken_volume   = round_volume < 1 ? 'less than one' : round_volume
-
+            spoken_volume   = spoken_vol(volume)
             print_trade(currency, operation, price, volume, time, type)
-            # speak_trade(currency, operation, spoken_price, spoken_volume)
+            speak_trade(currency, operation, price_f, spoken_volume)
             do_price_alerts(currency, operation, price_f, spoken_volume)
           end
         end
@@ -101,6 +97,11 @@ class Trades
   end
 
   private
+
+  def spoken_vol(volume)
+    round_volume = volume.to_f.round(1)
+    round_volume < 1 ? 'less than one' : round_volume
+  end
 
   def since
     @since ||= { 'USD' => nil, 'EUR' => nil }
@@ -119,8 +120,9 @@ class Trades
   end
 
   def speak_trade(currency, operation, price, volume)
+    spoken_price = digits_to_syllables(price.round(1))
     %x(say "#{CURRENCY_WORD[currency]}: #{BUY_OR_SELL[operation]}, #{volume
-            } bitcoin, at #{price}")
+            } bitcoin, at #{spoken_price}")
   end
 
   def do_price_alerts(currency, operation, price, volume)
@@ -129,9 +131,8 @@ class Trades
     alert = "Price alert: In #{CURRENCY_WORD[currency]}, the price of #{price
             } is #{action} your threshold of #{old_threshold.round(2)
             } with the #{BUY_OR_SELL[operation].strip} of #{volume} bitcoin."
-    puts alert
-    puts "The price threshold has been updated from #{old_threshold} to #{
-            new_threshold}."
+    puts "\r\n#{alert}\r\nThe price threshold has been updated from #{
+          old_threshold} to #{new_threshold}.\r\n\r\n"
     %x(say "#{alert}")
   end
 
