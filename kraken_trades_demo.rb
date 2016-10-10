@@ -133,11 +133,11 @@ class Trades
   def price_alert_action!(price, currency, coeff = PRICE_ALERT_ADJUST_COEFF)
     lo, hi = alerts[currency][:less_than], alerts[currency][:more_than]
     if lo && price < lo
-      alerts[currency][:less_than] = [(lo / coeff).round(2), price].min
-      "below, your threshold of #{lo}"
+      alerts[currency][:less_than] = [(lo / coeff), price].min
+      "below, your threshold of #{lo.round(2)}"
     elsif hi && price > hi
-      alerts[currency][:more_than] = [(hi * coeff).round(2), price].max
-      "above, your threshold of #{hi}"
+      alerts[currency][:more_than] = [(hi * coeff), price].max
+      "above, your threshold of #{hi.round(2)}"
     end
   end
 
