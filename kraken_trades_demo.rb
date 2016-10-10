@@ -92,7 +92,7 @@ class Trades
 
             print_trade(currency, operation, price, volume, time, type)
             # speak_trade(currency, operation, spoken_price, spoken_volume)
-            speak_price_alert(currency, operation, price_f, spoken_volume)
+            do_price_alerts(currency, operation, price_f, spoken_volume)
           end
         end
         sleep CALL_LIMIT_TIME
@@ -123,21 +123,26 @@ class Trades
             } bitcoin, at #{price}")
   end
 
-  def speak_price_alert(currency, operation, price, volume)
-    return unless action = price_alert_action!(price, currency)
-    %x(say "Price alert! In #{CURRENCY_WORD[currency]}, the price of #{price
-            } is #{action} with the #{BUY_OR_SELL[operation]
-            } of #{volume} bitcoin")
+  def do_price_alerts(currency, operation, price, volume)
+    return unless result = price_alert_action!(price, currency)
+    action, old_threshold, new_threshold = result
+    alert = "Price alert: In #{CURRENCY_WORD[currency]}, the price of #{price
+            } is #{action} your threshold of #{old_threshold.round(2)
+            } with the #{BUY_OR_SELL[operation].strip} of #{volume} bitcoin."
+    puts alert
+    puts "The price threshold has been updated from #{old_threshold} to #{
+            new_threshold}."
+    %x(say "#{alert}")
   end
 
   def price_alert_action!(price, currency, coeff = PRICE_ALERT_ADJUST_COEFF)
     lo, hi = alerts[currency][:less_than], alerts[currency][:more_than]
     if lo && price < lo
       alerts[currency][:less_than] = [(lo / coeff), price].min
-      "below, your threshold of #{lo.round(2)}"
+      ['below', lo, alerts[currency][:less_than]]
     elsif hi && price > hi
       alerts[currency][:more_than] = [(hi * coeff), price].max
-      "above, your threshold of #{hi.round(2)}"
+      ['above', hi, alerts[currency][:more_than]]
     end
   end
 
