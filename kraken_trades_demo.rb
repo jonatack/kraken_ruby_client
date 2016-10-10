@@ -104,17 +104,17 @@ class Trades
 
   private
 
-  def spoken_vol(volume)
-    round_volume = volume.to_f.round(1)
-    round_volume < 1 ? 'less than one' : round_volume
-  end
-
   def since
     @since ||= { 'USD' => nil, 'EUR' => nil }
   end
 
   def alerts
     @alerts ||= PRICE_ALERT_THRESHOLDS
+  end
+
+  def spoken_vol(volume)
+    round_volume = volume.to_f.round(1)
+    round_volume < 1 ? 'less than one' : round_volume
   end
 
   def print_trade(currency, operation, price, volume, time, type)
