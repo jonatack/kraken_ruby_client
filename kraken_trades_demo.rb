@@ -27,6 +27,7 @@
 #++
 lib = File.expand_path('../lib', __FILE__)
 $:.push(lib) unless $:.include?(lib)
+require 'kraken_ruby_client'
 
 # User settings ##############################################################
 #
