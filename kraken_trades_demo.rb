@@ -51,7 +51,7 @@ PRICE_ALERT_THRESHOLDS    = {
   }
 }
 
-# Audible settings per currency. True for audio, false for text only.
+# Audible settings per currency. True for audio+text, false for text only.
 AUDIBLE_TRADES            = { 'USD' => false, 'EUR' => false }
 
 ##############################################################################
