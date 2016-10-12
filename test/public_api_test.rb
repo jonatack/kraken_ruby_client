@@ -69,6 +69,13 @@ class PublicApiTest < Minitest::Test
     assert_get_exchange_currency_info_for('XXBT', 'XBT', 10, 5)
   end
 
+  def test_get_trades
+    query = @query.trades('XXBTZUSD')
+    assert_equal %w(error result), query.keys
+    assert_empty query['error']
+    assert_equal %w(XXBTZUSD last), query['result'].keys
+  end
+
   private
 
     def assert_get_exchange_currency_info_for(currency, alt_name, decimals,
