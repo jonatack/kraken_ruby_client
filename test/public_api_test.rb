@@ -20,7 +20,7 @@
 #    The author may be contacted by email: jon@atack.com
 #++
 require 'time'
-require_relative 'test_helper'
+require 'test_helper'
 
 # To run all tests: rake or rake test
 #
