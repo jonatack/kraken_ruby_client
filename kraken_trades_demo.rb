@@ -75,27 +75,12 @@ class Trades
     loop do
       CURRENCIES.each do |currency|
         query = @kraken.trades(PAIRS[currency], since[currency])
-        if query['error'].any?
+        errors, result = query['error'], query['result']
+        if errors.any?
           error_messages = query['error'].join(' - ')
           puts "Error '#{error_messages}' in #{currency} trades query!"
         else
-          trades            = query['result']
-          since[currency]   = trades['last'] # memoize last trade id
-          transactions      = trades[PAIRS[currency]]
-          number_of_tx      = transactions.size
-          next if number_of_tx.zero?
-
-          (number_of_tx < 200 ? transactions : [transactions.last]).each do |tx|
-            price, volume, time, operation, type, misc = tx
-            price_f         = price.to_f
-            volume          = volume[0..-5]
-            spoken_volume   = spoken_vol(volume)
-            print_trade(currency, operation, price, volume, time, type)
-            if AUDIBLE_TRADES[currency]
-              speak_trade(currency, operation, price_f, spoken_volume)
-            end
-            do_price_alerts(currency, operation, price_f, spoken_volume)
-          end
+          output_trades(result, currency)
         end
         sleep CALL_LIMIT_TIME
       end
@@ -110,6 +95,24 @@ class Trades
 
   def alerts
     @alerts ||= PRICE_ALERT_THRESHOLDS
+  end
+
+  def output_trades(trades, currency)
+    since[currency]   = trades['last'] # memoize last trade id
+    transactions      = trades[PAIRS[currency]]
+    number_of_tx      = transactions.size
+    return if number_of_tx.zero?
+    (number_of_tx < 200 ? transactions : [transactions.last]).each do |trade|
+      price, volume, time, operation, type, misc = trade
+      price_f         = price.to_f
+      volume          = volume[0..-5]
+      spoken_volume   = spoken_vol(volume)
+      print_trade(currency, operation, price, volume, time, type)
+      if AUDIBLE_TRADES[currency]
+        speak_trade(currency, operation, price_f, spoken_volume)
+      end
+      do_price_alerts(currency, operation, price_f, spoken_volume)
+    end
   end
 
   def spoken_vol(volume)
