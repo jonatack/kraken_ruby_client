@@ -77,8 +77,7 @@ class Trades
         query = @kraken.trades(PAIRS[currency], since[currency])
         errors, result = query['error'], query['result']
         if errors.any?
-          error_messages = query['error'].join(' - ')
-          puts "Error '#{error_messages}' in #{currency} trades query!"
+          display_error_messages(errors, currency)
         else
           output_trades(result, currency)
         end
@@ -172,6 +171,33 @@ class Trades
   def tab_for
     { 'USD' => '',
       'EUR' => '                                                ' }.freeze
+  end
+
+  # API Error Messages
+  #
+  # The Kraken API returns an array of error message strings
+  # in the following format:
+  #
+  # <char-severity code><str-error category>:<str-error type>[:<str-extra info>]
+  #
+  # Example: 'EAPI:Rate limit exceeded'
+  #
+  # The severity code can be E for error or W for warning.
+  #
+  def display_error_messages(errors_array, currency)
+    errors_array.each do |message|
+      puts format_error_message(message, currency)
+    end
+  end
+
+  def format_error_message(string, currency)
+    parts = string[1..-1].split(':')
+    description = "'#{parts.first} #{parts.last.downcase}'"
+    "#{error_code[string[0]]}: #{description} in #{currency} trades query!"
+  end
+
+  def error_code
+    { 'E' => 'Error', 'W' => 'Warning' }.freeze
   end
 end
 
