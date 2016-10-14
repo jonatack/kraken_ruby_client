@@ -83,10 +83,10 @@ class PublicApiTest < Minitest::Test
 
     def assert_get_exchange_currency_info_for(currency, alt_name, decimals,
       display_decimals)
-      query_currency = @query.assets(currency)['result']
-      assert_equal currency, query_currency.keys.first
-      assert_equal alt_name, query_currency[currency]['altname']
-      assert_equal decimals, query_currency[currency]['decimals']
-      assert_equal display_decimals, query_currency[currency]['display_decimals']
+      query = @query.assets(currency)['result']
+      assert_equal currency, query.keys.first
+      assert_equal alt_name, query[currency]['altname']
+      assert_equal decimals, query[currency]['decimals']
+      assert_equal display_decimals, query[currency]['display_decimals']
     end
 end
