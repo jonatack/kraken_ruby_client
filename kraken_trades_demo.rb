@@ -98,17 +98,20 @@ class Trades
 
   def output_trades(trades, last_trade_id, currency)
     (last_trade[currency] ? trades : [trades.last]).each do |trade|
-      price, volume, time, operation, type, misc = trade
-      price_f = price.to_f
-      volume = volume[0..-5]
-      spoken_volume = spoken_vol(volume)
-      print_trade(currency, operation, price, volume, time, type)
-      if AUDIBLE_TRADES[currency]
-        speak_trade(currency, operation, price_f, spoken_volume)
-      end
-      do_price_alerts(currency, operation, price_f, spoken_volume)
+      parse_and_output_one_trade(trade, currency)
     end
     last_trade[currency] = last_trade_id # memoize last trade id
+  end
+
+  def parse_and_output_one_trade(trade, currency)
+    price, volume, time, operation, type, misc = trade
+    price_f, volume = price.to_f, volume[0..-5]
+    spoken_volume = spoken_vol(volume)
+    print_trade(currency, operation, price, volume, time, type)
+    if AUDIBLE_TRADES[currency]
+      speak_trade(currency, operation, price_f, spoken_volume)
+    end
+    do_price_alerts(currency, operation, price_f, spoken_volume)
   end
 
   def spoken_vol(volume)
