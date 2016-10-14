@@ -97,11 +97,9 @@ class Trades
   end
 
   def output_trades(trades, currency)
-    since[currency]   = trades['last'] # memoize last trade id
     transactions      = trades[PAIRS[currency]]
-    number_of_tx      = transactions.size
-    return if number_of_tx.zero?
-    (number_of_tx < 200 ? transactions : [transactions.last]).each do |trade|
+    return if transactions.size.zero?
+    (since[currency] < 200 ? transactions : [transactions.last]).each do |trade|
       price, volume, time, operation, type, misc = trade
       price_f         = price.to_f
       volume          = volume[0..-5]
@@ -112,6 +110,7 @@ class Trades
       end
       do_price_alerts(currency, operation, price_f, spoken_volume)
     end
+    since[currency]   = trades['last'] # memoize last trade id
   end
 
   def spoken_vol(volume)
