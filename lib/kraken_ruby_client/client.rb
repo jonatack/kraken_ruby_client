@@ -39,10 +39,33 @@ module Kraken
       @api_private_url      = base_uri + @api_private_path
     end
 
+    # Get server time
+    # URL: https://api.kraken.com/0/public/Time
+    # Returns a hash with keys +error+ and +result+.
+    # +result+ is an array of hashes with keys:
+    #   +unixtime+  = unix timestamp
+    #   +rfc1123+   = RFC 1123 time format
+    #
     def server_time
       get_public 'Time'
     end
 
+    # Get asset info
+    # URL: https://api.kraken.com/0/public/Assets
+    # Input:
+    #   +asset+     = a comma-delimited, case-insensitive asset list string
+    #                (optional, defaults to all assets).
+    #   +info+      = info to retrieve (optional, defaults to all info).
+    #   +aclass+    = asset class (optional, defaults to +currency+).
+    #
+    # Returns a hash with keys +error+ and +result+.
+    #   +result+ is a hash of assets with keys like ZEUR, ZUSD, XXBT, etc.
+    #   Each asset is an array with the asset name and an info hash containing:
+    #     +altname+          = alternate name, like EUR, USD, XBT, etc.
+    #     +aclass+           = asset class (for now are all set to 'currency').
+    #     +decimals+         = decimal places for record keeping.
+    #     +display_decimals+ = decimal places for display (usually fewer).
+    #
     def assets(assets = nil)
       if assets
         get_public 'Assets', { 'asset': assets }
