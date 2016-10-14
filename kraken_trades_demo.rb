@@ -78,8 +78,8 @@ class Trades
         errors, result = query['error'], query['result']
         if errors.any?
           display_error_messages(errors, currency)
-        else
-          output_trades(result, currency)
+        elsif result[PAIRS[currency]].any?
+          output_trades(result[PAIRS[currency]], result['last'], currency)
         end
         sleep CALL_LIMIT_TIME
       end
@@ -96,10 +96,8 @@ class Trades
     @alerts ||= PRICE_ALERT_THRESHOLDS
   end
 
-  def output_trades(trades, currency)
-    transactions      = trades[PAIRS[currency]]
-    return if transactions.size.zero?
-    (since[currency] ? transactions : [transactions.last]).each do |trade|
+  def output_trades(trades, last, currency)
+    (since[currency] ? trades : [trades.last]).each do |trade|
       price, volume, time, operation, type, misc = trade
       price_f         = price.to_f
       volume          = volume[0..-5]
@@ -110,7 +108,7 @@ class Trades
       end
       do_price_alerts(currency, operation, price_f, spoken_volume)
     end
-    since[currency]   = trades['last'] # memoize last trade id
+    since[currency]   = last # memoize last trade id
   end
 
   def spoken_vol(volume)
