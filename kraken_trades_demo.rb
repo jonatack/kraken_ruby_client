@@ -74,7 +74,7 @@ class Trades
   def run
     loop do
       CURRENCIES.each do |currency|
-        query = @kraken.trades(PAIRS[currency], since[currency])
+        query = @kraken.trades(PAIRS[currency], last_trade[currency])
         errors, result = query['error'], query['result']
         if errors.any?
           display_error_messages(errors, currency)
@@ -88,27 +88,27 @@ class Trades
 
   private
 
-  def since
-    @since ||= { 'USD' => nil, 'EUR' => nil }
+  def last_trade
+    @last_trade ||= { 'USD' => nil, 'EUR' => nil }
   end
 
-  def alerts
-    @alerts ||= PRICE_ALERT_THRESHOLDS
+  def price_alerts
+    @price_alerts ||= PRICE_ALERT_THRESHOLDS
   end
 
-  def output_trades(trades, last, currency)
-    (since[currency] ? trades : [trades.last]).each do |trade|
+  def output_trades(trades, last_trade_id, currency)
+    (last_trade[currency] ? trades : [trades.last]).each do |trade|
       price, volume, time, operation, type, misc = trade
-      price_f         = price.to_f
-      volume          = volume[0..-5]
-      spoken_volume   = spoken_vol(volume)
+      price_f = price.to_f
+      volume = volume[0..-5]
+      spoken_volume = spoken_vol(volume)
       print_trade(currency, operation, price, volume, time, type)
       if AUDIBLE_TRADES[currency]
         speak_trade(currency, operation, price_f, spoken_volume)
       end
       do_price_alerts(currency, operation, price_f, spoken_volume)
     end
-    since[currency]   = last # memoize last trade id
+    last_trade[currency] = last_trade_id # memoize last trade id
   end
 
   def spoken_vol(volume)
@@ -142,13 +142,14 @@ class Trades
   end
 
   def price_alert_action!(price, currency, coeff = PRICE_ALERT_ADJUST_COEFF)
-    lo, hi = alerts[currency][:less_than], alerts[currency][:more_than]
+    lo = price_alerts[currency][:less_than]
+    hi = price_alerts[currency][:more_than]
     if lo && price < lo
-      alerts[currency][:less_than] = [(lo / coeff), price].min
-      ['below', lo, alerts[currency][:less_than]]
+      price_alerts[currency][:less_than] = [(lo / coeff), price].min
+      ['below', lo, price_alerts[currency][:less_than]]
     elsif hi && price > hi
-      alerts[currency][:more_than] = [(hi * coeff), price].max
-      ['above', hi, alerts[currency][:more_than]]
+      price_alerts[currency][:more_than] = [(hi * coeff), price].max
+      ['above', hi, price_alerts[currency][:more_than]]
     end
   end
 
