@@ -99,7 +99,7 @@ class Trades
   def output_trades(trades, currency)
     transactions      = trades[PAIRS[currency]]
     return if transactions.size.zero?
-    (since[currency] < 200 ? transactions : [transactions.last]).each do |trade|
+    (since[currency] ? transactions : [transactions.last]).each do |trade|
       price, volume, time, operation, type, misc = trade
       price_f         = price.to_f
       volume          = volume[0..-5]
