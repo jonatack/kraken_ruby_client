@@ -70,10 +70,13 @@ class PublicApiTest < Minitest::Test
   end
 
   def test_get_trades
-    query = @query.trades('XXBTZUSD')
-    assert_equal %w(error result), query.keys
-    assert_empty query['error']
-    assert_equal %w(XXBTZUSD last), query['result'].keys
+    pairs = %w(XXBTZEUR XXBTZUSD XETHZEUR XETHZUSD)
+    pairs.each do |pair|
+      query = @query.trades(pair)
+      assert_equal %w(error result), query.keys
+      assert_empty query['error']
+      assert_equal [pair, 'last'], query['result'].keys
+    end
   end
 
   private
