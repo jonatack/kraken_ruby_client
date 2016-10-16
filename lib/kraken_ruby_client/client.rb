@@ -59,8 +59,8 @@ module Kraken
     # Input:
     #   +asset+     = a comma-delimited, case-insensitive asset list string
     #                 (optional, defaults to all assets).
-    #   +info+      = info to retrieve (optional, defaults to all info).
     #   +aclass+    = asset class (optional, defaults to +currency+).
+    #                 Not useful for now; all assets have same value 'currency'.
     #
     # Returns a hash with keys +error+ and +result+.
     #   +result+ is a hash of assets with keys like ZEUR, ZUSD, XXBT, etc.
