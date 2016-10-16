@@ -20,6 +20,10 @@
 #
 #    The author may be contacted by email at jon@atack.com.
 #++
+
+# irb -I lib
+# require 'kraken_ruby_client'; k = Kraken::Client.new
+
 require 'base64'
 require 'securerandom'
 require 'curb'
@@ -54,13 +58,13 @@ module Kraken
     # URL: https://api.kraken.com/0/public/Assets
     # Input:
     #   +asset+     = a comma-delimited, case-insensitive asset list string
-    #                (optional, defaults to all assets).
+    #                 (optional, defaults to all assets).
     #   +info+      = info to retrieve (optional, defaults to all info).
     #   +aclass+    = asset class (optional, defaults to +currency+).
     #
     # Returns a hash with keys +error+ and +result+.
     #   +result+ is a hash of assets with keys like ZEUR, ZUSD, XXBT, etc.
-    #   Each asset is an array with the asset name and an info hash containing:
+    #   Each asset is an array of the asset name and an info hash containing:
     #     +altname+          = alternate name, like EUR, USD, XBT, etc.
     #     +aclass+           = asset class (for now are all set to 'currency').
     #     +decimals+         = decimal places for record keeping.
@@ -74,6 +78,39 @@ module Kraken
       end
     end
 
+    # Get tradable asset pairs
+    # URL: https://api.kraken.com/0/public/AssetPairs
+    # Input:
+    #   +pair+      = a comma-delimited, case-insensitive list of asset pairs
+    #                 (optional, defaults to all asset pairs).
+    #   +info+      = info to retrieve (optional, defaults to all info).
+    #                 Options:
+    #                   +leverage+  = leverage info
+    #                   +fees+      = fees schedule
+    #                   +margin+    = margin info
+    #
+    # Returns a hash with keys +error+ and +result+.
+    #   +result+ is a hash of asset pairs with keys like XXBTZEUR and XXBTZUSD.
+    #   Each asset pair is an array of the name and a hash containing:
+    #     +altname+             = alternate name, like EUR, USD, XBT, etc.
+    #     +aclass_base+         = asset class of base component
+    #     +base+                = asset id of base component
+    #     +aclass_quote+        = asset class of quote component
+    #     +quote+               = asset id of quote component
+    #     +lot+                 = volume lot size
+    #     +pair_decimals+       = scaling decimal places for pair
+    #     +lot_decimals+        = scaling decimal places for volume
+    #     +lot_multiplier+      = amount to multiply lot volume by to get
+    #                             currency volume
+    #     +leverage_buy+        = array of leverages available when buying
+    #     +leverage_sell+       = array of leverages available when selling
+    #     +fees+                = fee schedule array in
+    #                             [volume, percent fee] tuples
+    #     +fees_maker+          = maker fee schedule array in
+    #                             [volume, percent fee] tuples if on maker/taker
+    #     +fee_volume_currency+ = volume discount currency
+    #     +margin_call+         = margin call level
+    #     +margin_stop+         = stop-out/liquidation margin level
     def asset_pairs(pairs = nil)
       if pairs
         get_public 'AssetPairs', { 'pair': pairs }
