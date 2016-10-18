@@ -38,9 +38,9 @@ CALL_LIMIT_TIME           = 6
 # These are your price alert settings.
 # After each alert, the threshold is adjusted outward by the greater value
 # between the latest price, or the threshold multiplied by this coefficent:
-PRICE_ALERT_ADJUST_COEFF  = 1.0004
+PRICE_ALERT_ADJUST_COEFF = 1.0004
 # Set your price alert thresholds here. Use nil when no price alert wanted.
-PRICE_ALERT_THRESHOLDS    = {
+PRICE_ALERT_THRESHOLDS = {
   'USD' => {
     less_than: 616.4,
     more_than: 621
@@ -52,20 +52,42 @@ PRICE_ALERT_THRESHOLDS    = {
 }
 
 # Audible settings per currency. True for audio+text, false for text only.
-AUDIBLE_TRADES            = { 'USD' => false, 'EUR' => false }
+AUDIBLE_TRADES = { 'USD' => false, 'EUR' => false }
 
 ##############################################################################
 
 class Trades
-  CURRENCIES                = %w(USD EUR)
-  PAIRS                     = { 'USD' => 'XXBTZUSD',  'EUR' => 'XXBTZEUR' }
-  CURRENCY_WORD             = { 'USD' => 'dollars',   'EUR' => 'euros' }
-  CURRENCY_SYMBOL           = { 'USD' => '$',         'EUR' => '€' }
-  BUY_OR_SELL               = { 'b'   => 'buy ',      's'   => 'sell' }
-  MARKET_OR_LIMIT           = { 'l'   => 'limit',     'm'   => 'market' }
-
-  TEXT_COLORS               = { 'b'   => :green,      's'   => :red }
-  ANSI_COLOR_CODES          = { default: 38, black: 30, red: 31, green: 32 }
+  CURRENCIES = %w(USD EUR)
+  PAIRS = {
+    'USD' => 'XXBTZUSD',
+    'EUR' => 'XXBTZEUR'
+  }
+  CURRENCY_WORD = {
+    'USD' => 'dollars',
+    'EUR' => 'euros'
+  }
+  CURRENCY_SYMBOL = {
+    'USD' => '$',
+    'EUR' => '€'
+  }
+  BUY_OR_SELL = {
+    'b' => 'buy ',
+    's' => 'sell'
+  }
+  MARKET_OR_LIMIT = {
+    'l' => 'limit',
+    'm' => 'market'
+  }
+  TEXT_COLORS = {
+    'b' => :green,
+    's' => :red
+  }
+  ANSI_COLOR_CODES = {
+    default: 38,
+    black:   30,
+    red:     31,
+    green:   32
+  }
 
   def initialize
     @kraken = Kraken::Client.new
