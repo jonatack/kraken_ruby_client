@@ -123,8 +123,11 @@ class Trades
     puts "#{tab_for[currency]}#{unixtime_to_hhmmss(time)}  #{
       colorize(BUY_OR_SELL[operation], operation)}  #{
       CURRENCY_SYMBOL[currency]} #{price[0..-3]} #{
-      ' ' * (7 - volume.size)}#{colorize(volume, operation, 10)} ฿  #{
-      MARKET_OR_LIMIT[type]}"
+      display_volume(volume, operation)}  #{MARKET_OR_LIMIT[type]}"
+  end
+
+  def display_volume(volume, operation)
+    "#{' ' * (9 - volume.size)}#{colorize(volume, operation, 10)} ฿"
   end
 
   def speak_trade(currency, operation, price, volume)
