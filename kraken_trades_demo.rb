@@ -64,11 +64,13 @@ class Trades
   }
   CURRENCY_WORD = {
     'USD' => 'dollars',
-    'EUR' => 'euros'
+    'EUR' => 'euros',
+    'XBT' => 'bitcoins'
   }
   CURRENCY_SYMBOL = {
     'USD' => '$',
-    'EUR' => '€'
+    'EUR' => '€',
+    'XBT' => '฿'
   }
   BUY_OR_SELL = {
     'b' => 'buy ',
@@ -149,7 +151,8 @@ class Trades
   end
 
   def display_volume(volume, operation)
-    "#{' ' * (9 - volume.size)}#{colorize(volume, operation, 10)} ฿"
+    "#{' ' * (9 - volume.size)
+    }#{colorize(volume, operation, 10)} #{CURRENCY_SYMBOL['XBT']}"
   end
 
   def speak_trade(currency, operation, price, volume)
