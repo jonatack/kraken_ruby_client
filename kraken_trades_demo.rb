@@ -56,39 +56,11 @@ AUDIBLE_TRADES = { 'USD' => false, 'EUR' => false }
 
 ##############################################################################
 
-class Trades
+class TradeDemo
   CURRENCIES = %w(USD EUR)
   PAIRS = {
     'USD' => 'XXBTZUSD',
     'EUR' => 'XXBTZEUR'
-  }
-  CURRENCY_WORD = {
-    'USD' => 'dollars',
-    'EUR' => 'euros',
-    'XBT' => 'bitcoins'
-  }
-  CURRENCY_SYMBOL = {
-    'USD' => '$',
-    'EUR' => '€',
-    'XBT' => '฿'
-  }
-  BUY_OR_SELL = {
-    'b' => 'buy ',
-    's' => 'sell'
-  }
-  MARKET_OR_LIMIT = {
-    'l' => 'limit',
-    'm' => 'market'
-  }
-  TEXT_COLORS = {
-    'b' => :green,
-    's' => :red
-  }
-  ANSI_COLOR_CODES = {
-    default: 38,
-    black:   30,
-    red:     31,
-    green:   32
   }
 
   def initialize
@@ -103,7 +75,8 @@ class Trades
         if errors.any?
           display_error_messages(errors, currency)
         elsif result[PAIRS[currency]].any?
-          output_trades(result[PAIRS[currency]], result['last'], currency)
+          output_trades(result[PAIRS[currency]], currency)
+          memoize_last_trade_id(result['last'], currency)
         end
         sleep CALL_LIMIT_TIME
       end
@@ -112,95 +85,23 @@ class Trades
 
   private
 
-  def last_trade
-    @last_trade ||= { 'USD' => nil, 'EUR' => nil }
-  end
-
-  def price_alerts
-    @price_alerts ||= PRICE_ALERT_THRESHOLDS
-  end
-
-  def output_trades(trades, last_trade_id, currency)
-    (last_trade[currency] ? trades : [trades.last]).each do |trade|
-      parse_and_output_one_trade(trade, currency)
+    def last_trade
+      @last_trade ||= { 'USD' => nil, 'EUR' => nil }
     end
-    last_trade[currency] = last_trade_id # memoize last trade id
-  end
 
-  def parse_and_output_one_trade(trade, currency)
-    price, volume, time, operation, type, misc = trade
-    price_f, volume = price.to_f, volume[0..-5]
-    spoken_volume = spoken_vol(volume)
-    print_trade(currency, operation, price, volume, time, type)
-    if AUDIBLE_TRADES[currency]
-      speak_trade(currency, operation, price_f, spoken_volume)
+    def price_alerts
+      @price_alerts ||= PRICE_ALERT_THRESHOLDS
     end
-    do_price_alerts(currency, operation, price_f, spoken_volume)
-  end
 
-  def spoken_vol(volume)
-    round_volume = volume.to_f.round(1)
-    round_volume < 1 ? 'less than one' : round_volume
-  end
-
-  def print_trade(currency, operation, price, volume, time, type)
-    puts "#{tab_for[currency]}#{unixtime_to_hhmmss(time)}  #{
-      colorize(BUY_OR_SELL[operation], operation)}  #{
-      CURRENCY_SYMBOL[currency]} #{price[0..-3]} #{
-      display_volume(volume, operation)}  #{MARKET_OR_LIMIT[type]}"
-  end
-
-  def display_volume(volume, operation)
-    "#{' ' * (9 - volume.size)
-    }#{colorize(volume, operation, 10)} #{CURRENCY_SYMBOL['XBT']}"
-  end
-
-  def speak_trade(currency, operation, price, volume)
-    spoken_price = digits_to_syllables(price.round(1))
-    %x(say "#{CURRENCY_WORD[currency]}: #{BUY_OR_SELL[operation]}, #{volume
-            } bitcoin, at #{spoken_price}")
-  end
-
-  def do_price_alerts(currency, operation, price, volume)
-    return unless result = price_alert_action!(price, currency)
-    action, old_threshold, new_threshold = result
-    alert = "Price alert: In #{CURRENCY_WORD[currency]}, the price of #{price
-            } is #{action} your threshold of #{old_threshold.round(2)
-            } with the #{BUY_OR_SELL[operation].strip} of #{volume} bitcoin."
-    puts "\r\n#{alert}\r\nThe price threshold has been updated from #{
-          old_threshold} to #{new_threshold.round(3)}.\r\n\r\n"
-    %x(say "#{alert}")
-  end
-
-  def price_alert_action!(price, currency, coeff = PRICE_ALERT_ADJUST_COEFF)
-    lo = price_alerts[currency][:less_than]
-    hi = price_alerts[currency][:more_than]
-    if lo && price < lo
-      price_alerts[currency][:less_than] = [(lo / coeff), price].min
-      ['below', lo, price_alerts[currency][:less_than]]
-    elsif hi && price > hi
-      price_alerts[currency][:more_than] = [(hi * coeff), price].max
-      ['above', hi, price_alerts[currency][:more_than]]
+    def output_trades(trades, currency)
+      (last_trade[currency] ? trades : [trades.last]).each do |trade|
+        Trade.new(trade, currency, price_alerts).handle_trade
+      end
     end
-  end
 
-  def digits_to_syllables(num)
-    num.to_s.each_char.to_a.join(' ').sub('. 0', '').sub('.', 'point')
-  end
-
-  def unixtime_to_hhmmss(unixtime)
-    Time.at(unixtime).strftime('%H:%M:%S')
-  end
-
-  def colorize(text, operation, volume_threshold = nil)
-    return text if volume_threshold && text.to_i < volume_threshold
-    "\033[#{ANSI_COLOR_CODES[TEXT_COLORS[operation]]}m#{text}\033[0m"
-  end
-
-  def tab_for
-    { 'USD' => '',
-      'EUR' => '                                                ' }.freeze
-  end
+    def memoize_last_trade_id(last_trade_id, currency)
+      last_trade[currency] = last_trade_id
+    end
 
   # API Error Messages
   #
@@ -230,5 +131,131 @@ class Trades
   end
 end
 
-k = Trades.new
+class Trade
+  CURRENCY_SYMBOL = {
+    'USD' => '$',
+    'EUR' => '€',
+    'XBT' => '฿'
+  }
+  CURRENCY_WORD = {
+    'USD' => 'dollars',
+    'EUR' => 'euros',
+    'XBT' => 'bitcoins'
+  }
+  MARKET_OR_LIMIT = {
+    'l' => 'limit',
+    'm' => 'market'
+  }
+  BUY_OR_SELL = {
+    'b' => 'buy ',
+    's' => 'sell'
+  }
+  TEXT_COLORS = {
+    'b' => :green,
+    's' => :red
+  }
+  ANSI_COLOR_CODES = {
+    default: 38,
+    black:   30,
+    red:     31,
+    green:   32
+  }
+
+  def initialize(trade, currency, alerts)
+    @price, @volume, @unixtime, @operation, @type, @misc = trade
+    @currency = currency
+    @alerts = alerts
+  end
+
+  def handle_trade
+    print_trade
+    speak_trade
+    do_price_alerts
+  end
+
+  private
+
+    def print_trade
+      puts "#{tab_for[@currency]}#{unixtime_to_hhmmss}  #{
+        colorize(BUY_OR_SELL[@operation])}  #{
+        CURRENCY_SYMBOL[@currency]} #{printed_price} #{
+        display_volume}  #{MARKET_OR_LIMIT[@type]}"
+    end
+
+    def speak_trade
+      return unless AUDIBLE_TRADES[@currency]
+      %x(say "#{CURRENCY_WORD[@currency]}: #{BUY_OR_SELL[@operation]}, #{
+        spoken_volume} bitcoin, at #{price_to_syllables}")
+    end
+
+    def do_price_alerts
+      return unless result = price_alert_action
+      action, old_threshold, new_threshold = result
+      alert = "Price alert: In #{CURRENCY_WORD[@currency]
+              }, the price of #{price_f} is #{action
+              } your threshold of #{old_threshold.round(2)
+              } with the #{BUY_OR_SELL[@operation].strip
+              } of #{spoken_volume} bitcoin."
+      puts "\r\n#{alert}\r\nThe price threshold has been updated from #{
+            old_threshold} to #{new_threshold.round(3)}.\r\n\r\n"
+      %x(say "#{alert}")
+    end
+
+    def price_alert_action(coeff = PRICE_ALERT_ADJUST_COEFF)
+      lo, hi = @alerts[@currency][:less_than], @alerts[@currency][:more_than]
+      if lo && price_f < lo
+        @alerts[@currency][:less_than] = [(lo / coeff), price_f].min
+        ['below', lo, @alerts[currency][:less_than]]
+      elsif hi && price_f > hi
+        @alerts[@currency][:more_than] = [(hi * coeff), price_f].max
+        ['above', hi, @alerts[@currency][:more_than]]
+      end
+    end
+
+    def price_f
+      @price.to_f
+    end
+
+    def printed_price
+      @price[0..-3]
+    end
+
+    def volume
+      @volume[0..-5]
+    end
+
+    def spoken_volume
+      if (round_volume = volume.to_f.round(1)) < 1
+        'less than one'
+      else
+        round_volume
+      end
+    end
+
+    def price_to_syllables
+      price_f.round(1).to_s.each_char.to_a.join(' ')
+      .sub('. 0', '').sub('.', 'point')
+    end
+
+    def display_volume
+      "#{' ' * (9 - volume.size)}#{colorize(volume, 1)} #{
+        CURRENCY_SYMBOL['XBT']}"
+    end
+
+    def tab_for
+      { 'USD' => '',
+        'EUR' => '                                                ' }.freeze
+    end
+
+    def unixtime_to_hhmmss
+      Time.at(@unixtime).strftime('%H:%M:%S')
+    end
+
+    def colorize(text, volume_threshold = nil)
+      return text if volume_threshold && text.to_i < volume_threshold
+      "\033[#{ANSI_COLOR_CODES[TEXT_COLORS[@operation]]}m#{text}\033[0m"
+    end
+end
+
+k = TradeDemo.new
 k.run
