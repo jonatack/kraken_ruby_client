@@ -143,7 +143,7 @@ class Trade
   def handle_trade
     print_trade
     speak_trade
-    do_price_alerts
+    run_price_alerts
   end
 
   private
@@ -161,7 +161,7 @@ class Trade
         spoken_volume} bitcoin, at #{price_to_syllables}")
     end
 
-    def do_price_alerts
+    def run_price_alerts
       return unless result = price_alert_action
       action, old_threshold, new_threshold = result
       alert = "Price alert: In #{CURRENCY_WORD[@currency]
