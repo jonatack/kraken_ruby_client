@@ -135,8 +135,9 @@ class Trade
   }
 
   def initialize(trade, currency, alerts)
-    @price, @volume, @unixtime, @operation, @type, @misc = trade
-    @price_f, @currency, @alerts = @price.to_f, currency, alerts
+    @price, volume, @unixtime, @operation, @type, @misc = trade
+    @price_f, @volume = @price.to_f, volume[0..-5]
+    @currency, @alerts = currency, alerts
   end
 
   def handle_trade
@@ -188,12 +189,8 @@ class Trade
       @price[0..-3]
     end
 
-    def volume
-      @volume[0..-5]
-    end
-
     def spoken_volume
-      if (round_volume = volume.to_f.round(1)) < 1
+      if (round_volume = @volume.to_f.round(1)) < 1
         'less than one'
       else
         round_volume
@@ -206,7 +203,7 @@ class Trade
     end
 
     def display_volume
-      "#{' ' * (9 - volume.size)}#{colorize(volume, 1)} #{
+      "#{' ' * (9 - @volume.size)}#{colorize(@volume, 1)} #{
         CURRENCY_SYMBOL['XBT']}"
     end
 
