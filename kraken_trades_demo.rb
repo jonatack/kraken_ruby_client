@@ -73,7 +73,7 @@ class TradeDemo
         query = @kraken.trades(PAIRS[currency], last_trade[currency])
         errors, result = query['error'], query['result']
         if errors.any?
-          display_error_messages(errors, currency)
+          ErrorMessage.new(errors, currency).display_error_messages
         elsif result[PAIRS[currency]].any?
           output_trades(result[PAIRS[currency]], currency)
           memoize_last_trade_id(result['last'], currency)
@@ -102,33 +102,6 @@ class TradeDemo
     def memoize_last_trade_id(last_trade_id, currency)
       last_trade[currency] = last_trade_id
     end
-
-  # API Error Messages
-  #
-  # The Kraken API returns an array of error message strings
-  # in the following format:
-  #
-  # <char-severity code><str-error category>:<str-error type>[:<str-extra info>]
-  #
-  # Example: 'EAPI:Rate limit exceeded'
-  #
-  # The severity code can be E for error or W for warning.
-  #
-  def display_error_messages(errors_array, currency)
-    errors_array.each do |message|
-      puts format_error_message(message, currency)
-    end
-  end
-
-  def format_error_message(string, currency)
-    parts = string[1..-1].split(':')
-    description = "'#{parts.first} #{parts.last.downcase}'"
-    "#{error_code[string[0]]}: #{description} in #{currency} trades query!"
-  end
-
-  def error_code
-    { 'E' => 'Error', 'W' => 'Warning' }.freeze
-  end
 end
 
 class Trade
@@ -254,6 +227,38 @@ class Trade
     def colorize(text, volume_threshold = nil)
       return text if volume_threshold && text.to_i < volume_threshold
       "\033[#{ANSI_COLOR_CODES[TEXT_COLORS[@operation]]}m#{text}\033[0m"
+    end
+end
+
+class ErrorMessage
+  # The Kraken API returns an array of error message strings
+  # in the following format:
+  #
+  # <char-severity code><str-error category>:<str-error type>[:<str-extra info>]
+  #
+  # Example: 'EAPI:Rate limit exceeded'
+  #
+  # The severity code can be E for error or W for warning.
+  #
+  def initialize(errors_array, currency)
+    @errors_array, @currency = errors_array, currency
+  end
+
+  def display_error_messages
+    @errors_array.each do |message|
+      puts format_error_message(message)
+    end
+  end
+
+  private
+    def format_error_message(string)
+      parts = string[1..-1].split(':')
+      description = "'#{parts.first} #{parts.last.downcase}'"
+      "#{error_code[string[0]]}: #{description} in #{@currency} trades query!"
+    end
+
+    def error_code
+      { 'E' => 'Error', 'W' => 'Warning' }.freeze
     end
 end
 
