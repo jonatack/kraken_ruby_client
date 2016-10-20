@@ -136,8 +136,7 @@ class Trade
 
   def initialize(trade, currency, alerts)
     @price, @volume, @unixtime, @operation, @type, @misc = trade
-    @currency = currency
-    @alerts = alerts
+    @price_f, @currency, @alerts = @price.to_f, currency, alerts
   end
 
   def handle_trade
@@ -165,7 +164,7 @@ class Trade
       return unless result = price_alert_action
       action, old_threshold, new_threshold = result
       alert = "Price alert: In #{CURRENCY_WORD[@currency]
-              }, the price of #{price_f} is #{action
+              }, the price of #{@price_f} is #{action
               } your threshold of #{old_threshold.round(2)
               } with the #{BUY_OR_SELL[@operation].strip
               } of #{spoken_volume} bitcoin."
@@ -176,17 +175,13 @@ class Trade
 
     def price_alert_action(coeff = PRICE_ALERT_ADJUST_COEFF)
       lo, hi = @alerts[@currency][:less_than], @alerts[@currency][:more_than]
-      if lo && price_f < lo
-        @alerts[@currency][:less_than] = [(lo / coeff), price_f].min
+      if lo && @price_f < lo
+        @alerts[@currency][:less_than] = [(lo / coeff), @price_f].min
         ['below', lo, @alerts[currency][:less_than]]
-      elsif hi && price_f > hi
-        @alerts[@currency][:more_than] = [(hi * coeff), price_f].max
+      elsif hi && @price_f > hi
+        @alerts[@currency][:more_than] = [(hi * coeff), @price_f].max
         ['above', hi, @alerts[@currency][:more_than]]
       end
-    end
-
-    def price_f
-      @price.to_f
     end
 
     def printed_price
@@ -206,7 +201,7 @@ class Trade
     end
 
     def price_to_syllables
-      price_f.round(1).to_s.each_char.to_a.join(' ')
+      @price_f.round(1).to_s.each_char.to_a.join(' ')
       .sub('. 0', '').sub('.', 'point')
     end
 
