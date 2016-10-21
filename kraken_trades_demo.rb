@@ -94,8 +94,16 @@ class TradeDemo
     end
 
     def output_trades(trades, currency)
-      (last_trade.fetch(currency) ? trades : [trades.last]).each do |trade|
+      trades_to_display(trades, currency).each do |trade|
         Trade.new(trade, currency, price_alerts).handle_trade
+      end
+    end
+
+    def trades_to_display(trades, currency)
+      if last_trade.fetch(currency)
+        trades
+      else
+        [trades.last]
       end
     end
 
