@@ -70,13 +70,13 @@ class TradeDemo
   def run
     loop do
       CURRENCIES.each do |currency|
-        query = @kraken.trades(PAIRS[currency], last_trade[currency])
-        errors, result = query['error'], query['result']
+        query = @kraken.trades(PAIRS.fetch(currency), last_trade.fetch(currency))
+        errors, result = query.fetch('error'), query.fetch('result')
         if errors.any?
           ErrorMessage.new(errors, currency).display_error_messages
-        elsif result[PAIRS[currency]].any?
-          output_trades(result[PAIRS[currency]], currency)
-          memoize_last_trade_id(result['last'], currency)
+        elsif (trades = result.fetch(PAIRS.fetch(currency))).any?
+          output_trades(trades, currency)
+          memoize_last_trade_id(result.fetch('last'), currency)
         end
         sleep CALL_LIMIT_TIME
       end
@@ -94,7 +94,7 @@ class TradeDemo
     end
 
     def output_trades(trades, currency)
-      (last_trade[currency] ? trades : [trades.last]).each do |trade|
+      (last_trade.fetch(currency) ? trades : [trades.last]).each do |trade|
         Trade.new(trade, currency, price_alerts).handle_trade
       end
     end
@@ -149,25 +149,25 @@ class Trade
   private
 
     def print_trade
-      puts "#{tab_for[@currency]}#{unixtime_to_hhmmss}  #{
-        colorize(BUY_OR_SELL[@operation])}  #{
-        CURRENCY_SYMBOL[@currency]} #{printed_price} #{
-        display_volume}  #{MARKET_OR_LIMIT[@type]}"
+      puts "#{tab_for.fetch(@currency)}#{unixtime_to_hhmmss}  #{
+        colorize(BUY_OR_SELL.fetch(@operation))}  #{
+        CURRENCY_SYMBOL.fetch(@currency)} #{printed_price} #{
+        display_volume}  #{MARKET_OR_LIMIT.fetch(@type)}"
     end
 
     def speak_trade
-      return unless AUDIBLE_TRADES[@currency]
-      %x(say "#{CURRENCY_WORD[@currency]}: #{BUY_OR_SELL[@operation]}, #{
-        spoken_volume} bitcoin, at #{price_to_syllables}")
+      return unless AUDIBLE_TRADES.fetch(@currency)
+      %x(say "#{CURRENCY_WORD.fetch(@currency)}: #{BUY_OR_SELL.fetch(@operation)
+                }, #{spoken_volume} bitcoin, at #{price_to_syllables}")
     end
 
     def run_price_alerts
       return unless result = price_alert_action
       action, old_threshold, new_threshold = result
-      alert = "Price alert: In #{CURRENCY_WORD[@currency]
+      alert = "Price alert: In #{CURRENCY_WORD.fetch(@currency)
               }, the price of #{@price_f} is #{action
               } your threshold of #{old_threshold.round(2)
-              } with the #{BUY_OR_SELL[@operation].strip
+              } with the #{BUY_OR_SELL.fetch(@operation).strip
               } of #{spoken_volume} bitcoin."
       puts "\r\n#{alert}\r\nThe price threshold has been updated from #{
             old_threshold} to #{new_threshold.round(3)}.\r\n\r\n"
@@ -175,13 +175,14 @@ class Trade
     end
 
     def price_alert_action(coeff = PRICE_ALERT_ADJUST_COEFF)
-      lo, hi = @alerts[@currency][:less_than], @alerts[@currency][:more_than]
+      lo = @alerts.fetch(@currency)[:less_than]
+      hi = @alerts.fetch(@currency)[:more_than]
       if lo && @price_f < lo
-        @alerts[@currency][:less_than] = [(lo / coeff), @price_f].min
-        ['below', lo, @alerts[currency][:less_than]]
+        @alerts.fetch(@currency)[:less_than] = [(lo / coeff), @price_f].min
+        ['below', lo, @alerts.fetch(currency)[:less_than]]
       elsif hi && @price_f > hi
-        @alerts[@currency][:more_than] = [(hi * coeff), @price_f].max
-        ['above', hi, @alerts[@currency][:more_than]]
+        @alerts.fetch(@currency)[:more_than] = [(hi * coeff), @price_f].max
+        ['above', hi, @alerts.fetch(@currency)[:more_than]]
       end
     end
 
@@ -204,7 +205,7 @@ class Trade
 
     def display_volume
       "#{' ' * (9 - @volume.size)}#{colorize(@volume, 1)} #{
-        CURRENCY_SYMBOL['XBT']}"
+        CURRENCY_SYMBOL.fetch('XBT')}"
     end
 
     def tab_for
@@ -218,7 +219,7 @@ class Trade
 
     def colorize(text, volume_threshold = nil)
       return text if volume_threshold && text.to_i < volume_threshold
-      "\033[#{ANSI_COLOR_CODES[TEXT_COLORS[@operation]]}m#{text}\033[0m"
+      "\033[#{ANSI_COLOR_CODES.fetch(TEXT_COLORS.fetch(@operation))}m#{text}\033[0m"
     end
 end
 
@@ -246,7 +247,7 @@ class ErrorMessage
     def format_error_message(string)
       parts = string[1..-1].split(':')
       description = "'#{parts.first} #{parts.last.downcase}'"
-      "#{error_code[string[0]]}: #{description} in #{@currency} trades query!"
+      "#{error_code.fetch(string[0])}: #{description} in #{@currency} trades query!"
     end
 
     def error_code
