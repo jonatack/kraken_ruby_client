@@ -30,10 +30,9 @@ $:.push(lib) unless $:.include?(lib)
 require 'kraken_ruby_client'
 
 # User settings ##############################################################
-
 # Wait 6 seconds per call to not exceed the Kraken API rate limit.
 # Tier 3 users can lower this to 4 seconds, and Tier 4 users to 2 seconds.
-CALL_LIMIT_TIME           = 6
+CALL_LIMIT_TIME = 6
 
 # These are your price alert settings.
 # After each alert, the threshold is adjusted outward by the greater value
@@ -41,27 +40,18 @@ CALL_LIMIT_TIME           = 6
 PRICE_ALERT_ADJUST_COEFF = 1.0004
 # Set your price alert thresholds here. Use nil when no price alert wanted.
 PRICE_ALERT_THRESHOLDS = {
-  'USD' => {
-    less_than: 616.4,
-    more_than: 621
-  },
-  'EUR' => {
-    less_than: 553.3752,
-    more_than: nil
-  }
+  'USD' => { less_than: 616.4, more_than: 621 },
+  'EUR' => { less_than: 553.3752, more_than: nil }
 }
 
 # Audible settings per currency. True for audio+text, false for text only.
 AUDIBLE_TRADES = { 'USD' => false, 'EUR' => false }
-
 ##############################################################################
+
 
 class TradeDemo
   CURRENCIES = %w(USD EUR)
-  PAIRS = {
-    'USD' => 'XXBTZUSD',
-    'EUR' => 'XXBTZEUR'
-  }
+  PAIRS = { 'USD' => 'XXBTZUSD', 'EUR' => 'XXBTZEUR' }
 
   def initialize
     @kraken = Kraken::Client.new
@@ -70,7 +60,7 @@ class TradeDemo
   def run
     loop do
       CURRENCIES.each do |currency|
-        query = @kraken.trades(PAIRS.fetch(currency), last_trade.fetch(currency))
+        query = get_trades(currency)
         errors, result = query.fetch('error'), query.fetch('result')
         if errors.any?
           ErrorMessage.new(errors, currency).display_error_messages
@@ -84,6 +74,9 @@ class TradeDemo
   end
 
   private
+    def get_trades(currency)
+      @kraken.trades(PAIRS.fetch(currency), last_trade.fetch(currency))
+    end
 
     def last_trade
       @last_trade ||= { 'USD' => nil, 'EUR' => nil }
@@ -112,35 +105,14 @@ class TradeDemo
     end
 end
 
+
 class Trade
-  CURRENCY_SYMBOL = {
-    'USD' => '$',
-    'EUR' => '€',
-    'XBT' => '฿'
-  }
-  CURRENCY_WORD = {
-    'USD' => 'dollars',
-    'EUR' => 'euros',
-    'XBT' => 'bitcoins'
-  }
-  MARKET_OR_LIMIT = {
-    'l' => 'limit',
-    'm' => 'market'
-  }
-  BUY_OR_SELL = {
-    'b' => 'buy ',
-    's' => 'sell'
-  }
-  TEXT_COLORS = {
-    'b' => :green,
-    's' => :red
-  }
-  ANSI_COLOR_CODES = {
-    default: 38,
-    black:   30,
-    red:     31,
-    green:   32
-  }
+  CURRENCY_SYMBOL = { 'USD' => '$', 'EUR' => '€', 'XBT' => '฿' }
+  CURRENCY_WORD = { 'USD' => 'dollars', 'EUR' => 'euros', 'XBT' => 'bitcoins' }
+  MARKET_OR_LIMIT = { 'l' => 'limit', 'm' => 'market' }
+  BUY_OR_SELL = { 'b' => 'buy ', 's' => 'sell' }
+  TEXT_COLORS = { 'b' => :green, 's' => :red   }
+  ANSI_COLOR_CODES = { default: 38, black: 30, red: 31, green: 32 }
 
   def initialize(trade, currency, alerts)
     @price, volume, @unixtime, @operation, @type, @misc = trade
@@ -155,7 +127,6 @@ class Trade
   end
 
   private
-
     def print_trade
       puts "#{tab_for.fetch(@currency)}#{unixtime_to_hhmmss}  #{
         colorize(BUY_OR_SELL.fetch(@operation))}  #{
@@ -227,20 +198,18 @@ class Trade
 
     def colorize(text, volume_threshold = nil)
       return text if volume_threshold && text.to_i < volume_threshold
-      "\033[#{ANSI_COLOR_CODES.fetch(TEXT_COLORS.fetch(@operation))}m#{text}\033[0m"
+      "\033[#{ANSI_COLOR_CODES.fetch(TEXT_COLORS.fetch(@operation))}m#{text
+      }\033[0m"
     end
 end
+
 
 class ErrorMessage
   # The Kraken API returns an array of error message strings
   # in the following format:
-  #
   # <char-severity code><str-error category>:<str-error type>[:<str-extra info>]
-  #
   # Example: 'EAPI:Rate limit exceeded'
-  #
   # The severity code can be E for error or W for warning.
-  #
   def initialize(errors_array, currency)
     @errors_array, @currency = errors_array, currency
   end
@@ -255,13 +224,15 @@ class ErrorMessage
     def format_error_message(string)
       parts = string[1..-1].split(':')
       description = "'#{parts.first} #{parts.last.downcase}'"
-      "#{error_code.fetch(string[0])}: #{description} in #{@currency} trades query!"
+      "#{error_code.fetch(string[0])}: #{description} in #{@currency
+      } trades query!"
     end
 
     def error_code
       { 'E' => 'Error', 'W' => 'Warning' }.freeze
     end
 end
+
 
 k = TradeDemo.new
 k.run
