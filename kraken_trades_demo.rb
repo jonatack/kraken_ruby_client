@@ -63,7 +63,7 @@ class TradeDemo
         query = get_trades(currency)
         errors, result = query.fetch('error'), query.fetch('result')
         if errors.any?
-          ErrorMessage.new(errors, currency).display_error_messages
+          DisplayErrorMessages.new(errors, currency).call
         elsif (trades = result.fetch(PAIRS.fetch(currency))).any?
           output_trades(trades, currency)
           memoize_last_trade_id(result.fetch('last'), currency)
@@ -88,7 +88,7 @@ class TradeDemo
 
     def output_trades(trades, currency)
       trades_to_display(trades, currency).each do |trade|
-        Trade.new(trade, currency, price_alerts).handle_trade
+        OutputTradeInfo.new(trade, currency, price_alerts).call
       end
     end
 
@@ -106,7 +106,7 @@ class TradeDemo
 end
 
 
-class Trade
+class OutputTradeInfo
   CURRENCY_SYMBOL = { 'USD' => '$', 'EUR' => '€', 'XBT' => '฿' }
   CURRENCY_WORD = { 'USD' => 'dollars', 'EUR' => 'euros', 'XBT' => 'bitcoins' }
   MARKET_OR_LIMIT = { 'l' => 'limit', 'm' => 'market' }
@@ -120,7 +120,7 @@ class Trade
     @currency, @alerts = currency, alerts
   end
 
-  def handle_trade
+  def call
     print_trade
     speak_trade
     run_price_alerts
@@ -204,7 +204,7 @@ class Trade
 end
 
 
-class ErrorMessage
+class DisplayErrorMessages
   # The Kraken API returns an array of error message strings
   # in the following format:
   # <char-severity code><str-error category>:<str-error type>[:<str-extra info>]
@@ -214,7 +214,7 @@ class ErrorMessage
     @errors_array, @currency = errors_array, currency
   end
 
-  def display_error_messages
+  def call
     @errors_array.each do |message|
       puts format_error_message(message)
     end
