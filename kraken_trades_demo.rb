@@ -118,6 +118,8 @@ class OutputTradeInfo
     @price, volume, @unixtime, @operation, @type, @misc = trade
     @price_f, @volume = @price.to_f, volume[0..-5]
     @currency, @alerts = currency, alerts
+    @lower_alert_threshold = alerts.fetch(@currency).fetch(:less_than)
+    @upper_alert_threshold = alerts.fetch(@currency).fetch(:more_than)
   end
 
   def call
@@ -152,24 +154,22 @@ class OutputTradeInfo
       %x(say "#{alert}")
     end
 
-    def price_alert_action(coeff = PRICE_ALERT_ADJUST_COEFF)
-      lower_threshold = @alerts.fetch(@currency)[:less_than]
-      upper_threshold = @alerts.fetch(@currency)[:more_than]
-      if lower_threshold && @price_f < lower_threshold
-        update_lower_price_alert(lower_threshold, coeff)
-        ['below', lower_threshold, @alerts.fetch(@currency)[:less_than]]
-      elsif upper_threshold && @price_f > upper_threshold
-        update_upper_price_alert(upper_threshold, coeff)
-        ['above', upper_threshold, @alerts.fetch(@currency)[:more_than]]
+    def price_alert_action
+      if @lower_alert_threshold && @price_f < @lower_alert_threshold
+        ['below', @lower_alert_threshold, update_lower_price_alert]
+      elsif @upper_alert_threshold && @price_f > @upper_alert_threshold
+        ['above', @upper_alert_threshold, update_upper_price_alert]
       end
     end
 
-    def update_lower_price_alert(threshold, coeff)
-      @alerts.fetch(@currency)[:less_than] = [(threshold / coeff), @price_f].min
+    def update_lower_price_alert
+      @alerts.fetch(@currency)[:less_than] =
+        [(@lower_alert_threshold / PRICE_ALERT_ADJUST_COEFF), @price_f].min
     end
 
-    def update_upper_price_alert(threshold, coeff)
-      @alerts.fetch(@currency)[:more_than] = [(threshold * coeff), @price_f].max
+    def update_upper_price_alert
+      @alerts.fetch(@currency)[:more_than] =
+        [(@upper_alert_threshold * PRICE_ALERT_ADJUST_COEFF), @price_f].max
     end
 
     def printed_price
