@@ -128,32 +128,32 @@ class OutputTradeInfo
     run_price_alerts
   end
 
+  def print_trade
+    puts "#{tab_for.fetch(@currency)}#{unixtime_to_hhmmss}  #{
+      colorize(BUY_OR_SELL.fetch(@operation))}  #{
+      CURRENCY_SYMBOL.fetch(@currency)} #{printed_price} #{
+      display_volume}  #{MARKET_OR_LIMIT.fetch(@type)}"
+  end
+
+  def speak_trade
+    return unless AUDIBLE_TRADES.fetch(@currency)
+    %x(say "#{CURRENCY_WORD.fetch(@currency)}: #{BUY_OR_SELL.fetch(@operation)
+              }, #{spoken_volume} bitcoin, at #{price_to_syllables}")
+  end
+
+  def run_price_alerts
+    return unless result = price_alert_action
+    action, old_threshold, new_threshold = result
+    alert = "In #{CURRENCY_WORD.fetch(@currency)}, the price of #{@price_f
+            } is #{action} your threshold of #{old_threshold.round(2)
+            } with the #{BUY_OR_SELL.fetch(@operation).strip
+            } of #{spoken_volume} bitcoin."
+    puts "\r\n#{alert}\r\nThe price threshold has been updated from #{
+          old_threshold} to #{new_threshold.round(3)}.\r\n\r\n"
+    %x(say "#{alert}")
+  end
+
   private
-    def print_trade
-      puts "#{tab_for.fetch(@currency)}#{unixtime_to_hhmmss}  #{
-        colorize(BUY_OR_SELL.fetch(@operation))}  #{
-        CURRENCY_SYMBOL.fetch(@currency)} #{printed_price} #{
-        display_volume}  #{MARKET_OR_LIMIT.fetch(@type)}"
-    end
-
-    def speak_trade
-      return unless AUDIBLE_TRADES.fetch(@currency)
-      %x(say "#{CURRENCY_WORD.fetch(@currency)}: #{BUY_OR_SELL.fetch(@operation)
-                }, #{spoken_volume} bitcoin, at #{price_to_syllables}")
-    end
-
-    def run_price_alerts
-      return unless result = price_alert_action
-      action, old_threshold, new_threshold = result
-      alert = "In #{CURRENCY_WORD.fetch(@currency)}, the price of #{@price_f
-              } is #{action} your threshold of #{old_threshold.round(2)
-              } with the #{BUY_OR_SELL.fetch(@operation).strip
-              } of #{spoken_volume} bitcoin."
-      puts "\r\n#{alert}\r\nThe price threshold has been updated from #{
-            old_threshold} to #{new_threshold.round(3)}.\r\n\r\n"
-      %x(say "#{alert}")
-    end
-
     def price_alert_action
       if @lower_alert_threshold && @price_f < @lower_alert_threshold
         ['below', @lower_alert_threshold, update_lower_price_alert!]
