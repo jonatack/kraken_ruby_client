@@ -158,7 +158,7 @@ class OutputTradeInfo
       hi = @alerts.fetch(@currency)[:more_than]
       if lo && @price_f < lo
         @alerts.fetch(@currency)[:less_than] = [(lo / coeff), @price_f].min
-        ['below', lo, @alerts.fetch(currency)[:less_than]]
+        ['below', lo, @alerts.fetch(@currency)[:less_than]]
       elsif hi && @price_f > hi
         @alerts.fetch(@currency)[:more_than] = [(hi * coeff), @price_f].max
         ['above', hi, @alerts.fetch(@currency)[:more_than]]
