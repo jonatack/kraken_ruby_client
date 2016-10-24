@@ -143,9 +143,8 @@ class OutputTradeInfo
     def run_price_alerts
       return unless result = price_alert_action
       action, old_threshold, new_threshold = result
-      alert = "Price alert: In #{CURRENCY_WORD.fetch(@currency)
-              }, the price of #{@price_f} is #{action
-              } your threshold of #{old_threshold.round(2)
+      alert = "In #{CURRENCY_WORD.fetch(@currency)}, the price of #{@price_f
+              } is #{action} your threshold of #{old_threshold.round(2)
               } with the #{BUY_OR_SELL.fetch(@operation).strip
               } of #{spoken_volume} bitcoin."
       puts "\r\n#{alert}\r\nThe price threshold has been updated from #{
