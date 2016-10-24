@@ -156,18 +156,18 @@ class OutputTradeInfo
 
     def price_alert_action
       if @lower_alert_threshold && @price_f < @lower_alert_threshold
-        ['below', @lower_alert_threshold, update_lower_price_alert]
+        ['below', @lower_alert_threshold, update_lower_price_alert!]
       elsif @upper_alert_threshold && @price_f > @upper_alert_threshold
-        ['above', @upper_alert_threshold, update_upper_price_alert]
+        ['above', @upper_alert_threshold, update_upper_price_alert!]
       end
     end
 
-    def update_lower_price_alert
+    def update_lower_price_alert!
       @alerts.fetch(@currency)[:less_than] =
         [(@lower_alert_threshold / PRICE_ALERT_ADJUST_COEFF), @price_f].min
     end
 
-    def update_upper_price_alert
+    def update_upper_price_alert!
       @alerts.fetch(@currency)[:more_than] =
         [(@upper_alert_threshold * PRICE_ALERT_ADJUST_COEFF), @price_f].max
     end
