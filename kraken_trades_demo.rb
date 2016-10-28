@@ -60,13 +60,17 @@ class TradeDemo
   def run
     loop do
       CURRENCIES.each do |currency|
-        query = get_trades(currency)
-        errors, result = query.fetch('error'), query.fetch('result')
-        if errors.any?
-          DisplayErrorMessages.new(errors, currency).call
-        elsif (trades = result.fetch(PAIRS.fetch(currency))).any?
-          output_trades(trades, currency)
-          memoize_last_trade_id(result.fetch('last'), currency)
+        begin
+          query = get_trades(currency)
+          errors, result = query.fetch('error'), query.fetch('result')
+          if errors.any?
+            DisplayErrorMessages.new(errors, currency).call
+          elsif (trades = result.fetch(PAIRS.fetch(currency))).any?
+            output_trades(trades, currency)
+            memoize_last_trade_id(result.fetch('last'), currency)
+          end
+        rescue
+          DisplayErrorMessages.new.host_resolution_error
         end
         sleep CALL_LIMIT_TIME
       end
@@ -217,7 +221,7 @@ class DisplayErrorMessages
   # <char-severity code><str-error category>:<str-error type>[:<str-extra info>]
   # Example: 'EAPI:Rate limit exceeded'
   # The severity code can be E for error or W for warning.
-  def initialize(errors_array, currency)
+  def initialize(errors_array = nil, currency = nil)
     @errors_array, @currency = errors_array, currency
   end
 
@@ -225,6 +229,11 @@ class DisplayErrorMessages
     @errors_array.each do |message|
       puts format_error_message(message)
     end
+  end
+
+  def host_resolution_error
+    puts "\r\nCouldn't resolve host name (Curl::Err::HostResolutionError)." \
+         "\r\n\r\n"
   end
 
   private
