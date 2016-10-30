@@ -148,12 +148,12 @@ class OutputTradeInfo
   def run_price_alerts
     return unless result = price_alert_action
     action, old_threshold, new_threshold = result
+    old_threshold = cents_rounding_for(old_threshold)
     alert = "In #{CURRENCY_WORD.fetch(@currency)}, the price of #{@price_f
-            } is #{action} your threshold of #{old_threshold.round(2)
-            } with the #{BUY_OR_SELL.fetch(@operation).strip
-            } of #{spoken_volume} bitcoin."
+            } is #{action} your threshold of #{old_threshold} with the #{
+            BUY_OR_SELL.fetch(@operation).strip} of #{spoken_volume} bitcoin."
     puts "\r\n#{alert}\r\nThe price threshold has been updated from #{
-          old_threshold} to #{new_threshold.round(3)}.\r\n\r\n"
+          old_threshold} to #{cents_rounding_for(new_threshold)}.\r\n\r\n"
     %x(say "#{alert}")
   end
 
@@ -174,6 +174,10 @@ class OutputTradeInfo
     def update_upper_price_alert!
       @alerts.fetch(@currency)[:more_than] =
         [(@upper_alert_threshold * PRICE_ALERT_ADJUST_COEFF), @price_f].max
+    end
+
+    def cents_rounding_for(price)
+      price.round(2)
     end
 
     def printed_price
