@@ -44,8 +44,11 @@ PRICE_ALERT_THRESHOLDS = {
   'EUR' => { less_than: 553.3752, more_than: nil }
 }
 
+# Price alerts per currency. True for yes, false for no.
+PRICE_ALERTS    = { 'USD' => false, 'EUR' => true }
+
 # Audible settings per currency. True for audio+text, false for text only.
-AUDIBLE_TRADES = { 'USD' => false, 'EUR' => false }
+AUDIBLE_TRADES  = { 'USD' => false, 'EUR' => false }
 ##############################################################################
 
 
@@ -146,7 +149,7 @@ class OutputTradeInfo
   end
 
   def run_price_alerts
-    return unless result = price_alert_action
+    return unless PRICE_ALERTS.fetch(@currency) && result = price_alert_action
     action, old_threshold, new_threshold = result
     old_threshold = cents_rounding_for(old_threshold)
     alert = "In #{CURRENCY_WORD.fetch(@currency)}, the price of #{@price_f
