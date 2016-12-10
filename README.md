@@ -30,6 +30,17 @@ Currently developed with Ruby 2.4.0. Written for Ruby 2.3 and up.
 
 ## Getting started
 
+Add to your Gemfile
+```
+gem 'kraken_ruby_client', github: 'jonatack/kraken_ruby_client'
+```
+
+Install
+
+```
+bundle isntall
+```
+
 ## Usage
 
 ## Contributions
