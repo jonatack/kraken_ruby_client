@@ -41,6 +41,12 @@ Install
 bundle isntall
 ```
 
+Don't forget to append bundle exec
+
+```
+bundle exec ruby script.rb
+```
+
 ## Usage
 
 ## Contributions
