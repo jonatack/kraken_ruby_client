@@ -25,9 +25,22 @@ to avoid the [pain and performance costs](http://www.schneems.com/2014/12/15/has
 
 Currently developed with Ruby 2.7. Compatible with Ruby 2.4 and up.
 
+
 # Getting started
 
 Clone the repository, and in the local directory, run `gem install curb ; bundle install`.
+
+Or add it to your Gemfile
+
+```
+gem 'kraken_ruby_client', github: 'jonatack/kraken_ruby_client'
+```
+
+and install with
+
+```
+bundle install
+```
 
 Launch the interactive Ruby shell from the terminal with
 
