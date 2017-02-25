@@ -57,8 +57,8 @@ class PublicApiTest < Minitest::Test
   def test_get_assets
     query = @query.assets
     assets = %w(
-      KFEE XDAO XETC XETH XLTC XNMC XREP XXBT XXDG
-      XXLM XXRP XXVN ZCAD ZEUR ZGBP ZJPY ZKRW ZUSD
+      KFEE XDAO XETC XETH XICN XLTC XNMC XREP XXBT XXDG
+      XXLM XXMR XXRP XXVN XZEC ZCAD ZEUR ZGBP ZJPY ZKRW ZUSD
       )
     assert_equal %w(error result), query.keys
     assert_empty query['error']
