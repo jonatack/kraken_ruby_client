@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/taf2/curb.git
+  revision: fd02907e23cf8b7ffc1414ea6f6eaf4566c8c0b9
+  specs:
+    curb (0.9.3)
+
 PATH
   remote: .
   specs:
@@ -7,19 +13,29 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    curb (0.9.3)
-    minitest (5.9.0)
+    ansi (1.5.0)
+    builder (3.2.3)
+    color_pound_spec_reporter (0.0.6)
+    minitest (5.10.1)
+    minitest-reporters (1.1.14)
+      ansi
+      builder
+      minitest (>= 5.0)
+      ruby-progressbar
     rake (11.3.0)
+    ruby-progressbar (1.8.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   bundler (~> 1.13)
-  curb
+  color_pound_spec_reporter
+  curb!
   kraken_ruby_client!
   minitest
+  minitest-reporters
   rake (~> 11.3)
 
 BUNDLED WITH
-   1.13.1
+   1.14.5
