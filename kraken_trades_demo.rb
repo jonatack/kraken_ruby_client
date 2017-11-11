@@ -32,16 +32,16 @@ require 'kraken_ruby_client'
 # User settings ##############################################################
 # Wait 6 seconds per call to not exceed the Kraken API rate limit.
 # Tier 3 users can lower this to 4 seconds, and Tier 4 users to 2 seconds.
-CALL_LIMIT_TIME = 6
+CALL_LIMIT_TIME = 4
 
 # These are your price alert settings.
 # After each alert, the threshold is adjusted outward by the greater value
 # between the latest price, or the threshold multiplied by this coefficent:
-PRICE_ALERT_ADJUST_COEFF = 1.0004
+PRICE_ALERT_ADJUST_COEFF = 1.001
 # Set your price alert thresholds here. Use nil when no price alert wanted.
 PRICE_ALERT_THRESHOLDS = {
-  'USD' => { less_than: 616.4, more_than: 621 },
-  'EUR' => { less_than: 553.3752, more_than: nil }
+  'USD' => { less_than: nil, more_than: nil },
+  'EUR' => { less_than: 5200, more_than: 5225 }
 }
 
 # Price alerts per currency. True for yes, false for no.
