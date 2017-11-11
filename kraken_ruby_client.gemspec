@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   EOF
 
   s.add_dependency 'curb', '~> 0.9'
-  s.add_development_dependency 'bundler', '~> 1.13'
-  s.add_development_dependency 'rake', '~> 11.3'
-  s.add_development_dependency 'minitest', '~> 5.9'
+  s.add_development_dependency 'bundler', '~> 1.16'
+  s.add_development_dependency 'rake', '~> 12.2'
+  s.add_development_dependency 'minitest', '~> 5.10'
 end
