@@ -21,17 +21,17 @@
 #++
 require_relative 'test_helper'
 
-# To run all tests: rake or rake test
+# To run all tests: `bundle exec rake` or `bundle exec rake test`
 #
 # To run one test file:
-#   ruby -Ilib:test test/private_api_test.rb
+#  `ruby -Ilib:test test/private_api_test.rb`
 #   or
-#   rake test TEST=test/public_api_test.rb
+#  `rake test TEST=test/public_api_test.rb`
 #
 # To run an individual test in a test file:
-#   ruby -Ilib:test test/public_api_test.rb -n test_get_server_time
+#  `ruby -Ilib:test test/public_api_test.rb -n test_get_server_time`
 #   or
-#   rake test TEST=test/public_api_test.rb TESTOPTS=--name=test_get_server_time
+#  `rake test TEST=test/public_api_test.rb TESTOPTS=--name=test_get_server_time`
 
 class PrivateApiTest < Minitest::Test
   #
