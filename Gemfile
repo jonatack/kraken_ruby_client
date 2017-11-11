@@ -25,7 +25,7 @@ gemspec
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}.git" }
 
 gem 'curb', github: 'taf2/curb'
+gem 'rake'
 gem 'minitest'
-
 gem 'minitest-reporters'
 gem 'color_pound_spec_reporter'
