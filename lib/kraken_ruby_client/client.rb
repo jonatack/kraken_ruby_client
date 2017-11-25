@@ -28,11 +28,13 @@ require 'base64'
 require 'securerandom'
 require 'curb'
 require 'json'
+require 'kraken_ruby_client/http_errors'
 
 module Kraken
   class Client
     KRAKEN_API_URL     = 'https://api.kraken.com'
     KRAKEN_API_VERSION = 0
+    HTTP_SUCCESS       = 200
 
     def initialize(api_key = nil, api_secret = nil, options = {})
       @api_key, @api_secret = api_key, api_secret
@@ -173,7 +175,7 @@ module Kraken
           else
             Curl.get(url)
           end
-        JSON.parse(http.body)
+        parse_response(http)
       end
 
       # HTTP POST request for private API queries involving user credentials.
@@ -187,8 +189,19 @@ module Kraken
               "#{@api_private_path}#{method}#{
               OpenSSL::Digest.new('sha256', "#{nonce}#{params}").digest}"
             )
+          }
         end
-        JSON.parse(http.body)
+        parse_response(http)
+      end
+
+      def parse_response(http)
+        if http.response_code == HTTP_SUCCESS
+          JSON.parse(http.body)
+        else
+          http.status
+        end
+      rescue *KrakenRubyClient::HTTP_ERRORS => e
+        "Error #{e.inspect}"
       end
 
       # Kraken requires an always-increasing unsigned 64-bit integer nonce
