@@ -113,6 +113,7 @@ module Kraken
     #     +fee_volume_currency+ = volume discount currency
     #     +margin_call+         = margin call level
     #     +margin_stop+         = stop-out/liquidation margin level
+    #
     def asset_pairs(pairs = nil)
       if pairs
         get_public 'AssetPairs', { 'pair': pairs }
@@ -145,6 +146,55 @@ module Kraken
     def spread(pair = nil, opts = {})
       opts['pair'] = pair
       get_public 'Spread', opts
+    end
+
+    # Create a new order (POST)
+    # URL: https://api.kraken.com/0/private/AddOrder
+    # Input:
+    #   +pair+      required asset pair, example: XBTEUR
+    #   +type+      required operation type, possible values: buy/sell
+    #   +volume+    required order size
+    #   +ordertype+ required, possible values:
+    #     market
+    #     limit                   price = limit price
+    #     stop-loss               price = stop loss price
+    #     take-profit             price = take profit price
+    #     stop-loss-profit        price = stop loss price,
+    #                             price2 = take profit price)
+    #     stop-loss-profit-limit  price = stop loss price,
+    #                             price2 = take profit price
+    #     stop-loss-limit         price = stop loss trigger price,
+    #                             price2 = triggered limit price
+    #     take-profit-limit       price = take profit trigger price,
+    #                             price2 = triggered limit price
+    #     trailing-stop           price = trailing stop offset
+    #     trailing-stop-limit     price = trailing stop offset,
+    #                             price2 = triggered limit offset
+    #     stop-loss-and-limit     price = stop loss price
+    #                             price2 = limit price
+    #     settle-position
+    #   +price+     price (optional, dependant on ordertype)
+    #   +price2+    secondary price (optional, dependent on ordertype)
+    #   +leverage+  amount of leverage desired (optional, default = none)
+    #
+    # Examples:
+    # add_order(pair: 'XBTEUR', type: 'sell', ordertype: 'market', volume: 1.5)
+    # add_order(pair: 'XBTUSD', type: 'buy', ordertype: 'limit', volume: 1, price: 500)
+    # add_order(pair: 'DASHEUR', type: 'buy', ordertype: 'market', volume: 1.5, leverage: 2)
+    #
+    def add_order(opts = {})
+      missing_args = add_order_required_args - opts.keys.map(&:to_s)
+      raise ArgumentError, add_order_err_msg(missing_args) if missing_args.any?
+
+      post_private 'AddOrder', opts
+    end
+
+    def add_order_required_args
+      %w(pair type volume ordertype).freeze
+    end
+
+    def add_order_err_msg(missing_args)
+      'the following required arguments are missing: ' + missing_args.join(', ')
     end
 
     def balance
