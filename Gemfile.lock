@@ -21,19 +21,19 @@ GEM
       minitest-reporters (>= 0.14.24)
       rake
     minitest (5.10.3)
-    minitest-reporters (1.1.18)
+    minitest-reporters (1.1.19)
       ansi
       builder
       minitest (>= 5.0)
       ruby-progressbar
-    rake (12.2.1)
+    rake (12.3.0)
     ruby-progressbar (1.9.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.13)
+  bundler (~> 1.16)
   color_pound_spec_reporter
   curb!
   kraken_ruby_client!
