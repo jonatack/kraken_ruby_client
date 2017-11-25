@@ -197,6 +197,12 @@ module Kraken
       'the following required arguments are missing: ' + missing_args.join(', ')
     end
 
+    # Cancel order having txn id
+    #
+    def cancel_order(txid)
+      post_private 'CancelOrder', { txid: txid }
+    end
+
     def balance
       post_private 'Balance'
     end
