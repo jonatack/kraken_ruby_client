@@ -55,14 +55,26 @@ class PublicApiTest < Minitest::Test
   end
 
   def test_get_assets
-    query = @query.assets
     assets = %w(
       BCH DASH EOS GNO KFEE USDT XDAO XETC XETH XICN XLTC XMLN XNMC XREP XXBT
       XXDG XXLM XXMR XXRP XXVN XZEC ZCAD ZEUR ZGBP ZJPY ZKRW ZUSD
     )
+
+    query = @query.assets
+
+    assert_instance_of Hash, query
     assert_equal %w(error result), query.keys
-    assert_empty query['error']
-    assert_equal assets, query['result'].keys
+    assert_empty query.fetch('error')
+
+    result = query.fetch('result')
+    assert_instance_of Hash, result
+    assert_equal assets, result.keys
+    assert_instance_of Array, result.first
+
+    asset_name, asset_values = result.first
+    assert_instance_of String, asset_name
+    assert_instance_of Hash, asset_values
+    assert_equal %w(aclass altname decimals display_decimals), asset_values.keys
 
     assert_get_exchange_currency_info_for('ZUSD', 'USD',  4, 2)
     assert_get_exchange_currency_info_for('ZEUR', 'EUR',  4, 2)
@@ -71,11 +83,21 @@ class PublicApiTest < Minitest::Test
 
   def test_get_trades
     pairs = %w(XXBTZEUR XXBTZUSD XETHZEUR XETHZUSD)
+
     pairs.each do |pair|
       query = @query.trades(pair)
+
+      assert_instance_of Hash, query
       assert_equal %w(error result), query.keys
-      assert_empty query['error']
-      assert_equal [pair, 'last'], query['result'].keys
+      assert_empty query.fetch('error')
+
+      result = query.fetch('result')
+      assert_instance_of Hash, result
+      assert_equal [pair, 'last'], result.keys
+      assert_instance_of Array, result.first
+      assert_instance_of String, result.first.first
+      assert_instance_of Array, result.first.last
+      assert_equal pair, result.first.first
     end
   end
 
