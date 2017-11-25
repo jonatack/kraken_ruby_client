@@ -223,30 +223,27 @@ module Kraken
 
       # HTTP GET request for public API queries.
       #
-      def get_public(method, opts = nil)
-        url = @api_public_url + method
-        http =
-          if opts
-            Curl.get(url, opts)
-          else
-            Curl.get(url)
-          end
+      def get_public(method, opts = {})
+        url = "#{@api_public_url}#{method}"
+        http = Curl.get(url, opts)
+
         parse_response(http)
       end
 
       # HTTP POST request for private API queries involving user credentials.
       #
       def post_private(method, opts = {})
+        url = "#{@api_private_url}#{method}"
         nonce = opts['nonce'] = generate_nonce
         params = opts.map { |param| param.join('=') }.join('&')
-        http = Curl.post("#{@api_private_url}#{method}", params) do |request|
-          request.headers['API-Key']  = @api_key
-          request.headers['API-Sign'] = authenticate(
-              "#{@api_private_path}#{method}#{
-              OpenSSL::Digest.new('sha256', "#{nonce}#{params}").digest}"
-            )
+
+        http = Curl.post(url, params) do |request|
+          request.headers = {
+            'API-Key'  => @api_key,
+            'API-Sign' => authenticate(auth_url(method, nonce, params))
           }
         end
+
         parse_response(http)
       end
 
@@ -270,6 +267,11 @@ module Kraken
         higher_48_bits = (Time.now.to_f * 10_000).to_i << 16
         lower_16_bits  = SecureRandom.random_number(2 ** 16) & 0xffff
         higher_48_bits | lower_16_bits
+      end
+
+      def auth_url(method, nonce, params)
+        @api_private_path + method +
+          OpenSSL::Digest.new('sha256', "#{nonce}#{params}").digest
       end
 
       def authenticate(url)
