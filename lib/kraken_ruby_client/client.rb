@@ -38,8 +38,8 @@ module Kraken
 
     def initialize(api_key = nil, api_secret = nil, options = {})
       @api_key, @api_secret = api_key, api_secret
-      base_uri              = options[:base_uri]    ||= KRAKEN_API_URL
-      api_version_path      = "/#{options[:version] ||= KRAKEN_API_VERSION}"
+      base_uri              = options[:base_uri] || KRAKEN_API_URL
+      api_version_path      = "/#{options[:version] || KRAKEN_API_VERSION}"
       @api_public_url       = base_uri + api_version_path + '/public/'
       @api_private_path     =            api_version_path + '/private/'
       @api_private_url      = base_uri + @api_private_path
