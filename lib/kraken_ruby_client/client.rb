@@ -22,7 +22,7 @@
 #++
 
 # irb -I lib
-# require 'kraken_ruby_client'; k = Kraken::Client.new
+# require 'kraken_ruby_client'; client = Kraken::Client.new
 
 require 'base64'
 require 'securerandom'
@@ -178,9 +178,23 @@ module Kraken
     #   +leverage+  amount of leverage desired (optional, default = none)
     #
     # Examples:
-    # add_order(pair: 'XBTEUR', type: 'sell', ordertype: 'market', volume: 1.5)
-    # add_order(pair: 'XBTUSD', type: 'buy', ordertype: 'limit', volume: 1, price: 500)
-    # add_order(pair: 'DASHEUR', type: 'buy', ordertype: 'market', volume: 1.5, leverage: 2)
+    #
+    # require 'kraken_ruby_client'; client = Kraken::Client.new
+    #
+    # Market buy order:
+    #
+    #   client.add_order(pair: 'XBTEUR', type: 'buy', ordertype: 'market',
+    #     volume: 0.5)
+    #
+    # Limit buy order:
+    #
+    #   client.add_order(pair: 'XBTUSD', type: 'buy', ordertype: 'limit',
+    #     volume: 1.25, price: 5000)
+    #
+    # Margin sell order (short):
+    #
+    #   client.add_order(pair: 'DASHEUR', type: 'sell', ordertype: 'market',
+    #     volume: 1, leverage: 2)
     #
     def add_order(opts = {})
       missing_args = add_order_required_args - opts.keys.map(&:to_s)
@@ -211,10 +225,50 @@ module Kraken
       post_private 'TradeBalance', opts
     end
 
+    # Fetch open orders (POST)
+    # URL: https://api.kraken.com/0/private/OpenOrders
+    # Input:
+    #   +trades+    predicate to include trades (optional, default `false`)
+    #   +userref+   restrict results to given user reference id (optional)
+    #
+    # Examples:
+    #
+    # require 'kraken_ruby_client'; client = Kraken::Client.new
+    #
+    # Fetch first open order:
+    #
+    #   r = client.open_orders ; r.is_a?(String) ? r : r['result']['open'][0]
+    #
+    # Fetch open orders count:
+    #
+    #   r = client.open_orders ; r.is_a?(String) ? r : r['result']['open'].size
+    #
+    # Fetch open orders for a pair:
+    #
+    #   client.open_orders['result']['open']
+    #     .select { |_, v| v['descr']['pair'] == 'ETHEUR' }
+    #
     def open_orders(opts = {})
       post_private 'OpenOrders', opts
     end
 
+    # Fetch closed orders (POST)
+    # URL: https://api.kraken.com/0/private/ClosedOrders
+    # Input:
+    #   +trades+    predicate to include trades (optional, default `false`)
+    #   +userref+   restrict results to given user reference id (optional)
+    #   +start+     start UNIX timestamp or order txid (optional. exclusive)
+    #   +end+       end UNIX timestamp or order txid (optional. inclusive)
+    #   +ofs+       result offset
+    #   +closetime+ which time to use, optional: open, close, or both (default)
+    # Note: Times given by order txids are more accurate than UNIX timestamps.
+    #       If an order txid is given, the order's open time is used.
+    #
+    # Example to fetch last closed order:
+    #
+    # require 'kraken_ruby_client'; client = Kraken::Client.new
+    # r = client.closed_orders ; r.is_a?(String) ? r : r['result']['closed'][0]
+    #
     def closed_orders(opts = {})
       post_private 'ClosedOrders', opts
     end
