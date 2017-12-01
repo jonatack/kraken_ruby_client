@@ -27,7 +27,58 @@ Currently developed with Ruby 2.4.0. Written for Ruby 2.3 and up.
 
 ## Getting started
 
+On the command line, launch the interactive Ruby shell:
+```
+$ irb -I lib
+```
+
+Examples of using the public API:
+```ruby
+require 'kraken_ruby_client'; client = Kraken::Client.new
+
+client.server_time
+client.assets
+client.asset_pairs
+client.ticker('XBTEUR')
+client.ohlc('XBTUSD')
+client.order_book('ETHEUR')
+client.trades('DASHXBT')
+client.spread('XMREUR')
+```
+
 ## Usage
+
+Enter the interactive Ruby shell:
+```
+$ irb -I lib
+```
+
+To use the private API to access your account:
+```ruby
+require 'kraken_ruby_client'
+
+client = Kraken::Client.new(api_key: YOUR_KEY, api_secret: YOUR_SECRET)
+
+client.closed_orders
+
+orders = client.open_orders
+orders['result']['open'].select { |_, v| v['descr']['pair'] == 'ETCUSD' }
+```
+
+Place a market buy order:
+```ruby
+client.add_order(pair: 'XBTEUR', type: 'buy', ordertype: 'market', volume: 0.5)
+```
+
+Place a margin sell order (short):
+```ruby
+client.add_order(pair: 'DASHEUR', type: 'sell', ordertype: 'market', volume: 1, leverage: 2)
+```
+
+Cancel an order:
+```ruby
+client.cancel_order('TRANSACTION_ID')
+```
 
 ## Running the test suite
 
