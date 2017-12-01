@@ -180,7 +180,8 @@ module Kraken
     #
     # Examples:
     #
-    # require 'kraken_ruby_client'; client = Kraken::Client.new
+    # require 'kraken_ruby_client'
+    # client = Kraken::Client.new(api_key: YOUR_KEY, api_secret: YOUR_SECRET)
     #
     # Market buy order:
     #
@@ -234,7 +235,8 @@ module Kraken
     #
     # Examples:
     #
-    # require 'kraken_ruby_client'; client = Kraken::Client.new
+    # require 'kraken_ruby_client'
+    # client = Kraken::Client.new(api_key: YOUR_KEY, api_secret: YOUR_SECRET)
     #
     # Fetch first open order:
     #
@@ -267,7 +269,8 @@ module Kraken
     #
     # Example to fetch last closed order:
     #
-    # require 'kraken_ruby_client'; client = Kraken::Client.new
+    # require 'kraken_ruby_client'
+    # client = Kraken::Client.new(api_key: YOUR_KEY, api_secret: YOUR_SECRET)
     # r = client.closed_orders ; r.is_a?(String) ? r : r['result']['closed'][0]
     #
     def closed_orders(opts = {})
