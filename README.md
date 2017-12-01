@@ -18,10 +18,7 @@ Ruby bindings for [libcurl](https://github.com/curl/curl), a fully-featured
 client-side URL transfer library written in C.
 
 - does not use [Hashie](https://github.com/intridea/hashie),
-to avoid the [pain and performance costs]
-(http://www.schneems.com/2014/12/15/hashie-considered-harmful.html) of
-[subclassing Hash]
-(http://tenderlovemaking.com/2014/06/02/yagni-methods-are-killing-me.html).
+to avoid the [pain and performance costs](http://www.schneems.com/2014/12/15/hashie-considered-harmful.html) of [subclassing Hash](http://tenderlovemaking.com/2014/06/02/yagni-methods-are-killing-me.html).
 
 - uses fast, straightforward, assertions-style
 [Minitest](https://github.com/seattlerb/minitest) for its test suite.
