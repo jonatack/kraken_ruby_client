@@ -237,19 +237,21 @@ module Kraken
     #
     # require 'kraken_ruby_client'
     # client = Kraken::Client.new(api_key: YOUR_KEY, api_secret: YOUR_SECRET)
+    # open_orders = client.open_orders.dig('result', 'open')
     #
-    # Fetch first open order:
+    # Return most recent open order and total number of open orders:
     #
-    #   r = client.open_orders ; r.is_a?(String) ? r : r['result']['open'][0]
+    #   open_orders.first
+    #   open_orders.count
     #
-    # Fetch open orders count:
+    # Return all open orders for a pair:
     #
-    #   r = client.open_orders ; r.is_a?(String) ? r : r['result']['open'].size
+    #   pair = 'ETHEUR'
+    #   open_orders.select { |_, v| v.dig('descr', 'pair') == pair }
     #
-    # Fetch open orders for a pair:
+    # Return most recent closed order for a pair:
     #
-    #   client.open_orders['result']['open']
-    #     .select { |_, v| v['descr']['pair'] == 'ETHEUR' }
+    #   open_orders.select { |_, v| v.dig('descr', 'pair') == pair }
     #
     def open_orders(opts = {})
       post_private 'OpenOrders', opts
@@ -267,11 +269,25 @@ module Kraken
     # Note: Times given by order txids are more accurate than UNIX timestamps.
     #       If an order txid is given, the order's open time is used.
     #
-    # Example to fetch last closed order:
+    # Examples:
     #
     # require 'kraken_ruby_client'
     # client = Kraken::Client.new(api_key: YOUR_KEY, api_secret: YOUR_SECRET)
-    # r = client.closed_orders ; r.is_a?(String) ? r : r['result']['closed'][0]
+    # closed_orders = client.closed_orders.dig('result', 'closed')
+    #
+    # Return most recent closed order and total number of closed orders:
+    #
+    #   closed_orders.first
+    #   closed_orders.count
+    #
+    # Return all closed orders for a pair:
+    #
+    #   pair = 'ZECEUR'
+    #   closed_orders.select { |_, v| v.dig('descr', 'pair') == pair }
+    #
+    # Return most recent closed order for a pair:
+    #
+    #   closed_orders.detect { |_, v| v.dig('descr', 'pair') == pair }
     #
     def closed_orders(opts = {})
       post_private 'ClosedOrders', opts
