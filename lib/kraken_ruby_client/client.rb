@@ -249,7 +249,7 @@ module Kraken
     #   pair = 'ETHEUR'
     #   open_orders.select { |_, v| v.dig('descr', 'pair') == pair }
     #
-    # Return most recent closed order for a pair:
+    # Return most recent open order for a pair:
     #
     #   open_orders.select { |_, v| v.dig('descr', 'pair') == pair }
     #
