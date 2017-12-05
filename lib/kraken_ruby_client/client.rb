@@ -251,7 +251,7 @@ module Kraken
     #
     # Return most recent open order for a pair:
     #
-    #   open_orders.select { |_, v| v.dig('descr', 'pair') == pair }
+    #   open_orders.detect { |_, v| v.dig('descr', 'pair') == pair }
     #
     def open_orders(opts = {})
       post_private 'OpenOrders', opts
