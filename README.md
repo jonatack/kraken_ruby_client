@@ -49,20 +49,45 @@ client.spread('XMREUR')
 ## Usage
 
 Enter the interactive Ruby shell:
+
 ```
 $ irb -I lib
 ```
 
 To use the private API to access your account:
+
 ```ruby
 require 'kraken_ruby_client'
+client = Kraken::Client.new(api_key: 'YOUR_API_KEY', api_secret: 'YOUR_API_SECRET')
+```
 
-client = Kraken::Client.new(api_key: YOUR_KEY, api_secret: YOUR_SECRET)
+Fetch account balances:
 
-client.closed_orders
+```ruby
+client.balance
+```
 
-orders = client.open_orders
-orders['result']['open'].select { |_, v| v['descr']['pair'] == 'ETCUSD' }
+Fetch all closed orders and the most recent closed order:
+
+```ruby
+closed_orders = client.closed_orders.dig('result', 'closed') # All closed orders
+closed_orders.first # Most recent closed order
+```
+
+Fetch all open orders, the most recent open order, and total open order count:
+
+```ruby
+open_orders = client.open_orders.dig('result', 'open') # All open orders
+open_orders.first # Most recent open order
+open_orders.count # Number of open orders
+```
+
+List the open orders for a specific pair and the last order for the pair:
+
+```ruby
+pair = 'ETCUSD'
+orders.select { |_, v| v.dig('descr', 'pair') == pair } # All
+orders.detect { |_, v| v.dig('descr', 'pair') == pair } # Most recent order
 ```
 
 Place a market buy order:
