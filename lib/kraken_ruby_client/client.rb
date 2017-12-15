@@ -239,6 +239,10 @@ module Kraken
     # client = Kraken::Client.new(api_key: YOUR_KEY, api_secret: YOUR_SECRET)
     # open_orders = client.open_orders.dig('result', 'open')
     #
+    # Display all open orders:
+    #
+    # open_orders.each { |o| puts "#{o.first}, #{o.last.dig('descr')}" }
+    #
     # Return most recent open order and total number of open orders:
     #
     #   open_orders.first
