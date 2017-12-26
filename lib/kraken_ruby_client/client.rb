@@ -25,6 +25,7 @@
 # require 'kraken_ruby_client'
 # client = Kraken::Client.new(api_key: YOUR_KEY, api_secret: YOUR_SECRET)
 
+require 'openssl'
 require 'base64'
 require 'securerandom'
 require 'curb'
