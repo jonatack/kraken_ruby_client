@@ -23,11 +23,13 @@ to avoid the [pain and performance costs](http://www.schneems.com/2014/12/15/has
 - uses fast, straightforward, assertions-style
 [Minitest](https://github.com/seattlerb/minitest) for its test suite.
 
-Currently developed with Ruby 2.4.0. Written for Ruby 2.3 and up.
+Currently developed with Ruby 2.5. Written for Ruby 2.4 and up.
 
 ## Getting started
 
-On the command line, launch the interactive Ruby shell:
+Clone the repository, and in the local directory, run `gem install curb ; bundle install`.
+
+Launch the interactive Ruby shell:
 ```
 $ irb -I lib
 ```
