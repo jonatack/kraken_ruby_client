@@ -34,6 +34,8 @@ Launch the interactive Ruby shell:
 $ irb -I lib
 ```
 
+Inside the interactive Ruby console, ensure that `require 'curb'` does not raise any errors. If it does, Curb may not be properly installed or your system may be missing necessary dependencies. See the [Curb documentation](https://github.com/taf2/curb) for more info.
+
 Examples of using the public API:
 ```ruby
 require 'kraken_ruby_client'; client = Kraken::Client.new
