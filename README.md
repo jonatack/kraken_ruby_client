@@ -69,11 +69,14 @@ Fetch account balances:
 client.balance
 ```
 
-Fetch all closed orders and the most recent closed order:
+Fetch all closed orders and a display a readable summary:
 
 ```ruby
 closed_orders = client.closed_orders.dig('result', 'closed') # All closed orders
-closed_orders.first # Most recent closed order
+closed_orders.first # Show the most recent closed order
+
+# Show a readable list of the last 5 closed orders:
+closed_orders.first(5).each { |order| puts "#{order[0]} #{order[1].dig('descr', 'order')}" }
 ```
 
 Fetch all open orders, the most recent open order, and total open order count:
