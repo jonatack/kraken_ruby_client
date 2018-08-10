@@ -114,17 +114,12 @@ client.cancel_order('TRANSACTION_ID')
 
 ## Running the test suite
 
-To run all tests: `bundle exec rake` or `bundle exec rake test`
+To run all tests: `rake test`
 
-To run one test file:
-  `ruby -Ilib:test test/private_api_test.rb`
-  or
-  `rake test TEST=test/public_api_test.rb`
+To run one test file: `rake test TEST=test/public_api_test.rb`
 
 To run an individual test in a test file:
-  `ruby -Ilib:test test/public_api_test.rb -n test_get_server_time`
-  or
-  `rake test TEST=test/public_api_test.rb TESTOPTS=--name=test_get_server_time`
+`rake test TEST=test/public_api_test.rb TESTOPTS=--name=test_get_server_time`
 
 
 ## Contributions
