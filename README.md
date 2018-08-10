@@ -150,4 +150,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 The author may be contacted by email at jon@atack.com.
 
-Copyright © 2017 Jon Atack (@jonatack)
+Copyright © 2018 Jon Atack (@jonatack)

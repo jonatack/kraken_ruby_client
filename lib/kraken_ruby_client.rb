@@ -3,7 +3,7 @@
 #    lib/kraken_ruby_client.rb
 #
 #    Kraken Exchange API client written in Ruby
-#    Copyright (C) 2017 Jon Atack
+#    Copyright (C) 2018 Jon Atack
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published by

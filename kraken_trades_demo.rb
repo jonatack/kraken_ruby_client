@@ -8,7 +8,7 @@
 #
 #    To run it, type `ruby kraken_trades_demo.rb` on the command line.
 #
-#    Copyright (C) 2017 Jon Atack
+#    Copyright (C) 2018 Jon Atack
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published by
@@ -81,6 +81,7 @@ class TradeDemo
   end
 
   private
+
     def get_trades(currency)
       @kraken.trades(PAIRS.fetch(currency), last_trade.fetch(currency))
     end
@@ -244,6 +245,7 @@ class DisplayErrorMessages
   end
 
   private
+  
     def format_error_message(string)
       parts = string[1..-1].split(':')
       description = "'#{parts.first} #{parts.last.downcase}'"
