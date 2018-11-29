@@ -87,7 +87,7 @@ class TradeDemo
     end
 
     def last_trade
-      @last_trade ||= { 'USD' => nil, 'EUR' => nil }
+      @last_trade ||= { 'USD' => nil, 'EUR' => nil }.freeze
     end
 
     def price_alerts
@@ -115,12 +115,16 @@ end
 
 
 class OutputTradeInfo
-  CURRENCY_SYMBOL = { 'USD' => '$', 'EUR' => '€', 'XBT' => '฿' }
-  CURRENCY_WORD = { 'USD' => 'dollars', 'EUR' => 'euros', 'XBT' => 'bitcoins' }
-  MARKET_OR_LIMIT = { 'l' => 'limit', 'm' => 'market' }
-  BUY_OR_SELL = { 'b' => 'buy ', 's' => 'sell' }
-  TEXT_COLORS = { 'b' => :green, 's' => :red   }
-  ANSI_COLOR_CODES = { default: 38, black: 30, red: 31, green: 32 }
+  CURRENCY_SYMBOL = { 'USD' => '$', 'EUR' => '€', 'XBT' => '฿' }.freeze
+  CURRENCY_WORD = {
+    'USD' => 'dollars',
+    'EUR' => 'euros',
+    'XBT' => 'bitcoins'
+  }.freeze
+  MARKET_OR_LIMIT = { 'l' => 'limit', 'm' => 'market' }.freeze
+  BUY_OR_SELL = { 'b' => 'buy ', 's' => 'sell' }.freeze
+  TEXT_COLORS = { 'b' => :green, 's' => :red   }.freeze
+  ANSI_COLOR_CODES = { default: 38, black: 30, red: 31, green: 32 }.freeze
 
   def initialize(trade, currency, alerts)
     @price, volume, @unixtime, @operation, @type, @misc = trade
@@ -145,19 +149,24 @@ class OutputTradeInfo
 
   def speak_trade
     return unless AUDIBLE_TRADES.fetch(@currency)
+
     %x(say "#{CURRENCY_WORD.fetch(@currency)}: #{BUY_OR_SELL.fetch(@operation)
               }, #{spoken_volume} bitcoin, at #{price_to_syllables}")
   end
 
   def run_price_alerts
     return unless PRICE_ALERTS.fetch(@currency) && result = price_alert_action
+
     action, old_threshold, new_threshold = result
     old_threshold = cents_rounding_for(old_threshold)
+
     alert = "In #{CURRENCY_WORD.fetch(@currency)}, the price of #{@price_f
             } is #{action} your threshold of #{old_threshold} with the #{
             BUY_OR_SELL.fetch(@operation).strip} of #{spoken_volume} bitcoin."
+
     puts "\r\n#{alert}\r\nThe price threshold has been updated from #{
           old_threshold} to #{cents_rounding_for(new_threshold)}.\r\n\r\n"
+
     %x(say "#{alert}")
   end
 
@@ -198,7 +207,7 @@ class OutputTradeInfo
 
     def price_to_syllables
       @price_f.round(1).to_s.each_char.to_a.join(' ')
-      .sub('. 0', '').sub('.', 'point')
+        .sub('. 0', '').sub('.', 'point')
     end
 
     def display_volume
@@ -207,8 +216,11 @@ class OutputTradeInfo
     end
 
     def tab_for
-      { 'USD' => '',
-        'EUR' => '                                                ' }.freeze
+      {
+        'USD' => '',
+        'EUR' => '                                                '
+      }
+      .freeze
     end
 
     def unixtime_to_hhmmss
@@ -245,7 +257,7 @@ class DisplayErrorMessages
   end
 
   private
-  
+
     def format_error_message(string)
       parts = string[1..-1].split(':')
       description = "'#{parts.first} #{parts.last.downcase}'"
