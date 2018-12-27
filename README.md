@@ -23,7 +23,7 @@ to avoid the [pain and performance costs](http://www.schneems.com/2014/12/15/has
 - uses fast, straightforward, assertions-style
 [Minitest](https://github.com/seattlerb/minitest) for its test suite.
 
-Currently developed with Ruby 2.5. Written for Ruby 2.4 and up.
+Currently developed with Ruby 2.6. Written for Ruby 2.4 and up.
 
 ## Getting started
 
