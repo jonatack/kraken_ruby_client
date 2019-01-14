@@ -356,8 +356,8 @@ module Kraken
       end
 
       def auth_url(method, nonce, params)
-        @api_private_path + method +
-          OpenSSL::Digest.new('sha256', "#{nonce}#{params}").digest
+        data = "#{nonce}#{params}"
+        @api_private_path + method + Digest::SHA256.digest(data)
       end
 
       def authenticate(url)
