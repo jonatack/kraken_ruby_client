@@ -325,8 +325,8 @@ module Kraken
 
         http = Curl.post(url, params) do |request|
           request.headers = {
-            'API-Key'  => @api_key,
-            'API-Sign' => authenticate(auth_url(method, nonce, params))
+            'api-key'  => @api_key,
+            'api-sign' => authenticate(auth_url(method, nonce, params))
           }
         end
 
