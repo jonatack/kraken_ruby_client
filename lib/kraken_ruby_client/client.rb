@@ -343,16 +343,11 @@ module Kraken
         "Error #{e.inspect}"
       end
 
-      # Kraken requires an always-increasing unsigned 64-bit integer nonce
-      # using a persistent counter or the current time.
-      #
-      # We generate it using a timestamp in microseconds for the higher 48 bits
-      # and a pseudorandom number for the lower 16 bits.
+      # Generate a continually-increasing unsigned 51-bit integer nonce from the
+      # current Unix Time.
       #
       def generate_nonce
-        higher_48_bits = (Time.now.to_f * 10_000).to_i << 16
-        lower_16_bits  = SecureRandom.random_number(2 ** 16) & 0xffff
-        higher_48_bits | lower_16_bits
+        (Time.now.to_f * 1_000_000).to_i
       end
 
       def auth_url(method, nonce, params)
