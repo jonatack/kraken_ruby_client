@@ -21,7 +21,7 @@ GEM
       minitest-reporters (>= 0.14.24)
       rake
     minitest (5.11.3)
-    minitest-reporters (1.3.5)
+    minitest-reporters (1.3.6)
       ansi
       builder
       minitest (>= 5.0)
