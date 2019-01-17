@@ -34,6 +34,24 @@ require_relative 'test_helper'
 #  `rake test TEST=test/public_api_test.rb TESTOPTS=--name=test_get_server_time`
 
 class PrivateApiTest < Minitest::Test
+  def setup
+    @client = Kraken::Client.new
+  end
+
+  def test_generate_nonce_evaluates_to_a_51_bit_integer
+    nonce = @client.send(:generate_nonce)
+
+    assert_kind_of Integer, nonce
+    assert_equal 51, Math.log2(nonce).truncate + 1
+  end
+
+  def test_generate_nonce_returns_continually_increasing_numbers
+    prev_nonce = @client.send(:generate_nonce)
+    next_nonce = @client.send(:generate_nonce)
+
+    assert_operator next_nonce, :>, prev_nonce
+  end
+
   #
   # The Kraken API_KEY and API_SECRET environment variables are required.
   #
