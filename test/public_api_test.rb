@@ -46,12 +46,13 @@ class PublicApiTest < Minitest::Test
     server_rfc1123_time = Time.parse server_time['rfc1123']
     user_time           = Time.now.getutc
 
+    assert_kind_of Integer, server_unixtime
+    assert_equal (Time.now.to_i / 100), (server_unixtime / 100)
+
     assert_equal %w(error result), query.keys
     assert_empty query['error']
     assert_equal user_time.yday, server_rfc1123_time.yday
     assert_equal user_time.hour, server_rfc1123_time.hour
-
-    assert_kind_of Integer, server_unixtime
   end
 
   def test_get_assets
