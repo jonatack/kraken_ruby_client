@@ -36,7 +36,7 @@ require 'test_helper'
 
 class PublicApiTest < Minitest::Test
   def setup
-    @query ||= Kraken::Client.new
+    @query = Kraken::Client.new
   end
 
   def test_get_server_time
