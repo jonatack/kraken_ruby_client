@@ -82,7 +82,36 @@ class PublicApiTest < Minitest::Test
     assert_get_exchange_currency_info_for('XXBT', 'XBT', 10, 5)
   end
 
-  def test_get_trades
+  def test_get_ohlc
+    pair             = 'xbteur'
+    asset_pair_error = ['EQuery:Unknown asset pair']
+    arguments_error  = ['EGeneral:Invalid arguments']
+    query            = @query.ohlc(pair)
+    result           = query.fetch('result')
+    last             = result.fetch('last')
+
+    assert_instance_of Hash,        query
+    assert_equal %w[error result],  query.keys
+    assert_empty                    query.fetch('error')
+    assert_instance_of Hash,        result
+    assert_equal %w[XXBTZEUR last], result.keys
+    assert_instance_of Array,       result.first
+    assert_instance_of Array,       result.first[1]
+    assert_instance_of Integer,     last
+
+    assert_empty @query.ohlc(pair, since: nil).fetch('error')
+    assert_empty @query.ohlc(pair, since: last).fetch('error')
+    assert_empty @query.ohlc(pair, since: last, interval: 15).fetch('error')
+    assert_empty @query.ohlc(pair, since: 0, interval: 21600).fetch('error')
+    assert_empty @query.ohlc(pair, interval: 60).fetch('error')
+
+    assert_equal asset_pair_error, @query.ohlc('abc').fetch('error')
+    assert_equal arguments_error,  @query.ohlc.fetch('error')
+    assert_equal arguments_error,  @query.ohlc('').fetch('error')
+    assert_equal arguments_error,  @query.ohlc(pair, interval: 0).fetch('error')
+  end
+
+    def test_get_trades
     pairs = %w(XXBTZEUR XXBTZUSD XETHZEUR XETHZUSD)
 
     pairs.each do |pair|
