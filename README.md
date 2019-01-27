@@ -1,6 +1,6 @@
 # Kraken Ruby Client
 
-A work-in-progress Ruby API wrapper for the Kraken Bitcoin Exchange.
+A Ruby API wrapper for the Kraken cryptocurrency exchange.
 
 Emphasis on speed, simplicity, no meta-programming, and few dependencies.
 
@@ -36,9 +36,10 @@ $ irb -I lib
 
 Inside the interactive Ruby console, ensure that `require 'curb'` does not raise any errors. If it does, Curb may not be properly installed or your system may be missing necessary dependencies. See the [Curb documentation](https://github.com/taf2/curb) for more info.
 
-### Public API examples:
+### Public API examples
 ```ruby
-require 'kraken_ruby_client'; client = Kraken::Client.new
+require 'kraken_ruby_client'
+client = Kraken::Client.new
 
 client.server_time
 client.assets
@@ -50,7 +51,7 @@ client.trades('DASHXBT')
 client.spread('XMREUR')
 ```
 
-### Private API examples:
+### Private API examples
 
 ```ruby
 require 'kraken_ruby_client'
@@ -94,7 +95,7 @@ client.ohlc('xmrusd', interval: 15, since: 1548525720)
 
 ## Private API
 
-### Fetch account balances:
+### Fetch account balances
 
 ```ruby
 client.balance
@@ -131,19 +132,19 @@ orders.select { |_, v| v.dig('descr', 'pair') == pair } # All open orders
 orders.detect { |_, v| v.dig('descr', 'pair') == pair } # Most recent open order
 ```
 
-### Place a market buy order:
+### Place a market buy order
 
 ```ruby
 client.add_order(pair: 'XBTEUR', type: 'buy', ordertype: 'market', volume: 0.5)
 ```
 
-### Place a margin sell order (short):
+### Place a margin sell order (short)
 
 ```ruby
 client.add_order(pair: 'DASHEUR', type: 'sell', ordertype: 'market', volume: 1, leverage: 2)
 ```
 
-### Cancel an order:
+### Cancel an order
 
 ```ruby
 client.cancel_order('TRANSACTION_ID')
@@ -152,12 +153,12 @@ client.cancel_order('TRANSACTION_ID')
 
 ## Running the test suite
 
-To run all tests: `rake test`
+To run all tests: `rake test` or just `rake`
 
-To run one test file: `rake test TEST=test/public_api_test.rb`
+To run one test file: `rake TEST=test/public_api_test.rb`
 
 To run an individual test in a test file:
-`rake test TEST=test/public_api_test.rb TESTOPTS=--name=test_get_server_time`
+`rake TEST=test/public_api_test.rb TESTOPTS=--name=test_get_server_time`
 
 
 ## Contributions
