@@ -25,7 +25,7 @@ to avoid the [pain and performance costs](http://www.schneems.com/2014/12/15/has
 
 Currently developed with Ruby 2.6. Written for Ruby 2.4 and up.
 
-## Getting started
+# Getting started
 
 Clone the repository, and in the local directory, run `gem install curb ; bundle install`.
 
@@ -36,7 +36,7 @@ $ irb -I lib
 
 Inside the interactive Ruby console, ensure that `require 'curb'` does not raise any errors. If it does, Curb may not be properly installed or your system may be missing necessary dependencies. See the [Curb documentation](https://github.com/taf2/curb) for more info.
 
-Examples of using the public API:
+### Public API examples:
 ```ruby
 require 'kraken_ruby_client'; client = Kraken::Client.new
 
@@ -44,7 +44,27 @@ client.server_time
 client.assets
 client.asset_pairs
 client.ticker('XBTEUR')
+client.ohlc('XBTUSD'
+client.order_book('ETHEUR')
+client.trades('DASHXBT')
+client.spread('XMREUR')
 ```
+
+### Private API examples:
+
+```ruby
+require 'kraken_ruby_client'
+client = Kraken::Client.new(api_key: 'YOUR_API_KEY', api_secret: 'YOUR_API_SECRET')
+
+client.balance
+client.add_order(pair: 'XBTEUR', type: 'buy', ordertype: 'market', volume: 0.5)
+client.open_orders.dig('result', 'open')
+```
+
+
+# API
+
+## Public API
 
 ### Get OHLC (Open, High, Low, Close) data
 
@@ -72,81 +92,63 @@ client.ohlc('ETHGBP', since: 1548525720)
 client.ohlc('xmrusd', interval: 15, since: 1548525720)
 ```
 
-```ruby
-client.order_book('ETHEUR')
-client.trades('DASHXBT')
-client.spread('XMREUR')
-```
+## Private API
 
-## Usage
-
-Enter the interactive Ruby shell:
-
-```
-$ irb -I lib
-```
-
-To use the private API to access your account:
-
-```ruby
-require 'kraken_ruby_client'
-client = Kraken::Client.new(api_key: 'YOUR_API_KEY', api_secret: 'YOUR_API_SECRET')
-```
-
-Fetch account balances:
+### Fetch account balances:
 
 ```ruby
 client.balance
 ```
 
-Fetch all closed orders and a display a readable summary:
+### Fetch closed orders
 
 ```ruby
+# Fetch all closed orders and a display a readable summary
 closed_orders = client.closed_orders.dig('result', 'closed') # All closed orders
 closed_orders.first # Show the most recent closed order
 
-# Show a readable list of the last 5 closed orders:
-
+# Show a readable list of the last 5 closed orders
 closed_orders.first(5).each { |order| puts "#{order[0]} - #{order[1].dig('descr', 'order')}" }
 
-# More elaborate version with order date and improved readibility for the last 10 closed orders:
-
+# More elaborate version with order date and improved readibility for the last 10 closed orders
 closed_orders.first(10).each do |order|
   action, price, *rest = order[1].dig('descr', 'order').split
   puts "#{order[0]}   #{Time.at(order[1]['opentm'])}   #{action}#{' ' if action.size == 3}  #{price[0..4]} #{rest.join(' ')}"
 end
 ```
 
-Fetch all open orders, the most recent open order, and total open order count:
+### Fetch open orders
 
 ```ruby
+# Fetch all open orders, the most recent open order, and total open order count:
 open_orders = client.open_orders.dig('result', 'open') # All open orders
 open_orders.first # Most recent open order
 open_orders.count # Number of open orders
-```
 
-List the open orders for a specific pair and the last order for the pair:
-
-```ruby
+# List the open orders for an asset pair and the most recent order for the pair:
 pair = 'ETCUSD'
-orders.select { |_, v| v.dig('descr', 'pair') == pair } # All
-orders.detect { |_, v| v.dig('descr', 'pair') == pair } # Most recent order
+orders.select { |_, v| v.dig('descr', 'pair') == pair } # All open orders
+orders.detect { |_, v| v.dig('descr', 'pair') == pair } # Most recent open order
 ```
 
-Place a market buy order:
+### Place a market buy order:
+
 ```ruby
 client.add_order(pair: 'XBTEUR', type: 'buy', ordertype: 'market', volume: 0.5)
 ```
 
-Place a margin sell order (short):
+### Place a margin sell order (short):
+
 ```ruby
 client.add_order(pair: 'DASHEUR', type: 'sell', ordertype: 'market', volume: 1, leverage: 2)
 ```
 
-Cancel an order:
+### Cancel an order:
+
 ```ruby
 client.cancel_order('TRANSACTION_ID')
 ```
+
 
 ## Running the test suite
 
