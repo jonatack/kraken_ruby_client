@@ -20,6 +20,7 @@
 #    The author may be contacted by email: jon@atack.com
 #++
 require 'minitest/autorun'
+require 'minitest/focus'
 require 'kraken_ruby_client'
 
 require 'color_pound_spec_reporter'

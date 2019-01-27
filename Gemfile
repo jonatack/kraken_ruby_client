@@ -29,3 +29,8 @@ gem 'rake'
 gem 'minitest'
 gem 'minitest-reporters'
 gem 'color_pound_spec_reporter'
+
+# Minitest-focus allows you to focus on a single test without CLI arguments.
+# The +focus+ class method enables running the next defined test only.
+# Read more: https://github.com/seattlerb/minitest-focus
+gem 'minitest-focus'
