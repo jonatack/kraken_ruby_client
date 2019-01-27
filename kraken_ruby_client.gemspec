@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.files                 = `git ls-files`.split("\n")
   s.require_path          = 'lib'
   s.description           = <<-EOF
-    A Kraken Exchange API wrapper for Ruby 2.3+. Emphasis on speed,
+    A Kraken Exchange API wrapper for Ruby 2.4+. Emphasis on speed,
     simplicity, no meta-programming, and few dependencies. Uses the fast
     Curb gem (CUrl-RuBy, Ruby bindings for libcurl written in C) for HTTP.
 
@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   EOF
 
   s.add_dependency 'curb', '~> 0.9'
-  s.add_development_dependency 'bundler', '~> 1.16'
-  s.add_development_dependency 'rake', '~> 12.2'
-  s.add_development_dependency 'minitest', '~> 5.10'
+  s.add_development_dependency 'bundler', '~> 1.17'
+  s.add_development_dependency 'rake', '~> 12.3'
+  s.add_development_dependency 'minitest', '~> 5.11'
 end
