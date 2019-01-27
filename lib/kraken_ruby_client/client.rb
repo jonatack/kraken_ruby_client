@@ -128,9 +128,25 @@ module Kraken
       get_public 'Ticker', { 'pair': pairs }
     end
 
-    # Get open-high-low-close data
-    def ohlc(pair = nil) # pair, interval (optional), since (optional)
-      get_public 'OHLC', { 'pair': pair }
+    # Get OHLC (Open, High, Low, Close) data
+    # URL: https://api.kraken.com/0/public/OHLC
+    # Input:
+    #   +pair+     = required asset pair for which to query OHLC data
+    #   +interval+ = optional time frame interval in minutes. Defaults to 1.
+    #                Permitted values: 1, 5, 15, 30, 60, 240, 1440, 10080, 21600
+    #                Returns an Invalid Arguments error for other values.
+    #   +since+    = optional Unix Time from when to return committed OHLC data
+    #
+    # Returns a hash with keys `error' and `result'.
+    #   +result+ is an array containing pair name, OHLC data, and last Unixtime.
+    #   The OHLC data array contains:
+    #     time, open, high, low, close, VWAP, price, volume, count.
+    #   The last entry in the OHLC data array is for the current, not-yet-
+    #   committed frame and is always present, regardless of the value of since.
+    #   +last+ is to be used as `since' when getting new committed OHLC data.
+    #
+    def ohlc(pair = nil, interval: 1, since: nil)
+      get_public 'OHLC', { pair: pair, interval: interval, since: since }
     end
 
     def order_book(pair = nil)
