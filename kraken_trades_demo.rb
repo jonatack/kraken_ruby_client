@@ -8,7 +8,7 @@
 #
 #    To run it, type `ruby kraken_trades_demo.rb` on the command line.
 #
-#    Copyright (C) 2018 Jon Atack
+#    Copyright (C) 2016-2019 Jon Atack <jon@atack.com>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published by
