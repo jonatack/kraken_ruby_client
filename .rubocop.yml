@@ -1,0 +1,70 @@
+AllCops:
+  TargetRubyVersion: 2.6
+
+#
+# Overrides to the default Rubocop config, in alphabetical order.
+#
+
+Bundler/OrderedGems:
+  Enabled: false
+
+Layout/AlignHash:
+  Enabled: false
+
+Layout/AlignParameters:
+  Enabled: false
+
+Layout/MultilineMethodCallIndentation:
+  Enabled: false
+
+Layout/SpaceInLambdaLiteral:
+  Enabled: false
+
+Lint/AssignmentInCondition:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'test/**/*'
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 80
+  AllowHeredoc: true
+  AllowURI: true
+  IgnoreCopDirectives: false
+
+Metrics/MethodLength:
+  CountComments: false
+  Max: 20
+  Exclude:
+    - 'test/**/*'
+
+Naming/MemoizedInstanceVariableName:
+  Enabled: false
+
+Naming/PredicateName:
+  Enabled: false
+
+Naming/VariableNumber:
+  EnforcedStyle: snake_case
+
+Style/Documentation:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+Style/ParallelAssignment:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    default: '()'
+    '%i':    '()'
+    '%w':    '()'

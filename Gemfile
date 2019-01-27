@@ -34,3 +34,6 @@ gem 'color_pound_spec_reporter'
 # The +focus+ class method enables running the next defined test only.
 # Read more: https://github.com/seattlerb/minitest-focus
 gem 'minitest-focus'
+
+# Linter
+gem 'rubocop'
