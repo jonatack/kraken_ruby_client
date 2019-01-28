@@ -30,7 +30,7 @@ require 'json'
 require 'kraken_ruby_client/http_errors'
 
 module Kraken
-  # irb -I lib
+  # irb -I lib (or) rake console
   # require 'kraken_ruby_client'
   # client = Kraken::Client.new(api_key: YOUR_KEY, api_secret: YOUR_SECRET)
   class Client
