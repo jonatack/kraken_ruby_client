@@ -154,11 +154,7 @@ module Kraken
     end
 
     def trades(pair, since = nil)
-      if since
-        get_public 'Trades', pair: pair, since: since
-      else
-        get_public 'Trades', pair: pair
-      end
+      get_public 'Trades', pair: pair, since: since
     end
 
     def spread(pair = nil, opts = {})
