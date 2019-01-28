@@ -1,11 +1,13 @@
-$:.push File.expand_path("../lib", __FILE__)
+# frozen_string_literal: true
+
+$LOAD_PATH.push File.expand_path('lib', __dir__)
 require 'kraken_ruby_client/version'
 
 Gem::Specification.new do |s|
   s.name                  = 'kraken_ruby_client'
   s.version               = KrakenRubyClient::VERSION
   s.date                  = '2016-09-25'
-  s.required_ruby_version = '>= 2.3'
+  s.required_ruby_version = '>= 2.6'
   s.homepage              = 'https://rubygems.org/gems/kraken_ruby_client'
   s.author                = 'Jon Atack'
   s.email                 = 'jon@atack.com'
@@ -14,7 +16,7 @@ Gem::Specification.new do |s|
   s.license               = 'LGPL-3.0'
   s.files                 = `git ls-files`.split("\n")
   s.require_path          = 'lib'
-  s.description           = <<-EOF
+  s.description           = <<-DESCRIPTION
     A Kraken Exchange API wrapper for Ruby 2.4+. Emphasis on speed,
     simplicity, no meta-programming, and few dependencies. Uses the fast
     Curb gem (CUrl-RuBy, Ruby bindings for libcurl written in C) for HTTP.
@@ -23,10 +25,10 @@ Gem::Specification.new do |s|
     This is free software, and you are welcome to redistribute it
     under certain conditions; see the LICENSE file for details.
     Copyright (C) 2016-2019 Jon Atack <jon@atack.com>
-  EOF
+  DESCRIPTION
 
   s.add_dependency 'curb', '~> 0.9'
   s.add_development_dependency 'bundler', '~> 1.17'
-  s.add_development_dependency 'rake', '~> 12.3'
   s.add_development_dependency 'minitest', '~> 5.11'
+  s.add_development_dependency 'rake', '~> 12.3'
 end

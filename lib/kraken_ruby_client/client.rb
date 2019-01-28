@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #--
 #    lib/kraken_ruby_client/client.rb
 #
@@ -21,10 +22,6 @@
 #    The author may be contacted by email at jon@atack.com.
 #++
 
-# irb -I lib
-# require 'kraken_ruby_client'
-# client = Kraken::Client.new(api_key: YOUR_KEY, api_secret: YOUR_SECRET)
-
 require 'openssl'
 require 'base64'
 require 'securerandom'
@@ -33,6 +30,9 @@ require 'json'
 require 'kraken_ruby_client/http_errors'
 
 module Kraken
+  # irb -I lib
+  # require 'kraken_ruby_client'
+  # client = Kraken::Client.new(api_key: YOUR_KEY, api_secret: YOUR_SECRET)
   class Client
     KRAKEN_API_URL     = 'https://api.kraken.com'
     KRAKEN_API_VERSION = 0
@@ -76,7 +76,7 @@ module Kraken
     #
     def assets(assets = nil)
       if assets
-        get_public 'Assets', { 'asset': assets }
+        get_public 'Assets', 'asset': assets
       else
         get_public 'Assets'
       end
@@ -118,14 +118,14 @@ module Kraken
     #
     def asset_pairs(pairs = nil)
       if pairs
-        get_public 'AssetPairs', { 'pair': pairs }
+        get_public 'AssetPairs', 'pair': pairs
       else
         get_public 'AssetPairs'
       end
     end
 
     def ticker(pairs = nil)
-      get_public 'Ticker', { 'pair': pairs }
+      get_public 'Ticker', 'pair': pairs
     end
 
     # Get OHLC (Open, High, Low, Close) data
@@ -146,18 +146,18 @@ module Kraken
     #   +last+ is to be used as `since' when getting new committed OHLC data.
     #
     def ohlc(pair = nil, interval: 1, since: nil)
-      get_public 'OHLC', { pair: pair, interval: interval, since: since }
+      get_public 'OHLC', pair: pair, interval: interval, since: since
     end
 
     def order_book(pair = nil)
-      get_public 'Depth', { 'pair': pair }
+      get_public 'Depth', 'pair': pair
     end
 
     def trades(pair, since = nil)
       if since
-        get_public 'Trades', { 'pair': pair, since: since }
+        get_public 'Trades', 'pair': pair, since: since
       else
-        get_public 'Trades', { 'pair': pair }
+        get_public 'Trades', 'pair': pair
       end
     end
 
@@ -233,7 +233,7 @@ module Kraken
     # Cancel order having txn id
     #
     def cancel_order(txid)
-      post_private 'CancelOrder', { txid: txid }
+      post_private 'CancelOrder', txid: txid
     end
 
     def balance
@@ -323,57 +323,57 @@ module Kraken
 
     private
 
-      # HTTP GET request for public API queries.
-      #
-      def get_public(method, opts = {})
-        url = "#{@api_public_url}#{method}"
-        http = Curl.get(url, opts)
+    # HTTP GET request for public API queries.
+    #
+    def get_public(method, opts = {})
+      url = "#{@api_public_url}#{method}"
+      http = Curl.get(url, opts)
 
-        parse_response(http)
+      parse_response(http)
+    end
+
+    # HTTP POST request for private API queries involving user credentials.
+    #
+    def post_private(method, opts = {})
+      url = "#{@api_private_url}#{method}"
+      nonce = opts['nonce'] = generate_nonce
+      params = opts.map { |param| param.join('=') }.join('&')
+
+      http = Curl.post(url, params) do |request|
+        request.headers = {
+          'api-key' => @api_key,
+          'api-sign' => authenticate(auth_url(method, nonce, params))
+        }
       end
 
-      # HTTP POST request for private API queries involving user credentials.
-      #
-      def post_private(method, opts = {})
-        url = "#{@api_private_url}#{method}"
-        nonce = opts['nonce'] = generate_nonce
-        params = opts.map { |param| param.join('=') }.join('&')
+      parse_response(http)
+    end
 
-        http = Curl.post(url, params) do |request|
-          request.headers = {
-            'api-key'  => @api_key,
-            'api-sign' => authenticate(auth_url(method, nonce, params))
-          }
-        end
-
-        parse_response(http)
+    def parse_response(http)
+      if http.response_code == HTTP_SUCCESS
+        JSON.parse(http.body)
+      else
+        http.status
       end
+    rescue *KrakenRubyClient::HTTP_ERRORS => e
+      "Error #{e.inspect}"
+    end
 
-      def parse_response(http)
-        if http.response_code == HTTP_SUCCESS
-          JSON.parse(http.body)
-        else
-          http.status
-        end
-      rescue *KrakenRubyClient::HTTP_ERRORS => e
-        "Error #{e.inspect}"
-      end
+    # Generate a continually-increasing unsigned 51-bit integer nonce from the
+    # current Unix Time.
+    #
+    def generate_nonce
+      (Time.now.to_f * 1_000_000).to_i
+    end
 
-      # Generate a continually-increasing unsigned 51-bit integer nonce from the
-      # current Unix Time.
-      #
-      def generate_nonce
-        (Time.now.to_f * 1_000_000).to_i
-      end
+    def auth_url(method, nonce, params)
+      data = "#{nonce}#{params}"
+      @api_private_path + method + Digest::SHA256.digest(data)
+    end
 
-      def auth_url(method, nonce, params)
-        data = "#{nonce}#{params}"
-        @api_private_path + method + Digest::SHA256.digest(data)
-      end
-
-      def authenticate(url)
-        hmac = OpenSSL::HMAC.digest('sha512', Base64.decode64(@api_secret), url)
-        Base64.strict_encode64(hmac)
-      end
+    def authenticate(url)
+      hmac = OpenSSL::HMAC.digest('sha512', Base64.decode64(@api_secret), url)
+      Base64.strict_encode64(hmac)
+    end
   end
 end

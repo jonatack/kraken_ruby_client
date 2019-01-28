@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #--
 #    lib/kraken_ruby_client.rb
 #
