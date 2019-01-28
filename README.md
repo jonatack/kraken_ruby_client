@@ -29,14 +29,22 @@ Currently developed with Ruby 2.6. Written for Ruby 2.4 and up.
 
 Clone the repository, and in the local directory, run `gem install curb ; bundle install`.
 
-Launch the interactive Ruby shell:
+Launch the interactive Ruby shell from the terminal with
+
 ```
 $ irb -I lib
+```
+
+or with the rake task
+
+```
+$ rake console
 ```
 
 Inside the interactive Ruby console, ensure that `require 'curb'` does not raise any errors. If it does, Curb may not be properly installed or your system may be missing necessary dependencies. See the [Curb documentation](https://github.com/taf2/curb) for more info.
 
 ### Public API examples
+
 ```ruby
 require 'kraken_ruby_client'
 client = Kraken::Client.new
