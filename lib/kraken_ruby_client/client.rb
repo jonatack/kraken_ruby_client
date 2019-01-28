@@ -76,7 +76,7 @@ module Kraken
     #
     def assets(assets = nil)
       if assets
-        get_public 'Assets', 'asset': assets
+        get_public 'Assets', asset: assets
       else
         get_public 'Assets'
       end
@@ -118,14 +118,14 @@ module Kraken
     #
     def asset_pairs(pairs = nil)
       if pairs
-        get_public 'AssetPairs', 'pair': pairs
+        get_public 'AssetPairs', pair: pairs
       else
         get_public 'AssetPairs'
       end
     end
 
     def ticker(pairs = nil)
-      get_public 'Ticker', 'pair': pairs
+      get_public 'Ticker', pair: pairs
     end
 
     # Get OHLC (Open, High, Low, Close) data
@@ -150,14 +150,14 @@ module Kraken
     end
 
     def order_book(pair = nil)
-      get_public 'Depth', 'pair': pair
+      get_public 'Depth', pair: pair
     end
 
     def trades(pair, since = nil)
       if since
-        get_public 'Trades', 'pair': pair, since: since
+        get_public 'Trades', pair: pair, since: since
       else
-        get_public 'Trades', 'pair': pair
+        get_public 'Trades', pair: pair
       end
     end
 
@@ -341,7 +341,7 @@ module Kraken
 
       http = Curl.post(url, params) do |request|
         request.headers = {
-          'api-key' => @api_key,
+          'api-key'  => @api_key,
           'api-sign' => authenticate(auth_url(method, nonce, params))
         }
       end
