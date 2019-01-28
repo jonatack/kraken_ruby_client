@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #--
 #    test/test_private_api.rb
 #

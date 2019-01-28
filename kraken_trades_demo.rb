@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #--
 #    kraken_trades_demo.rb
 #
@@ -25,8 +26,8 @@
 #
 #    The author may be contacted by email: jon@atack.com
 #++
-lib = File.expand_path('../lib', __FILE__)
-$:.push(lib) unless $:.include?(lib)
+lib = File.expand_path('lib', __dir__)
+$LOAD_PATH.push(lib) unless $LOAD_PATH.include?(lib)
 require 'kraken_ruby_client'
 
 # User settings ##############################################################
@@ -42,19 +43,19 @@ PRICE_ALERT_ADJUST_COEFF = 1.001
 PRICE_ALERT_THRESHOLDS = {
   'USD' => { less_than: nil, more_than: nil },
   'EUR' => { less_than: 5200, more_than: 5225 }
-}
+}.freeze
 
 # Price alerts per currency. True for yes, false for no.
-PRICE_ALERTS    = { 'USD' => false, 'EUR' => true }
+PRICE_ALERTS    = { 'USD' => false, 'EUR' => true }.freeze
 
 # Audible settings per currency. True for audio+text, false for text only.
-AUDIBLE_TRADES  = { 'USD' => false, 'EUR' => false }
+AUDIBLE_TRADES  = { 'USD' => false, 'EUR' => false }.freeze
 ##############################################################################
 
-
+# Main trade info loop.
 class TradeDemo
-  CURRENCIES = %w(USD EUR)
-  PAIRS = { 'USD' => 'XXBTZUSD', 'EUR' => 'XXBTZEUR' }
+  CURRENCIES = %w(USD EUR).freeze
+  PAIRS = { 'USD' => 'XXBTZUSD', 'EUR' => 'XXBTZEUR' }.freeze
 
   def initialize
     @kraken = Kraken::Client.new
@@ -72,7 +73,7 @@ class TradeDemo
             output_trades(trades, currency)
             memoize_last_trade_id(result.fetch('last'), currency)
           end
-        rescue
+        rescue StandardError
           DisplayErrorMessages.new.host_resolution_error
         end
         sleep CALL_LIMIT_TIME
@@ -82,37 +83,36 @@ class TradeDemo
 
   private
 
-    def get_trades(currency)
-      @kraken.trades(PAIRS.fetch(currency), last_trade.fetch(currency))
-    end
+  def get_trades(currency)
+    @kraken.trades(PAIRS.fetch(currency), last_trade.fetch(currency))
+  end
 
-    def last_trade
-      @last_trade ||= { 'USD' => nil, 'EUR' => nil }.freeze
-    end
+  def last_trade
+    @last_trade ||= { 'USD' => nil, 'EUR' => nil }.freeze
+  end
 
-    def price_alerts
-      @price_alerts ||= PRICE_ALERT_THRESHOLDS
-    end
+  def price_alerts
+    @price_alerts ||= PRICE_ALERT_THRESHOLDS
+  end
 
-    def output_trades(trades, currency)
-      trades_to_display(trades, currency).each do |trade|
-        OutputTradeInfo.new(trade, currency, price_alerts).call
-      end
+  def output_trades(trades, currency)
+    trades_to_display(trades, currency).each do |trade|
+      OutputTradeInfo.new(trade, currency, price_alerts).call
     end
+  end
 
-    def trades_to_display(trades, currency)
-      if last_trade.fetch(currency)
-        trades
-      else
-        [trades.last]
-      end
+  def trades_to_display(trades, currency)
+    if last_trade.fetch(currency)
+      trades
+    else
+      [trades.last]
     end
+  end
 
-    def memoize_last_trade_id(last_trade_id, currency)
-      last_trade[currency] = last_trade_id
-    end
+  def memoize_last_trade_id(last_trade_id, currency)
+    last_trade[currency] = last_trade_id
+  end
 end
-
 
 class OutputTradeInfo
   CURRENCY_SYMBOL = { 'USD' => '$', 'EUR' => '€', 'XBT' => '฿' }.freeze
@@ -141,99 +141,104 @@ class OutputTradeInfo
   end
 
   def print_trade
-    puts "#{tab_for.fetch(@currency)}#{unixtime_to_hhmmss}  #{
-      colorize(BUY_OR_SELL.fetch(@operation))}  #{
-      CURRENCY_SYMBOL.fetch(@currency)} #{printed_price} #{
-      display_volume}  #{MARKET_OR_LIMIT.fetch(@type)}"
+    puts "#{tab_for.fetch(@currency)}#{unixtime_to_hhmmss}  " \
+      "#{colorize(BUY_OR_SELL.fetch(@operation))}  " \
+      "#{CURRENCY_SYMBOL.fetch(@currency)} #{printed_price} " \
+      "#{display_volume}  #{MARKET_OR_LIMIT.fetch(@type)}"
   end
 
   def speak_trade
     return unless AUDIBLE_TRADES.fetch(@currency)
 
-    %x(say "#{CURRENCY_WORD.fetch(@currency)}: #{BUY_OR_SELL.fetch(@operation)
-              }, #{spoken_volume} bitcoin, at #{price_to_syllables}")
+    `say "#{CURRENCY_WORD.fetch(@currency)}: " \
+         "#{BUY_OR_SELL.fetch(@operation)}, " \
+         "#{spoken_volume} bitcoin, at #{price_to_syllables}"`
   end
 
   def run_price_alerts
-    return unless PRICE_ALERTS.fetch(@currency) && result = price_alert_action
+    return unless PRICE_ALERTS.fetch(@currency) && (result = price_alert_action)
 
     action, old_threshold, new_threshold = result
     old_threshold = cents_rounding_for(old_threshold)
 
-    alert = "In #{CURRENCY_WORD.fetch(@currency)}, the price of #{@price_f
-            } is #{action} your threshold of #{old_threshold} with the #{
-            BUY_OR_SELL.fetch(@operation).strip} of #{spoken_volume} bitcoin."
+    alert = "In #{CURRENCY_WORD.fetch(@currency)}, " \
+      "the price of #{@price_f} is #{action} " \
+      "your threshold of #{old_threshold} with the " \
+      "#{BUY_OR_SELL.fetch(@operation).strip} of #{spoken_volume} bitcoin."
 
-    puts "\r\n#{alert}\r\nThe price threshold has been updated from #{
-          old_threshold} to #{cents_rounding_for(new_threshold)}.\r\n\r\n"
+    puts "\r\n#{alert}\r\nThe price threshold has been updated from " \
+      "#{old_threshold} to #{cents_rounding_for(new_threshold)}.\r\n\r\n"
 
-    %x(say "#{alert}")
+    `say "#{alert}"`
   end
 
   private
-    def price_alert_action
-      if @lower_alert_threshold && @price_f < @lower_alert_threshold
-        ['below', @lower_alert_threshold, update_lower_price_alert!]
-      elsif @upper_alert_threshold && @price_f > @upper_alert_threshold
-        ['above', @upper_alert_threshold, update_upper_price_alert!]
-      end
-    end
 
-    def update_lower_price_alert!
-      @alerts.fetch(@currency)[:less_than] =
-        [(@lower_alert_threshold / PRICE_ALERT_ADJUST_COEFF), @price_f].min
+  def price_alert_action
+    if @lower_alert_threshold && @price_f < @lower_alert_threshold
+      ['below', @lower_alert_threshold, update_lower_price_alert!]
+    elsif @upper_alert_threshold && @price_f > @upper_alert_threshold
+      ['above', @upper_alert_threshold, update_upper_price_alert!]
     end
+  end
 
-    def update_upper_price_alert!
-      @alerts.fetch(@currency)[:more_than] =
-        [(@upper_alert_threshold * PRICE_ALERT_ADJUST_COEFF), @price_f].max
-    end
+  def update_lower_price_alert!
+    @alerts.fetch(@currency)[:less_than] =
+      [(@lower_alert_threshold / PRICE_ALERT_ADJUST_COEFF), @price_f].min
+  end
 
-    def cents_rounding_for(price)
-      price.round(2)
-    end
+  def update_upper_price_alert!
+    @alerts.fetch(@currency)[:more_than] =
+      [(@upper_alert_threshold * PRICE_ALERT_ADJUST_COEFF), @price_f].max
+  end
 
-    def printed_price
-      @price[0..-3]
-    end
+  def cents_rounding_for(price)
+    price.round(2)
+  end
 
-    def spoken_volume
-      if (round_volume = @volume.to_f.round(1)) < 1
-        'less than one'
-      else
-        round_volume
-      end
-    end
+  def printed_price
+    @price[0..-3]
+  end
 
-    def price_to_syllables
-      @price_f.round(1).to_s.each_char.to_a.join(' ')
-        .sub('. 0', '').sub('.', 'point')
+  def spoken_volume
+    if (round_volume = @volume.to_f.round(1)) < 1
+      'less than one'
+    else
+      round_volume
     end
+  end
 
-    def display_volume
-      "#{' ' * (9 - @volume.size)}#{colorize(@volume, 1)} #{
-        CURRENCY_SYMBOL.fetch('XBT')}"
-    end
+  def price_to_syllables
+    @price_f
+      .round(1)
+      .to_s.each_char.to_a.join(' ')
+      .sub('. 0', '').sub('.', 'point')
+  end
 
-    def tab_for
-      {
-        'USD' => '',
-        'EUR' => '                                                '
-      }
-      .freeze
-    end
+  def display_volume
+    "#{' ' * (9 - @volume.size)}#{colorize(@volume, 1)} " +
+      CURRENCY_SYMBOL.fetch('XBT')
+  end
 
-    def unixtime_to_hhmmss
-      Time.at(@unixtime).strftime('%H:%M:%S')
-    end
+  def tab_for
+    {
+      'USD' => '',
+      'EUR' => '                                                '
+    }.freeze
+  end
 
-    def colorize(text, volume_threshold = nil)
-      return text if volume_threshold && text.to_i < volume_threshold
-      "\033[#{ANSI_COLOR_CODES.fetch(TEXT_COLORS.fetch(@operation))}m#{text
-      }\033[0m"
-    end
+  def unixtime_to_hhmmss
+    Time.at(@unixtime).strftime('%H:%M:%S')
+  end
+
+  def colorize(text, volume_threshold = nil)
+    return text if volume_threshold && text.to_i < volume_threshold
+
+    color = ANSI_COLOR_CODES.fetch(TEXT_COLORS.fetch(@operation))
+
+    "\033[#{color}m#{text}\033[0m"
+  end
 end
-
 
 class DisplayErrorMessages
   # The Kraken API returns an array of error message strings
@@ -258,18 +263,18 @@ class DisplayErrorMessages
 
   private
 
-    def format_error_message(string)
-      parts = string[1..-1].split(':')
-      description = "'#{parts.first} #{parts.last.downcase}'"
-      "#{error_code.fetch(string[0])}: #{description} in #{@currency
-      } trades query!"
-    end
+  def format_error_message(string)
+    parts = string[1..-1].split(':')
+    description = "'#{parts.first} #{parts.last.downcase}'"
 
-    def error_code
-      { 'E' => 'Error', 'W' => 'Warning' }.freeze
-    end
+    "#{error_code.fetch(string[0])}: " \
+      "#{description} in #{@currency} trades query!"
+  end
+
+  def error_code
+    { 'E' => 'Error', 'W' => 'Warning' }.freeze
+  end
 end
-
 
 k = TradeDemo.new
 k.run

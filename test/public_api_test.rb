@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #--
 #    test/test_public_api.rb
 #
@@ -40,7 +42,7 @@ class PublicApiTest < Minitest::Test
   end
 
   def test_get_server_time
-    query = @query.server_time
+    query               = @query.server_time
     server_time         = query['result']
     server_unixtime     = server_time['unixtime']
     server_rfc1123_time = Time.parse server_time['rfc1123']
@@ -56,10 +58,9 @@ class PublicApiTest < Minitest::Test
   end
 
   def test_get_assets
-    assets = %w(
-      ADA BCH BSV DASH EOS GNO KFEE QTUM USDT XDAO XETC XETH XICN XLTC XMLN XNMC XREP XTZ XXBT
-      XXDG XXLM XXMR XXRP XXVN XZEC ZCAD ZEUR ZGBP ZJPY ZKRW ZUSD
-    )
+    assets = %w(ADA BCH BSV DASH EOS GNO KFEE QTUM USDT XDAO XETC XETH XICN XLTC
+                XMLN XNMC XREP XTZ XXBT XXDG XXLM XXMR XXRP XXVN XZEC ZCAD ZEUR
+                ZGBP ZJPY ZKRW ZUSD)
 
     query = @query.assets
 
@@ -91,18 +92,18 @@ class PublicApiTest < Minitest::Test
     last             = result.fetch('last')
 
     assert_instance_of Hash,        query
-    assert_equal %w[error result],  query.keys
+    assert_equal %w(error result),  query.keys
     assert_empty                    query.fetch('error')
     assert_instance_of Hash,        result
-    assert_equal %w[XXBTZEUR last], result.keys
+    assert_equal %w(XXBTZEUR last), result.keys
     assert_instance_of Array,       result.first
     assert_instance_of Array,       result.first[1]
     assert_instance_of Integer,     last
 
     assert_empty @query.ohlc(pair, since: nil).fetch('error')
     assert_empty @query.ohlc(pair, since: last).fetch('error')
-    assert_empty @query.ohlc(pair, since: last, interval: 15).fetch('error')
-    assert_empty @query.ohlc(pair, since: 0, interval: 21600).fetch('error')
+    assert_empty @query.ohlc(pair, since: last, interval: 240).fetch('error')
+    assert_empty @query.ohlc(pair, since: 0, interval: 21_600).fetch('error')
     assert_empty @query.ohlc(pair, interval: 60).fetch('error')
 
     assert_equal asset_pair_error, @query.ohlc('abc').fetch('error')
@@ -111,7 +112,7 @@ class PublicApiTest < Minitest::Test
     assert_equal arguments_error,  @query.ohlc(pair, interval: 0).fetch('error')
   end
 
-    def test_get_trades
+  def test_get_trades
     pairs = %w(XXBTZEUR XXBTZUSD XETHZEUR XETHZUSD)
 
     pairs.each do |pair|
@@ -133,12 +134,12 @@ class PublicApiTest < Minitest::Test
 
   private
 
-    def assert_get_exchange_currency_info_for(currency, alt_name, decimals,
-      display_decimals)
-      query = @query.assets(currency)['result']
-      assert_equal currency, query.keys.first
-      assert_equal alt_name, query[currency]['altname']
-      assert_equal decimals, query[currency]['decimals']
-      assert_equal display_decimals, query[currency]['display_decimals']
-    end
+  def assert_get_exchange_currency_info_for(currency, alt_name, decimals,
+                                            display_decimals)
+    query = @query.assets(currency)['result']
+    assert_equal currency, query.keys.first
+    assert_equal alt_name, query[currency]['altname']
+    assert_equal decimals, query[currency]['decimals']
+    assert_equal display_decimals, query[currency]['display_decimals']
+  end
 end

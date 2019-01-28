@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #--
 #    lib/kraken_ruby_client/http_errors.rb
 #
@@ -32,6 +33,5 @@ module KrakenRubyClient
     Net::HTTPHeaderSyntaxError,
     Net::ProtocolError,
     Timeout::Error
-  ]
-  .freeze
+  ].freeze
 end
