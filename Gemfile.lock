@@ -51,7 +51,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.16)
+  bundler (~> 1.17)
   color_pound_spec_reporter
   curb!
   kraken_ruby_client!
