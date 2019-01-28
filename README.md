@@ -51,12 +51,17 @@ client = Kraken::Client.new
 
 client.server_time
 client.assets
+client.assets('USD')
+client.assets('xbt,zec,dash,xmr,eth,etc,usd,eur,gbp,jpy')
 client.asset_pairs
-client.ticker('XBTEUR')
-client.ohlc('XBTUSD'
-client.order_book('ETHEUR')
+client.asset_pairs(:zecusd)
+client.asset_pairs('xbtusd,etheur')
+client.ticker('xbtusd,xmreur,ethgbp,ethjpy')
+client.ohlc(:xbtusd)
+client.order_book('etheur')
 client.trades('DASHXBT')
-client.spread('XMREUR')
+client.spread(:XMREUR)
+client.spread('XBTJPY')
 ```
 
 ### Private API examples
