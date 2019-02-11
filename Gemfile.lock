@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/taf2/curb.git
-  revision: 3b022d22a91ea79d18c2e67c301c74f81842245b
+  revision: 00670738c8ad18dd03455d121ea5ea7bdd81c225
   specs:
     curb (0.9.8)
 
@@ -36,7 +36,7 @@ GEM
     powerpack (0.1.2)
     rainbow (3.0.0)
     rake (12.3.2)
-    rubocop (0.63.1)
+    rubocop (0.64.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
       parser (>= 2.5, != 2.5.1.1)
