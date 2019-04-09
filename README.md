@@ -145,6 +145,12 @@ open_orders.select { |_, v| v.dig('descr', 'pair') == pair } # All open orders
 open_orders.detect { |_, v| v.dig('descr', 'pair') == pair } # Most recent open order
 ```
 
+### Place a limit buy order
+
+```ruby
+client.add_order(pair: 'LTCEUR', type: 'buy', ordertype: 'limit', volume: 1, price: 50.5)
+```
+
 ### Place a market buy order
 
 ```ruby
