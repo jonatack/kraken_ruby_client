@@ -144,6 +144,12 @@ open_orders.count # Number of open orders
 pair = 'ETCUSD'
 open_orders.select { |_, v| v.dig('descr', 'pair') == pair } # All open orders
 open_orders.detect { |_, v| v.dig('descr', 'pair') == pair } # Most recent open order
+
+# More elaborate version with order date and improved readibility for the last 10 open orders of an asset pair.
+open_orders.select { |_, v| v.dig('descr', 'pair') == pair }.first(10).each do |order|
+  action, price, *rest = order[1].dig('descr', 'order').split
+  puts "#{order[0]}   #{Time.at(order[1]['opentm'])}   #{action}#{' ' if action.size == 3}  #{price[0..4]} #{rest.join(' ')}"
+end
 ```
 
 ### Place a limit buy order
