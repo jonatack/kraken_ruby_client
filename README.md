@@ -117,14 +117,14 @@ client.balance
 ### Fetch closed orders
 
 ```ruby
-# Fetch all closed orders and a display a readable summary
+# Fetch all closed orders and a display a readable summary.
 closed_orders = client.closed_orders.dig('result', 'closed') # All closed orders
 closed_orders.first # Show the most recent closed order
 
-# Show a readable list of the last 5 closed orders
+# Show a readable list of the last 5 closed orders.
 closed_orders.first(5).each { |order| puts "#{order[0]} - #{order[1].dig('descr', 'order')}" }
 
-# More elaborate version with order date and improved readibility for the last 10 closed orders
+# More elaborate version with order date and improved readibility for the last 10 closed orders.
 closed_orders.first(10).each do |order|
   action, price, *rest = order[1].dig('descr', 'order').split
   puts "#{order[0]}   #{Time.at(order[1]['opentm'])}   #{action}#{' ' if action.size == 3}  #{price[0..4]} #{rest.join(' ')}"
@@ -134,12 +134,12 @@ end
 ### Fetch open orders
 
 ```ruby
-# Fetch all open orders, the most recent open order, and total open order count:
+# Fetch all open orders, the most recent open order, and total open order count.
 open_orders = client.open_orders.dig('result', 'open') # All open orders
 open_orders.first # Most recent open order
 open_orders.count # Number of open orders
 
-# List the open orders for an asset pair and the most recent order for the pair:
+# List the open orders for an asset pair and the most recent order for the pair.
 pair = 'ETCUSD'
 open_orders.select { |_, v| v.dig('descr', 'pair') == pair } # All open orders
 open_orders.detect { |_, v| v.dig('descr', 'pair') == pair } # Most recent open order
