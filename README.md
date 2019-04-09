@@ -124,7 +124,7 @@ closed_orders.first # Show the most recent closed order
 # Show a readable list of the last 5 closed orders.
 closed_orders.first(5).each { |order| puts "#{order[0]} - #{order[1].dig('descr', 'order')}" }
 
-# More elaborate version, with order date and improved readibility for the
+# More elaborate version, with order date and improved readability for the
 # last 10 closed orders of an asset pair.
 pair = 'LTCEUR'
 closed_orders.select { |_, v| v.dig('descr', 'pair') == pair }.first(10).each do |order|
@@ -147,7 +147,7 @@ pair = 'ETCUSD'
 open_orders.select { |_, v| v.dig('descr', 'pair') == pair } # All open orders
 open_orders.detect { |_, v| v.dig('descr', 'pair') == pair } # Most recent open order
 
-# More elaborate version, with order date and improved readibility for the
+# More elaborate version, with order date and improved readability for the
 # last 10 open orders of an asset pair.
 open_orders.select { |_, v| v.dig('descr', 'pair') == pair }.first(10).each do |order|
   action, price, *rest = order[1].dig('descr', 'order').split
