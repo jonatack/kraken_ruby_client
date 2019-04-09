@@ -141,8 +141,8 @@ open_orders.count # Number of open orders
 
 # List the open orders for an asset pair and the most recent order for the pair:
 pair = 'ETCUSD'
-orders.select { |_, v| v.dig('descr', 'pair') == pair } # All open orders
-orders.detect { |_, v| v.dig('descr', 'pair') == pair } # Most recent open order
+open_orders.select { |_, v| v.dig('descr', 'pair') == pair } # All open orders
+open_orders.detect { |_, v| v.dig('descr', 'pair') == pair } # Most recent open order
 ```
 
 ### Place a market buy order
