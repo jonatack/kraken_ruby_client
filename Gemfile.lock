@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/taf2/curb.git
-  revision: 93d83de2c93d87f86ca2c6c57d0d897dd5a7ad77
+  revision: e4ae981cd26d17c961e2e50e21ff5be49afa484e
   specs:
-    curb (0.9.8)
+    curb (0.9.10)
 
 PATH
   remote: .
