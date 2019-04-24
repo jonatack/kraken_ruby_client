@@ -58,9 +58,9 @@ class PublicApiTest < Minitest::Test
   end
 
   def test_get_assets
-    assets = %w(ADA BCH BSV DASH EOS GNO KFEE QTUM USDT XDAO XETC XETH XICN XLTC
-                XMLN XNMC XREP XTZ XXBT XXDG XXLM XXMR XXRP XXVN XZEC ZCAD ZEUR
-                ZGBP ZJPY ZKRW ZUSD)
+    assets = %w(ADA ATOM BCH BSV DASH EOS GNO KFEE QTUM USDT XDAO XETC XETH XICN
+                XLTC XMLN XNMC XREP XTZ XXBT XXDG XXLM XXMR XXRP XXVN XZEC ZCAD
+                ZEUR ZGBP ZJPY ZKRW ZUSD)
 
     query = @query.assets
 
