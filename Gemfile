@@ -47,3 +47,4 @@ gem 'color_pound_spec_reporter'
 
 # Linter
 gem 'rubocop'
+gem 'rubocop-performance'

@@ -1,9 +1,9 @@
 AllCops:
   TargetRubyVersion: 2.6
 
-#
 # Overrides to the default Rubocop config, in alphabetical order.
-#
+
+require: rubocop-performance
 
 Bundler/OrderedGems:
   Enabled: false
