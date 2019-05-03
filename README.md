@@ -130,7 +130,7 @@ pair = 'LTCEUR'
 closed_orders.select { |_, v| v.dig('descr', 'pair') == pair }.first(10).each do |order|
   action, price, *rest = order[1].dig('descr', 'order').split
   puts "#{order[0]}   #{Time.at(order[1]['opentm'])}   " \
-    "#{action}#{' ' if action.size == 3}  "#{price[0..4]} #{rest.join(' ')}"
+    "#{action}#{' ' if action.size == 3}  #{price[0..4]} #{rest.join(' ')}"
 end
 ```
 
