@@ -180,6 +180,14 @@ client.add_order(pair: 'DASHEUR', type: 'sell', ordertype: 'market', volume: 1, 
 client.cancel_order('TRANSACTION_ID')
 ```
 
+### Fetch trade volume
+
+```ruby
+client.trade_volume
+client.trade_volume(pair: 'XBTEUR, etcusd, xbteth')
+client.trade_volume(pair: 'XBTEUR', 'fee-info': true)
+```
+
 
 ## Running the test suite
 

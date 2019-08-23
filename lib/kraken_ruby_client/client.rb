@@ -240,6 +240,55 @@ module Kraken
       post_private 'TradeBalance', opts
     end
 
+    # Fetch trade volume (POST)
+    # URL: https://api.kraken.com/0/private/TradeVolume
+    # Input:
+    #   +pair+     [string] comma-delimited list of asset pairs (optional)
+    #   +fee-info+ [boolean] whether or not to include fee info (optional)
+    #
+    # Returns a hash with keys `error' and `result'.
+    #   +result+ is a hash of hashes containing keys:
+    #            currency, volume, fees, fees_maker.
+    #   currency   = volume currency
+    #   volume     = current discount volume
+    #   fees       = array of asset pairs and fee tier info (if requested)
+    #     fee        = current fee in percent
+    #     minfee     = minimum fee for pair (if not fixed fee)
+    #     maxfee     = maximum fee for pair (if not fixed fee)
+    #     nextfee    = next tier's fee for pair
+    #                  (if not fixed fee. nil if at lowest fee tier)
+    #     nextvolume = volume level of next tier
+    #                  (if not fixed fee. nil if at lowest fee tier)
+    #     tiervolume = volume level of current tier
+    #                  (if not fixed fee. nil if at lowest fee tier)
+    #   fees_maker = array of asset pairs and maker fee tier info (if requested)
+    #                for any pairs on maker/taker schedule
+    #     fee        = current fee in percent
+    #     minfee     = minimum fee for pair (if not fixed fee)
+    #     maxfee     = maximum fee for pair (if not fixed fee)
+    #     nextfee    = next tier's fee for pair
+    #                  (if not fixed fee, nil if at lowest fee tier)
+    #     nextvolume = volume level of next tier
+    #                  (if not fixed fee, nil if at lowest fee tier)
+    #     tiervolume = volume level of current tier
+    #                  (if not fixed fee, nil if at lowest fee tier)
+    #
+    # Note: If an asset pair is on a maker/taker fee schedule, the taker side is
+    # given in "fees" and maker side in "fees_maker". For pairs not on
+    # maker/taker, they will only be given in "fees".
+    #
+    # Examples:
+    #
+    # require 'kraken_ruby_client'
+    # client = Kraken::Client.new(api_key: YOUR_KEY, api_secret: YOUR_SECRET)
+    # client.trade_volume
+    # client.trade_volume(pair: 'XBTEUR, etcusd, xbteth')
+    # client.trade_volume(pair: 'XBTEUR', 'fee-info': true)
+    #
+    def trade_volume(opts = {})
+      post_private 'TradeVolume', opts
+    end
+
     # Fetch open orders (POST)
     # URL: https://api.kraken.com/0/private/OpenOrders
     # Input:
