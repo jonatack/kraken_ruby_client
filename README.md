@@ -28,33 +28,45 @@ Currently developed with Ruby 2.7. Compatible with Ruby 2.4 and up.
 
 # Getting started
 
-Clone the repository, and in the local directory, run `gem install curb ; bundle install`.
+1. Clone the repository from the command line or add it to your Gemfile.
 
-Or add it to your Gemfile
+    clone with SSH
 
-```
-gem 'kraken_ruby_client', github: 'jonatack/kraken_ruby_client'
-```
+    ```shell
+    git clone git@github.com:jonatack/kraken_ruby_client.git
+    ```
 
-and install with
+    or clone with HTTPS
 
-```
-bundle install
-```
+    ```shell
+    git clone https://github.com/jonatack/kraken_ruby_client.git
+    ```
 
-Launch the interactive Ruby shell from the terminal with
+    or add it to your Gemfile
 
-```
-$ irb -I lib
-```
+    ```ruby
+    gem 'kraken_ruby_client', github: 'jonatack/kraken_ruby_client'
+    ```
 
-or with the rake task
+2. Install from the command line in your local directory.
 
-```
-$ rake console
-```
+    ```shell
+    gem install curb ; bundle install
+    ```
 
-Inside the interactive Ruby console, ensure that `require 'curb'` does not raise any errors. If it does, Curb may not be properly installed or your system may be missing necessary dependencies. See the [Curb documentation](https://github.com/taf2/curb) for more info.
+3. Launch the interactive Ruby shell from the terminal.
+
+    ```shell
+    $ irb -I lib
+    ```
+
+    or with the rake task provided by this library
+
+    ```shell
+    $ rake console
+    ```
+
+    Inside the interactive Ruby console, ensure that `require 'curb'` does not raise any errors. If it does, Curb may not be properly installed or your system may be missing necessary dependencies. See the [Curb documentation](https://github.com/taf2/curb) for more info.
 
 ### Public API examples
 
