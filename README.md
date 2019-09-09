@@ -1,6 +1,8 @@
 # Kraken Ruby Client
 
-A Ruby API wrapper for the Kraken cryptocurrency exchange.
+A Ruby API wrapper for the Kraken cryptocurrency exchange, now featured as one
+of the libraries in
+[Kraken's API documentation](https://www.kraken.com/features/api#example-api-code).
 
 Emphasis on speed, simplicity, no meta-programming, and few dependencies.
 
