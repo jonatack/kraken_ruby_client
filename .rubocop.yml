@@ -3,7 +3,9 @@ AllCops:
 
 # Overrides to the default Rubocop config, in alphabetical order.
 
-require: rubocop-performance
+require:
+  - rubocop-performance
+  - rubocop-minitest
 
 Bundler/OrderedGems:
   Enabled: false

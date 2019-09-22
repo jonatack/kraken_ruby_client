@@ -53,3 +53,8 @@ task :console do
   ARGV.clear
   IRB.start
 end
+
+require 'rubocop/rake_task'
+RuboCop::RakeTask.new do |task|
+  task.requires << 'rubocop-minitest'
+end
