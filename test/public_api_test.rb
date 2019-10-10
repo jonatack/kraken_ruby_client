@@ -58,7 +58,7 @@ class PublicApiTest < Minitest::Test
   end
 
   def test_get_assets
-    assets = %w(ADA ATOM BAT BCH BSV DAI DASH EOS GNO ICX KFEE LINK QTUM USDT
+    assets = %w(ADA ATOM BAT BCH BSV DAI DASH EOS GNO ICX KFEE LINK QTUM SC USDT
                 WAVES XETC XETH XLTC XMLN XREP XTZ XXBT XXDG XXLM XXMR XXRP XZEC
                 ZCAD ZEUR ZGBP ZJPY ZUSD)
 
