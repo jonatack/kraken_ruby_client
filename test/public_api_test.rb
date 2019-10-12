@@ -22,7 +22,7 @@
 #    The author may be contacted by email: jon@atack.com
 #++
 require 'time'
-require 'test_helper'
+require_relative 'test_helper'
 
 # To run all tests: `bundle exec rake` or `bundle exec rake test`
 #

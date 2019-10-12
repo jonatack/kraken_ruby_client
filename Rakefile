@@ -41,9 +41,7 @@ desc 'Run all tests with `rake` or `rake test`'
 task default: :test
 Rake::TestTask.new(:test) do |t|
   t.libs.push 'test'
-  t.libs.push 'lib'
   t.test_files = FileList['test/**/*_test.rb']
-  t.verbose = true
 end
 
 desc 'Open an irb session with `rake console`'
