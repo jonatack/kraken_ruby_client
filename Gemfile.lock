@@ -21,8 +21,8 @@ GEM
       minitest
       minitest-reporters (>= 0.14.24)
       rake
-    jaro_winkler (1.5.3)
-    minitest (5.12.2)
+    jaro_winkler (1.5.4)
+    minitest (5.13.0)
     minitest-focus (1.1.2)
       minitest (>= 4, < 6)
     minitest-reporters (1.4.2)
@@ -35,7 +35,7 @@ GEM
       ast (~> 2.4.0)
     rainbow (3.0.0)
     rake (13.0.0)
-    rubocop (0.75.1)
+    rubocop (0.76.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
       parser (>= 2.6)
