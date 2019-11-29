@@ -10,10 +10,10 @@ require:
 Bundler/OrderedGems:
   Enabled: false
 
-Layout/AlignHash:
+Layout/HashAlignment:
   Enabled: false
 
-Layout/AlignParameters:
+Layout/ParameterAlignment:
   Enabled: false
 
 Layout/MultilineMethodCallIndentation:
