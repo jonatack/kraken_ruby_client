@@ -13,10 +13,16 @@ Bundler/OrderedGems:
 Layout/HashAlignment:
   Enabled: false
 
-Layout/ParameterAlignment:
-  Enabled: false
+Layout/LineLength:
+  Max: 80
+  AllowHeredoc: true
+  AllowURI: true
+  IgnoreCopDirectives: false
 
 Layout/MultilineMethodCallIndentation:
+  Enabled: false
+
+Layout/ParameterAlignment:
   Enabled: false
 
 Layout/SpaceInLambdaLiteral:
@@ -34,12 +40,6 @@ Metrics/BlockLength:
 
 Metrics/ClassLength:
   Enabled: false
-
-Metrics/LineLength:
-  Max: 80
-  AllowHeredoc: true
-  AllowURI: true
-  IgnoreCopDirectives: false
 
 Metrics/MethodLength:
   CountComments: false
