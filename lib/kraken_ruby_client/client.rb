@@ -366,6 +366,24 @@ module Kraken
       post_private 'ClosedOrders', opts
     end
 
+    # Withdraw funds (POST)
+    # URL: https://api.kraken.com/0/private/Withdraw
+    # Input:
+    #   +aclass+    asset class (optional)
+    #   +asset+     asset being withdrawn
+    #   +key+       withdrawal key name, as set up on your account
+    #   +amount+    amount to withdraw, including fees
+    #
+    # Examples:
+    #
+    # require 'kraken_ruby_client'
+    # client = Kraken::Client.new(api_key: YOUR_KEY, api_secret: YOUR_SECRET)
+    # withdrawal = client.withdraw(asset: 'USD', key: 'YOUR_WITHDRAWAL_ACCOUNT_KEY', amount: 20.0)
+    # 
+    def withdraw(opts = {})
+      post_private 'Withdraw', opts
+    end
+
     private
 
     # HTTP GET request for public API queries.
