@@ -378,8 +378,8 @@ module Kraken
     #
     # require 'kraken_ruby_client'
     # client = Kraken::Client.new(api_key: YOUR_KEY, api_secret: YOUR_SECRET)
-    # withdrawal = client.withdraw(asset: 'USD', key: 'YOUR_WITHDRAWAL_ACCOUNT_KEY', amount: 20.0)
-    # 
+    # withdrawal = client.withdraw(asset: 'USD', key: YOUR_KEY, amount: 20.0)
+    #
     def withdraw(opts = {})
       post_private 'Withdraw', opts
     end
@@ -436,6 +436,7 @@ module Kraken
 
     def authenticate(url)
       raise 'API Secret is not set' unless @api_secret
+
       hmac = OpenSSL::HMAC.digest('sha512', Base64.decode64(@api_secret), url)
       Base64.strict_encode64(hmac)
     end
