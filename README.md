@@ -225,6 +225,14 @@ To run an individual test in a test file:
 `rake TEST=test/public_api_test.rb TESTOPTS=--name=test_get_server_time`
 
 
+## Running the linter
+
+To run the linters: `rubocop`
+
+This will run the linters in the Gemfile: rubocop, rubocop-performance, and
+rubocop-minitest.
+
+
 ## Contributions
 
 To support the project:
