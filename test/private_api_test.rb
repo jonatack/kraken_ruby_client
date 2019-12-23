@@ -54,6 +54,11 @@ class PrivateApiTest < Minitest::Test
     assert_operator next_nonce, :>, prev_nonce
   end
 
+  def test_raise_if_api_key_not_set
+    exception = assert_raises(RuntimeError) { Kraken::Client.new.balance }
+    assert_equal('API Key is not set', exception.message)
+  end
+
   def test_raise_if_api_secret_not_set
     exception = assert_raises(RuntimeError) do
       Kraken::Client.new(api_key: 'a').balance

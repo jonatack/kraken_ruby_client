@@ -435,6 +435,7 @@ module Kraken
     end
 
     def authenticate(url)
+      raise 'API Key is not set' unless @api_key
       raise 'API Secret is not set' unless @api_secret
 
       hmac = OpenSSL::HMAC.digest('sha512', Base64.decode64(@api_secret), url)
