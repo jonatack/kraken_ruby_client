@@ -54,6 +54,13 @@ class PrivateApiTest < Minitest::Test
     assert_operator next_nonce, :>, prev_nonce
   end
 
+  def test_raise_error_if_api_secret_null
+    @client = Kraken::Client.new
+
+    exception = assert_raises(RuntimeError) { @client.withdraw(asset: 'USD', key: 'TEST_KEY', amount: 5.0) }
+    assert_equal( 'API Secret is not set', exception.message )
+  end
+
   #
   # The Kraken API_KEY and API_SECRET environment variables are required.
   #
