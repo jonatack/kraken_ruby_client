@@ -219,10 +219,10 @@ client.trade_volume(pair: 'XBTEUR, etcusd, xbteth')
 
 To run all tests: `rake test` or just `rake`
 
-To run one test file: `rake TEST=test/public_api_test.rb`
+To run one test file: `rake TEST=test/public_api_test`
 
 To run an individual test in a test file:
-`rake TEST=test/public_api_test.rb TESTOPTS=--name=test_get_server_time`
+`rake TEST=test/public_api_test TESTOPTS=--name=test_get_server_time`
 
 
 ## Running the linter
