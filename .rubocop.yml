@@ -25,6 +25,9 @@ Layout/MultilineMethodCallIndentation:
 Layout/ParameterAlignment:
   Enabled: false
 
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+
 Layout/SpaceInLambdaLiteral:
   Enabled: false
 
@@ -64,6 +67,9 @@ Naming/VariableNumber:
 
 Style/Documentation:
   Enabled: false
+
+Style/ExponentialNotation:
+  Enabled: true
 
 Style/GuardClause:
   Enabled: false
