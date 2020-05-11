@@ -13,6 +13,9 @@ Bundler/OrderedGems:
 Layout/HashAlignment:
   Enabled: false
 
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+
 Layout/LineLength:
   Max: 80
   AllowHeredoc: true
@@ -91,3 +94,6 @@ Style/PercentLiteralDelimiters:
     default: '()'
     '%i':    '()'
     '%w':    '()'
+
+Style/SlicingWithRange:
+  Enabled: false
