@@ -37,6 +37,9 @@ Layout/SpaceInLambdaLiteral:
 Lint/AssignmentInCondition:
   Enabled: false
 
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+
 Lint/RaiseException:
   Enabled: true
 
