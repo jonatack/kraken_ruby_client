@@ -40,6 +40,9 @@ Lint/AssignmentInCondition:
 Lint/DeprecatedOpenSSLConstant:
   Enabled: true
 
+Lint/MixedRegexpCaptureTypes:
+  Enabled: true
+
 Lint/RaiseException:
   Enabled: true
 
@@ -97,6 +100,12 @@ Style/PercentLiteralDelimiters:
     default: '()'
     '%i':    '()'
     '%w':    '()'
+
+Style/RedundantRegexpCharacterClass:
+  Enabled: true
+
+Style/RedundantRegexpEscape:
+  Enabled: true
 
 Style/SlicingWithRange:
   Enabled: false
