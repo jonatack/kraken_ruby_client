@@ -101,6 +101,9 @@ Style/PercentLiteralDelimiters:
     '%i':    '()'
     '%w':    '()'
 
+Style/RedundantFetchBlock:
+  Enabled: true
+
 Style/RedundantRegexpCharacterClass:
   Enabled: true
 
