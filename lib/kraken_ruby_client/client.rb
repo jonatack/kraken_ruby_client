@@ -42,8 +42,8 @@ module Kraken
       @api_key, @api_secret = api_key, api_secret
       base_uri              = options[:base_uri] || KRAKEN_API_URL
       api_version_path      = "/#{options[:version] || KRAKEN_API_VERSION}"
-      @api_public_url       = base_uri + api_version_path + '/public/'
-      @api_private_path     =            api_version_path + '/private/'
+      @api_public_url       = "#{base_uri}#{api_version_path}/public/"
+      @api_private_path     =            "#{api_version_path}/private/"
       @api_private_url      = base_uri + @api_private_path
     end
 
@@ -223,7 +223,7 @@ module Kraken
     end
 
     def add_order_err_msg(missing_args)
-      'the following required arguments are missing: ' + missing_args.join(', ')
+      "the following required arguments are missing: #{missing_args.join(', ')}"
     end
 
     # Cancel order having txn id
