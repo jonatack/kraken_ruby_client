@@ -127,7 +127,7 @@ client.open_orders.dig('result', 'open')
 #   committed frame and is always present, regardless of the value of since.
 #   +last+ is to be used as `since' when getting new committed OHLC data.
 
-client.ohlc('XBTUSD'
+client.ohlc('XBTUSD')
 client.ohlc('xbtjpy', interval: 5)
 client.ohlc('ETHGBP', since: 1548525720)
 client.ohlc('xmrusd', interval: 15, since: 1548525720)
