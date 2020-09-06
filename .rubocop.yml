@@ -46,10 +46,16 @@ Lint/DeprecatedOpenSSLConstant:
 Lint/DuplicateElsifCondition:
   Enabled: true
 
+Lint/DuplicateRequire:
+  Enabled: true
+
 Lint/DuplicateRescueException:
   Enabled: true
 
 Lint/EmptyConditionalBody:
+  Enabled: true
+
+Lint/EmptyFile:
   Enabled: true
 
 Lint/FloatComparison:
@@ -76,7 +82,13 @@ Lint/StructNewOverride:
 Lint/TopLevelReturnWithArgument:
   Enabled: true
 
+Lint/TrailingCommaInAttributeDeclaration:
+  Enabled: true
+
 Lint/UnreachableLoop:
+  Enabled: true
+
+Lint/UselessMethodDefinition:
   Enabled: true
 
 Metrics/AbcSize:
@@ -167,6 +179,9 @@ Performance/Squeeze:
 Performance/StringInclude:
   Enabled: true
 
+Performance/Sum:
+  Enabled: true
+
 Style/AccessorGrouping:
   Enabled: true
 
@@ -177,6 +192,9 @@ Style/BisectedAttrAccessor:
   Enabled: true
 
 Style/CaseLikeIf:
+  Enabled: true
+
+Style/CombinableLoops:
   Enabled: true
 
 Style/Documentation:
@@ -209,6 +227,9 @@ Style/HashTransformKeys:
 Style/HashTransformValues:
   Enabled: true
 
+Style/KeywordParametersOrder:
+  Enabled: true
+
 Style/OptionalBooleanParameter:
   Enabled: true
 
@@ -236,6 +257,9 @@ Style/RedundantRegexpCharacterClass:
 Style/RedundantRegexpEscape:
   Enabled: true
 
+Style/RedundantSelfAssignment:
+  Enabled: true
+
 Style/SingleArgumentDig:
   Enabled: true
 
@@ -243,4 +267,7 @@ Style/SlicingWithRange:
   Enabled: false
 
 Style/StringConcatenation:
+  Enabled: true
+
+Style/SoleNestedConditional:
   Enabled: true
