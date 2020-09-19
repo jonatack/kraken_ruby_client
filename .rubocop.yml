@@ -10,6 +10,9 @@ require:
 Bundler/OrderedGems:
   Enabled: false
 
+Layout/BeginEndAlignment:
+  Enabled: true
+
 Layout/HashAlignment:
   Enabled: false
 
@@ -40,6 +43,9 @@ Lint/AssignmentInCondition:
 Lint/BinaryOperatorWithIdenticalOperands:
   Enabled: true
 
+Lint/ConstantDefinitionInBlock:
+  Enabled: true
+
 Lint/DeprecatedOpenSSLConstant:
   Enabled: true
 
@@ -59,6 +65,9 @@ Lint/EmptyFile:
   Enabled: true
 
 Lint/FloatComparison:
+  Enabled: true
+
+Lint/IdentityComparison:
   Enabled: true
 
 Lint/MissingSuper:
@@ -89,6 +98,9 @@ Lint/UnreachableLoop:
   Enabled: true
 
 Lint/UselessMethodDefinition:
+  Enabled: true
+
+Lint/UselessTimes:
   Enabled: true
 
 Metrics/AbcSize:
