@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/taf2/curb.git
-  revision: 2fcd3863454754303151885ef7d247cc31a4472d
+  revision: fa6e08ecb8783c4ad5103ae12469931a4ba9036b
   specs:
     curb (0.9.10)
 
@@ -30,19 +30,19 @@ GEM
       minitest (>= 5.0)
       ruby-progressbar
     parallel (1.19.2)
-    parser (2.7.1.5)
+    parser (2.7.2.0)
       ast (~> 2.4.1)
     rainbow (3.0.0)
     rake (13.0.1)
     regexp_parser (1.8.1)
     rexml (3.2.4)
-    rubocop (0.92.0)
+    rubocop (0.93.0)
       parallel (~> 1.10)
       parser (>= 2.7.1.5)
       rainbow (>= 2.2.2, < 4.0)
-      regexp_parser (>= 1.7)
+      regexp_parser (>= 1.8)
       rexml
-      rubocop-ast (>= 0.5.0)
+      rubocop-ast (>= 0.6.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 2.0)
     rubocop-ast (0.7.1)
