@@ -236,10 +236,6 @@ module Kraken
       post_private 'Balance'
     end
 
-    def deposit_status(opts = {})
-      post_private 'DepositStatus', opts
-    end
-
     def trade_balance(opts = {})
       post_private 'TradeBalance', opts
     end
@@ -370,6 +366,60 @@ module Kraken
       post_private 'ClosedOrders', opts
     end
 
+    # Get deposit methods (POST)
+    #
+    # Examples:
+    #
+    # client.deposit_methods(asset: :xxbt)
+    #
+    def deposit_methods(opts = {})
+      post_private 'DepositMethods', opts
+    end
+
+    # Get deposit addresses (POST)
+    # Input:
+    #   aclass = asset class (optional):
+    #     currency (default)
+    #   asset = asset being deposited
+    #   method = name of the deposit method
+    #   new = whether or not to generate a new address (optional, default false)
+    #
+    # Result: associative array of deposit addresses:
+    #   address = deposit address
+    #   expiretm = expiration time in unix timestamp, or 0 if not expiring
+    #   new = whether or not address has ever been used
+    #
+    # Examples:
+    #
+    # client.deposit_addresses(asset: 'xxbt', method: 'Bitcoin', new: true)
+    #
+    def deposit_addresses(opts = {})
+      post_private 'DepositAddresses', opts
+    end
+
+    # Get deposit status (POST)
+    #
+    # Examples:
+    #
+    # client.deposit_status(asset: :xxbt, method: 'Bitcoin')
+    #
+    def deposit_status(opts = {})
+      post_private 'DepositStatus', opts
+    end
+
+    # Withdraw info (POST)
+    def withdraw_info(opts = {})
+      post_private 'WithdrawInfo', opts
+    end
+
+    # Withdraw status (POST)
+    #
+    # client.withdraw_status(asset: :zeur)
+    #
+    def withdraw_status(opts = {})
+      post_private 'WithdrawStatus', opts
+    end
+
     # Withdraw funds (POST)
     # URL: https://api.kraken.com/0/private/Withdraw
     # Input:
@@ -382,10 +432,28 @@ module Kraken
     #
     # require 'kraken_ruby_client'
     # client = Kraken::Client.new(api_key: YOUR_KEY, api_secret: YOUR_SECRET)
-    # withdrawal = client.withdraw(asset: 'USD', key: YOUR_KEY, amount: 20.0)
+    # withdrawal = client.withdraw(asset: :zeur, key: YOUR_KEY, amount: 20.0)
     #
     def withdraw(opts = {})
       post_private 'Withdraw', opts
+    end
+
+    # Request withdrawal cancellation (POST)
+    #
+    # Input:
+    #   aclass = asset class (optional):
+    #     currency (default)
+    #   asset = asset being withdrawn
+    #   refid = withdrawal reference id
+    #
+    # Result: true on success
+    #
+    # Note: Cancellation cannot be guaranteed. This will put in a cancelation
+    # request. Depending upon how far along the withdrawal process is, it may
+    # not be possible to cancel the withdrawal.
+    #
+    def withdraw_cancel(opts = {})
+      post_private 'WithdrawCancel', opts
     end
 
     private
