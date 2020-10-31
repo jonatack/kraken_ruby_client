@@ -52,10 +52,16 @@ Lint/DeprecatedOpenSSLConstant:
 Lint/DuplicateElsifCondition:
   Enabled: true
 
+Lint/DuplicateRegexpCharacterClassElement:
+  Enabled: true
+
 Lint/DuplicateRequire:
   Enabled: true
 
 Lint/DuplicateRescueException:
+  Enabled: true
+
+Lint/EmptyBlock:
   Enabled: true
 
 Lint/EmptyConditionalBody:
@@ -94,10 +100,16 @@ Lint/SelfAssignment:
 Lint/StructNewOverride:
   Enabled: true
 
+Lint/ToEnumArguments:
+  Enabled: true
+
 Lint/TopLevelReturnWithArgument:
   Enabled: true
 
 Lint/TrailingCommaInAttributeDeclaration:
+  Enabled: true
+
+Lint/UnmodifiedReduceAccumulator:
   Enabled: true
 
 Lint/UnreachableLoop:
@@ -203,6 +215,9 @@ Performance/Sum:
 Style/AccessorGrouping:
   Enabled: true
 
+Style/ArgumentsForwarding:
+  Enabled: true
+
 Style/ArrayCoercion:
   Enabled: true
 
@@ -216,6 +231,9 @@ Style/ClassEqualityComparison:
   Enabled: true
 
 Style/CombinableLoops:
+  Enabled: true
+
+Style/DocumentDynamicEvalDefinition:
   Enabled: true
 
 Style/Documentation:
@@ -287,8 +305,11 @@ Style/SingleArgumentDig:
 Style/SlicingWithRange:
   Enabled: false
 
+Style/SoleNestedConditional:
+  Enabled: true
+
 Style/StringConcatenation:
   Enabled: true
 
-Style/SoleNestedConditional:
+Style/SwapValues:
   Enabled: true
