@@ -399,7 +399,7 @@ module Kraken
 
     # Get deposit status (POST)
     #
-    # Examples:
+    # Example:
     #
     # client.deposit_status(asset: :xxbt, method: 'Bitcoin')
     #
@@ -408,11 +408,18 @@ module Kraken
     end
 
     # Withdraw info (POST)
+    #
+    # Example:
+    #
+    # client.withdraw_info(asset: :zusd, key: 'Bank account name', amount: 10)
+    #
     def withdraw_info(opts = {})
       post_private 'WithdrawInfo', opts
     end
 
     # Withdraw status (POST)
+    #
+    # Example:
     #
     # client.withdraw_status(asset: :zeur)
     #
@@ -432,7 +439,7 @@ module Kraken
     #
     # require 'kraken_ruby_client'
     # client = Kraken::Client.new(api_key: YOUR_KEY, api_secret: YOUR_SECRET)
-    # withdrawal = client.withdraw(asset: :zeur, key: YOUR_KEY, amount: 20.0)
+    # client.withdraw(asset: :zusd, key: 'Bank account name', amount: 10)
     #
     def withdraw(opts = {})
       post_private 'Withdraw', opts
