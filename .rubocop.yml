@@ -85,6 +85,9 @@ Lint/MissingSuper:
 Lint/MixedRegexpCaptureTypes:
   Enabled: true
 
+Lint/NoReturnInBeginEndBlocks:
+  Enabled: true
+
 Lint/OutOfRangeRegexpRef:
   Enabled: true
 
@@ -233,6 +236,9 @@ Style/ClassEqualityComparison:
 Style/CombinableLoops:
   Enabled: true
 
+Style/CollectionCompact:
+  Enabled: true
+
 Style/DocumentDynamicEvalDefinition:
   Enabled: true
 
@@ -267,6 +273,9 @@ Style/HashTransformValues:
   Enabled: true
 
 Style/KeywordParametersOrder:
+  Enabled: true
+
+Style/NegatedIfElseCondition:
   Enabled: true
 
 Style/OptionalBooleanParameter:
