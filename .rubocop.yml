@@ -49,6 +49,9 @@ Lint/ConstantDefinitionInBlock:
 Lint/DeprecatedOpenSSLConstant:
   Enabled: true
 
+Lint/DuplicateBranch:
+  Enabled: true
+
 Lint/DuplicateElsifCondition:
   Enabled: true
 
@@ -62,6 +65,9 @@ Lint/DuplicateRescueException:
   Enabled: true
 
 Lint/EmptyBlock:
+  Enabled: true
+
+Lint/EmptyClass:
   Enabled: true
 
 Lint/EmptyConditionalBody:
@@ -276,6 +282,9 @@ Style/KeywordParametersOrder:
   Enabled: true
 
 Style/NegatedIfElseCondition:
+  Enabled: true
+
+Style/NilLambda:
   Enabled: true
 
 Style/OptionalBooleanParameter:
