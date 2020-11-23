@@ -314,6 +314,9 @@ Style/PercentLiteralDelimiters:
     '%i':    '()'
     '%w':    '()'
 
+Style/RedundantArgument:
+  Enabled: true
+
 Style/RedundantAssignment:
   Enabled: true
 
