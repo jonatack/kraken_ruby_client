@@ -118,6 +118,9 @@ Lint/TopLevelReturnWithArgument:
 Lint/TrailingCommaInAttributeDeclaration:
   Enabled: true
 
+Lint/UnexpectedBlockArity:
+  Enabled: true
+
 Lint/UnmodifiedReduceAccumulator:
   Enabled: true
 
