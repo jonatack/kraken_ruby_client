@@ -34,8 +34,14 @@ Layout/ParameterAlignment:
 Layout/SpaceAroundMethodCallOperator:
   Enabled: true
 
+Layout/SpaceBeforeBrackets:
+  Enabled: true
+
 Layout/SpaceInLambdaLiteral:
   Enabled: false
+
+Lint/AmbiguousAssignment:
+  Enabled: true
 
 Lint/AssignmentInCondition:
   Enabled: false
@@ -285,6 +291,9 @@ Style/HashAsLastArrayItem:
   Enabled: true
 
 Style/HashEachMethods:
+  Enabled: true
+
+Style/HashExcept:
   Enabled: true
 
 Style/HashLikeCase:
