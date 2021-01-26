@@ -4,7 +4,7 @@
 #    Gemfile
 #
 #    Kraken Exchange API client written in Ruby
-#    Copyright (C) 2016-2020 Jon Atack <jon@atack.com>
+#    Copyright (C) 2016-2021 Jon Atack <jon@atack.com>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published by

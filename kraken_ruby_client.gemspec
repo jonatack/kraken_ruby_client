@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
     This program comes with ABSOLUTELY NO WARRANTY.
     This is free software, and you are welcome to redistribute it
     under certain conditions; see the LICENSE file for details.
-    Copyright (C) 2016-2020 Jon Atack <jon@atack.com>
+    Copyright (C) 2016-2021 Jon Atack <jon@atack.com>
   DESCRIPTION
 
   s.add_dependency 'curb', '~> 0.9'

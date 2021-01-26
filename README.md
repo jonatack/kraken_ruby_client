@@ -214,6 +214,12 @@ client.trade_volume
 client.trade_volume(pair: 'XBTEUR, etcusd, xbteth')
 ```
 
+### Get deposit methods
+
+```ruby
+client.deposit_methods(asset: 'XXBT')
+```
+
 
 ## Running the test suite
 
@@ -258,4 +264,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 The author may be contacted by email at jon@atack.com.
 
-Copyright © 2016-2020 Jon Atack (@jonatack)
+Copyright © 2016-2021 Jon Atack (@jonatack)
