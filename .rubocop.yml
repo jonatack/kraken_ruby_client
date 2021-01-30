@@ -106,6 +106,12 @@ Lint/MixedRegexpCaptureTypes:
 Lint/NoReturnInBeginEndBlocks:
   Enabled: true
 
+Lint/NumberedParameterAssignment:
+  Enabled: true
+
+Lint/OrAssignmentToConstant:
+  Enabled: true
+
 Lint/OutOfRangeRegexpRef:
   Enabled: true
 
@@ -124,6 +130,9 @@ Lint/SelfAssignment:
 Lint/StructNewOverride:
   Enabled: true
 
+Lint/SymbolConversion:
+  Enabled: true
+
 Lint/ToEnumArguments:
   Enabled: true
 
@@ -131,6 +140,9 @@ Lint/TopLevelReturnWithArgument:
   Enabled: true
 
 Lint/TrailingCommaInAttributeDeclaration:
+  Enabled: true
+
+Lint/TripleQuotes:
   Enabled: true
 
 Lint/UnexpectedBlockArity:
@@ -315,6 +327,9 @@ Style/HashTransformKeys:
   Enabled: true
 
 Style/HashTransformValues:
+  Enabled: true
+
+Style/IfWithBooleanLiteralBranches:
   Enabled: true
 
 Style/KeywordParametersOrder:
