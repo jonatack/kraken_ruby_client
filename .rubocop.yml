@@ -10,6 +10,9 @@ require:
 Bundler/OrderedGems:
   Enabled: false
 
+Gemspec/DateAssignment:
+  Enabled: false
+
 Layout/BeginEndAlignment:
   Enabled: true
 
@@ -245,7 +248,13 @@ Performance/ConstantRegexp:
 Performance/MethodObjectAsBlock:
   Enabled: true
 
+Performance/RedundantEqualityComparisonBlock:
+  Enabled: true
+
 Performance/RedundantSortBlock:
+  Enabled: true
+
+Performance/RedundantSplitRegexpArgument:
   Enabled: true
 
 Performance/RedundantStringChars:
@@ -312,6 +321,9 @@ Style/GuardClause:
   Enabled: false
 
 Style/HashAsLastArrayItem:
+  Enabled: true
+
+Style/HashConversion:
   Enabled: true
 
 Style/HashEachMethods:
