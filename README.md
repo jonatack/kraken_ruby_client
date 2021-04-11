@@ -192,13 +192,31 @@ client.add_order(pair: 'LTCEUR', type: 'buy', ordertype: 'limit', volume: 1, pri
 ### Place a market buy order
 
 ```ruby
-client.add_order(pair: 'XBTEUR', type: 'buy', ordertype: 'market', volume: 0.5)
+client.add_order(pair: 'XBTUSD', type: 'buy', ordertype: 'market', volume: 0.012)
 ```
 
-### Place a margin sell order (short)
+### Place a margin buy order (long) at 2x leverage
 
 ```ruby
-client.add_order(pair: 'DASHEUR', type: 'sell', ordertype: 'market', volume: 1, leverage: 2)
+client.add_order(pair: 'BTCUSD, type: 'buy, ordertype: 'market', volume: 0.072, leverage: 2)
+```
+
+### Place a limit sell order
+
+```ruby
+client.add_order(pair: 'ZECEUR', type: 'sell', ordertype: 'limit', volume: 1.23, price: 199.43)
+```
+
+### Place a market sell order
+
+```ruby
+client.add_order(pair: 'XMRUSD, type: 'sell', ordertype: 'limit', volume: 256.62)
+```
+
+### Place a margin sell order (short) at 2x leverage
+
+```ruby
+client.add_order(pair: 'DASHEUR', type: 'sell', ordertype: 'market', volume: 1.53, leverage: 2)
 ```
 
 ### Cancel an order
