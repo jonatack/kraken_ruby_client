@@ -398,6 +398,9 @@ Style/SlicingWithRange:
 Style/SoleNestedConditional:
   Enabled: true
 
+Style/StringChars:
+  Enabled: true
+
 Style/StringConcatenation:
   Enabled: true
 
