@@ -148,16 +148,16 @@ client.balance
 closed_orders = client.closed_orders.dig('result', 'closed') # All closed orders
 closed_orders.first # Show the most recent closed order
 
-# Show a readable list of the last 5 closed orders.
-closed_orders.first(5).each { |order| puts "#{order[0]} - #{order[1].dig('descr', 'order')}" }
+# Show a readable list of the last 10 closed orders, including canceled ones.
+closed_orders.first(10).each { |order| puts "#{order[0]} - #{order[1].dig('descr', 'order')} - #{order[1]['status']}" }
 
-# More elaborate version, with order date and improved readability for the
-# last 10 closed orders of an asset pair.
-pair = 'LTCEUR'
-closed_orders.select { |_, v| v.dig('descr', 'pair') == pair }.first(10).each do |order|
+# More elaborate version, with order date/time and improved readability for the
+# last 10 closed orders (that were not canceled) of an asset pair.
+pair = 'XBTEUR'
+closed_orders.select { |_, v| v.dig('descr', 'pair') == pair && v['status'] != 'canceled' }.first(10).each do |order|
   action, price, *rest = order[1].dig('descr', 'order').split
-  puts "#{order[0]}   #{Time.at(order[1]['opentm'])}   " \
-    "#{action}#{' ' if action.size == 3}  #{price[0..4]} #{rest.join(' ')}"
+  puts "#{order[0]}   #{Time.at(order[1]['opentm']).utc}   " \
+    "#{action}#{' ' if action.size == 3}  #{price[0..4]} #{rest.join(' ')}   #{order[1]['status']}"
 end
 ```
 
