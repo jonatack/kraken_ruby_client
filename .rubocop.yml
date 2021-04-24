@@ -248,6 +248,9 @@ Performance/CollectionLiteralInLoop:
 Performance/ConstantRegexp:
   Enabled: true
 
+Performance/MapCompact:
+  Enabled: true
+
 Performance/MethodObjectAsBlock:
   Enabled: true
 
