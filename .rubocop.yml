@@ -88,6 +88,9 @@ Lint/EmptyConditionalBody:
 Lint/EmptyFile:
   Enabled: true
 
+Lint/EmptyInPattern:
+  Enabled: true
+
 Lint/FloatComparison:
   Enabled: true
 
@@ -350,7 +353,13 @@ Style/HashTransformValues:
 Style/IfWithBooleanLiteralBranches:
   Enabled: true
 
+Style/InPatternThen:
+  Enabled: true
+
 Style/KeywordParametersOrder:
+  Enabled: true
+
+Style/MultilineInPatternThen:
   Enabled: true
 
 Style/NegatedIfElseCondition:
@@ -370,6 +379,9 @@ Style/PercentLiteralDelimiters:
     default: '()'
     '%i':    '()'
     '%w':    '()'
+
+Style/QuotedSymbols:
+  Enabled: true
 
 Style/RedundantArgument:
   Enabled: true
