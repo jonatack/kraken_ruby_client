@@ -28,6 +28,9 @@ Layout/LineLength:
   AllowURI: true
   IgnoreCopDirectives: false
 
+Layout/LineEndStringConcatenationIndentation:
+  Enabled: false
+
 Layout/MultilineMethodCallIndentation:
   Enabled: false
 
@@ -222,6 +225,9 @@ Minitest/TestMethodName:
   Enabled: true
 
 Minitest/UnspecifiedException:
+  Enabled: true
+
+Naming/InclusiveLanguage:
   Enabled: true
 
 Naming/MemoizedInstanceVariableName:
