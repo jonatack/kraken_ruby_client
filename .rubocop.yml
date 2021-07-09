@@ -224,6 +224,9 @@ Minitest/RefutePathExists:
 Minitest/TestMethodName:
   Enabled: true
 
+Minitest/UnreachableAssertion:
+  Enabled: true
+
 Minitest/UnspecifiedException:
   Enabled: true
 
