@@ -49,6 +49,9 @@ Layout/SpaceInLambdaLiteral:
 Lint/AmbiguousAssignment:
   Enabled: true
 
+Lint/AmbiguousRange:
+  Enabled: true
+
 Lint/AssignmentInCondition:
   Enabled: false
 
@@ -411,6 +414,9 @@ Style/RedundantRegexpEscape:
   Enabled: true
 
 Style/RedundantSelfAssignment:
+  Enabled: true
+
+Style/RedundantSelfAssignmentBranch:
   Enabled: true
 
 Style/SingleArgumentDig:
