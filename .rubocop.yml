@@ -49,6 +49,9 @@ Layout/SpaceInLambdaLiteral:
 Lint/AmbiguousAssignment:
   Enabled: true
 
+Lint/AmbiguousOperatorPrecedence:
+  Enabled: true
+
 Lint/AmbiguousRange:
   Enabled: true
 
@@ -104,6 +107,9 @@ Lint/HashCompareByIdentity:
   Enabled: true
 
 Lint/IdentityComparison:
+  Enabled: true
+
+Lint/IncompatibleIoSelectWithFiberScheduler:
   Enabled: true
 
 Lint/LambdaWithoutLiteralBlock:
