@@ -142,6 +142,9 @@ Lint/RedundantDirGlobSort:
 Lint/RedundantSafeNavigation:
   Enabled: true
 
+Lint/RequireRelativeSelfPath:
+  Enabled: true
+
 Lint/SelfAssignment:
   Enabled: true
 
@@ -302,6 +305,9 @@ Performance/StringInclude:
 Performance/Sum:
   Enabled: true
 
+Security/IoMethods:
+  Enabled: true
+
 Style/AccessorGrouping:
   Enabled: true
 
@@ -386,6 +392,12 @@ Style/NegatedIfElseCondition:
 Style/NilLambda:
   Enabled: true
 
+Style/NumberedParameters:
+  Enabled: true
+
+Style/NumberedParametersLimit:
+  Enabled: true
+
 Style/OptionalBooleanParameter:
   Enabled: true
 
@@ -423,6 +435,9 @@ Style/RedundantSelfAssignment:
   Enabled: true
 
 Style/RedundantSelfAssignmentBranch:
+  Enabled: true
+
+Style/SelectByRegexp:
   Enabled: true
 
 Style/SingleArgumentDig:
