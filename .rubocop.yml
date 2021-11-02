@@ -269,6 +269,9 @@ Performance/BlockGivenWithExplicitBlock:
 Performance/CollectionLiteralInLoop:
   Enabled: true
 
+Performance/ConcurrentMonotonicTime:
+  Enabled: true
+
 Performance/ConstantRegexp:
   Enabled: true
 
