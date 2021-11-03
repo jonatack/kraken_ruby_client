@@ -239,6 +239,14 @@ module Kraken
     def trade_balance(opts = {})
       post_private 'TradeBalance', opts
     end
+    
+    def trades_history(opts = {})
+      post_private 'TradesHistory', opts
+    end
+
+    def query_trades_history(opts = {})
+      post_private 'QueryTrades', opts
+    end
 
     # Fetch trade volume (POST)
     # URL: https://api.kraken.com/0/private/TradeVolume
