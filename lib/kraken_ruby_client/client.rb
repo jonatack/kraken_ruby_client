@@ -239,12 +239,17 @@ module Kraken
     def trade_balance(opts = {})
       post_private 'TradeBalance', opts
     end
-    
+
+    # Retrieve information about trades/fills.
+    # 50 results are returned at a time, the most recent by default.
+    # https://docs.kraken.com/rest/#operation/getTradeHistory
     def trades_history(opts = {})
       post_private 'TradesHistory', opts
     end
 
-    def query_trades_history(opts = {})
+    # Retrieve information about specific trades/fills.
+    # https://docs.kraken.com/rest/#operation/getTradesInfo
+    def query_trades(opts = {})
       post_private 'QueryTrades', opts
     end
 
