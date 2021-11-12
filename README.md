@@ -183,6 +183,18 @@ open_orders.select { |_, v| v.dig('descr', 'pair') == pair }.first(10).each do |
 end
 ```
 
+### Query orders
+
+```ruby
+# Query all orders based on a transaction id
+queried_orders = client.query_orders(txid: txid)
+```
+
+```ruby
+# Query all orders based on a userref
+queried_orders = client.query_orders(userref: userref)
+```
+
 ### Place a limit buy order
 
 ```ruby

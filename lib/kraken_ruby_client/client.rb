@@ -379,6 +379,26 @@ module Kraken
       post_private 'ClosedOrders', opts
     end
 
+    # Query Orders Info (POST)
+    # URL: https://api.kraken.com/0/private/QueryOrders
+    # Input:
+    #   +trades+    predicate to include trades (optional, default `false`)
+    #   +userref+   restrict results to given user reference id (optional)
+    #   +txid+      Comma delimited list of transaction IDs to query info about (20 maximum)
+    #
+    # Examples:
+    #
+    # require 'kraken_ruby_client'
+    # client = Kraken::Client.new(api_key: YOUR_KEY, api_secret: YOUR_SECRET)
+    #
+    # Return orders based on a transaction id
+    #
+    #   queried_orders = client.query_orders(txid: txid)
+    #
+    def query_orders(opts = {})
+      post_private 'QueryOrders', opts
+    end
+
     # Get deposit methods (POST)
     #
     # Examples:
