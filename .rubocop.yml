@@ -13,6 +13,9 @@ Bundler/OrderedGems:
 Gemspec/DateAssignment:
   Enabled: false
 
+Gemspec/RequireMFA:
+  Enabled: false
+
 Layout/BeginEndAlignment:
   Enabled: true
 
@@ -176,6 +179,9 @@ Lint/UnreachableLoop:
   Enabled: true
 
 Lint/UselessMethodDefinition:
+  Enabled: true
+
+Lint/UselessRuby2Keywords:
   Enabled: true
 
 Lint/UselessTimes:
@@ -399,6 +405,9 @@ Style/NumberedParameters:
   Enabled: true
 
 Style/NumberedParametersLimit:
+  Enabled: true
+
+Style/OpenStructUse:
   Enabled: true
 
 Style/OptionalBooleanParameter:
