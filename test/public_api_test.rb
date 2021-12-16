@@ -93,7 +93,6 @@ class PublicApiTest < Minitest::Test
 
   def test_get_ohlc
     pair             = 'xbteur'
-    asset_pair_error = ['EQuery:Unknown asset pair']
     arguments_error  = ['EGeneral:Invalid arguments']
     query            = @query.ohlc(pair)
     result           = query.fetch('result')
@@ -114,10 +113,11 @@ class PublicApiTest < Minitest::Test
     assert_empty @query.ohlc(pair, since: 0, interval: 21_600).fetch('error')
     assert_empty @query.ohlc(pair, interval: 60).fetch('error')
 
-    assert_equal asset_pair_error, @query.ohlc('abc').fetch('error')
-    assert_equal arguments_error,  @query.ohlc.fetch('error')
-    assert_equal arguments_error,  @query.ohlc('').fetch('error')
-    assert_equal arguments_error,  @query.ohlc(pair, interval: 0).fetch('error')
+    assert_equal arguments_error, @query.ohlc('abc').fetch('error')
+    assert_equal arguments_error, @query.ohlc('btcabc').fetch('error')
+    assert_equal arguments_error, @query.ohlc.fetch('error')
+    assert_equal arguments_error, @query.ohlc('').fetch('error')
+    assert_equal arguments_error, @query.ohlc(pair, interval: 0).fetch('error')
   end
 
   def test_get_trades
