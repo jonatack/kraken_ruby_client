@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
     Copyright (C) 2016-2021 Jon Atack <jon@atack.com>
   DESCRIPTION
 
-  s.add_dependency 'curb', '~> 0.9'
+  s.add_dependency 'curb', '~> 1.0'
   s.add_development_dependency 'bundler', '~> 2.0'
   s.add_development_dependency 'minitest', '~> 5.11'
   s.add_development_dependency 'rake', '~> 12.3'
