@@ -518,7 +518,15 @@ module Kraken
     # current Unix Time.
     #
     def generate_nonce
-      (Time.now.to_f * 1_000_000).to_i
+      ((high_bits | low_bits).to_s)
+    end
+    
+    def low_bits
+      @low_bits ||= (SecureRandom.random_number(2 ** 16) & 0xffff)
+    end
+
+    def high_bits
+      @high_bits ||= ((Time.now.to_f * 10000).to_i << 16)
     end
 
     def auth_url(method, nonce, params)
