@@ -27,7 +27,7 @@ gemspec
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}.git" }
 
 # Curl Ruby for HTTP - the only runtime dependency for this gem.
-gem 'curb', github: 'taf2/curb'
+gem 'curb', '~> 0.9.11'
 
 # Ruby Make
 gem 'rake'
