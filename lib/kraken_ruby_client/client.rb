@@ -379,12 +379,13 @@ module Kraken
       post_private 'ClosedOrders', opts
     end
 
-    # Query Orders Info (POST)
+    # Query orders (POST)
     # URL: https://api.kraken.com/0/private/QueryOrders
     # Input:
     #   +trades+    predicate to include trades (optional, default `false`)
     #   +userref+   restrict results to given user reference id (optional)
-    #   +txid+      Comma delimited list of transaction IDs to query info about (20 maximum)
+    #   +txid+      comma-delimited list of transaction IDs to query info about
+    #               (20 maximum)
     #
     # Examples:
     #
@@ -399,15 +400,18 @@ module Kraken
       post_private 'QueryOrders', opts
     end
 
-    # Get Ledgers Info (POST)
+    # Fetch ledgers by asset(s) (POST)
     # URL: https://api.kraken.com/0/private/Ledgers
     # Input:
-    #   +asset+     comma delimited list of asset names to get info on (optional.)
+    #   +asset+     comma-delimited list of asset names to get info on
+    #               (optional)
     #   +aclass+    asset class (optional): currency (default) or asset
-    #   +type+      type of ledger to retrieve (optional): all(default), deposit, withdrawal, trade, margin
-    #   +start+     start UNIX timestamp or order txid (optional. exclusive)
-    #   +end+       end UNIX timestamp or order txid (optional. inclusive)
+    #   +type+      type of ledger to retrieve (optional), accepted string
+    #               values: all (default), deposit, withdrawal, trade, margin
+    #   +start+     start UNIX timestamp or order txid (optional; exclusive)
+    #   +end+       end UNIX timestamp or order txid (optional; inclusive)
     #   +ofs+       result offset
+    #
     # Note: Times given by order txids are more accurate than UNIX timestamps.
     #       If an order txid is given, the order's open time is used.
     #
@@ -424,10 +428,11 @@ module Kraken
       post_private 'Ledgers', opts
     end
 
-    # Query Ledgers (POST)
+    # Query ledgers by ledger id(s) (POST)
     # URL: https://api.kraken.com/0/private/QueryLedgers
     # Input:
-    #   +id+        comma delimited list of ledger IDs to query info about (20 maximum)
+    #   +id+        comma-delimited list of ledger IDs to query info about
+    #               (20 maximum)
     #   +trades+    predicate to include trades (optional, default `false`)
     #
     # Examples:

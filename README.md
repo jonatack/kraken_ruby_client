@@ -244,13 +244,13 @@ client.trade_volume
 client.trade_volume(pair: 'XBTEUR, etcusd, xbteth')
 ```
 
-### Retrieve ledgers
+### Fetch ledgers by asset(s)
 
 ```ruby
 ledgers = client.ledgers(asset: "AAVE")
 ```
 
-### Query ledgers
+### Query ledgers by id(s)
 
 ```ruby
 ledgers = client.query_ledgers(id: "LX4A-QQQ")
