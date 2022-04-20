@@ -213,7 +213,7 @@ module Kraken
     #
     def add_order(opts = {})
       missing_args = add_order_required_args - opts.keys.map(&:to_s)
-      raise ArgumentError, add_order_err_msg(missing_args) if missing_args.any?
+      raise ArgumentError, order_err_msg(missing_args) if missing_args.any?
 
       post_private 'AddOrder', opts
     end
@@ -221,8 +221,19 @@ module Kraken
     def add_order_required_args
       %w(pair type volume ordertype).freeze
     end
+    
+    def edit_order(opts = {})
+      missing_args = edit_order_required_args - opts.keys.map(&:to_s)
+      raise ArgumentError, order_err_msg(missing_args) if missing_args.any?
 
-    def add_order_err_msg(missing_args)
+      post_private 'EditOrder', opts
+    end
+    
+    def edit_order_required_args
+      %w(txid pair).freeze
+    end
+
+    def order_err_msg(missing_args)
       "the following required arguments are missing: #{missing_args.join(', ')}"
     end
 
@@ -230,6 +241,10 @@ module Kraken
     #
     def cancel_order(txid)
       post_private 'CancelOrder', txid: txid
+    end
+
+    def edit_order_err_msg(missing_args)
+      "the following required arguments are missing: #{missing_args.join(', ')}"
     end
 
     def balance
