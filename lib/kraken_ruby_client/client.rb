@@ -243,10 +243,6 @@ module Kraken
       post_private 'CancelOrder', txid: txid
     end
 
-    def edit_order_err_msg(missing_args)
-      "the following required arguments are missing: #{missing_args.join(', ')}"
-    end
-
     def balance
       post_private 'Balance'
     end
