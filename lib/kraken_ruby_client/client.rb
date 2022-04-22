@@ -587,7 +587,7 @@ module Kraken
     # current Unix Time.
     #
     def generate_nonce
-      (Time.now.to_f * 1_000_000).to_i
+      ((Time.now.to_f * 1_000_000).to_i << 10).to_s
     end
 
     def auth_url(method, nonce, params)
